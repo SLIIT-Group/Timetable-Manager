@@ -1,4 +1,5 @@
 import React from 'react';
+import { Switch, Route, Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -15,8 +16,6 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 
 const drawerWidth = 240;
 
@@ -83,7 +82,8 @@ export default function PersistentDrawerLeft() {
   const [open, setOpen] = React.useState(false);
 
   const navLinks = [
-    { url: '../Test', name: 'About Us' },
+    { url: '/', name: 'Home' },
+    { url: '/test', name: 'About Us' },
     { url: '/projects', name: 'Projects' },
     { url: '/services', name: 'Services' },
     { url: '/contact-us', name: 'Contact Us' },
@@ -142,9 +142,11 @@ export default function PersistentDrawerLeft() {
         <Divider />
         <List>
           {navLinks.map(({ url, name }) => (
-            <ListItem button key={url}>
-              <ListItemText primary={name} />
-            </ListItem>
+            <div>
+              <ListItem button key={url}>
+                <ListItemText primary={name} />
+              </ListItem>
+            </div>
           ))}
         </List>
       </Drawer>
