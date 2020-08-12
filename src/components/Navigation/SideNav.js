@@ -16,6 +16,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import ExpansionPanel from '../ExpansionPanel/ExpansionPanel';
+import { Container } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -156,7 +158,10 @@ export default function PersistentDrawerLeft() {
         })}
       >
         <div className={classes.drawerHeader} />
-        <Typography paragraph>Hello World</Typography>
+        <Container>
+          <ExpansionPanel></ExpansionPanel>
+          <ExpansionPanel></ExpansionPanel>
+        </Container>
       </main>
     </div>
   );
