@@ -48,10 +48,7 @@ function AllocateWorkingDays() {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-              Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
-              feugiat. Aliquam eget maximus est, id dignissim quam.
-            </Typography>
+            
           </AccordionDetails>
         </Accordion>
       </Container>

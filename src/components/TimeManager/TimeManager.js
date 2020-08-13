@@ -1,7 +1,7 @@
 import React from 'react';
-import TimeSlot from './TimeSlot';
-import AllocateWorkingDays from './AllocateWorkingDays';
-import NoOfWorkingDays from './NoOfWorkingDays';
+import TimeSlot from './Panels/TimeSlot';
+import AllocateWorkingDays from './Panels/AllocateWorkingDays';
+import NoOfWorkingDays from './Panels/NoOfWorkingDays';
 
 function TimeManager() {
   return (
