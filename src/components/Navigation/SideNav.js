@@ -153,11 +153,11 @@ export default function PersistentDrawerLeft() {
               <ListItemText>Location</ListItemText>
             </Link>
           </ListItem>
-          <ListItem button>
-            <Link style={navStyle} to='/session'>
+          <Link style={navStyle} to='/session'>
+            <ListItem button>
               <ListItemText>Session</ListItemText>
-            </Link>
-          </ListItem>
+            </ListItem>
+          </Link>
           <ListItem button>
             <Link style={navStyle} to='/student'>
               <ListItemText>Student</ListItemText>
