@@ -138,36 +138,36 @@ export default function PersistentDrawerLeft() {
         </div>
         <Divider />
         <List>
-          <ListItem button>
-            <Link style={navStyle} to='/time'>
+          <Link style={navStyle} to='/time'>
+            <ListItem button>
               <ListItemText>Time Manager</ListItemText>
-            </Link>
-          </ListItem>
-          <ListItem button>
-            <Link style={navStyle} to='/lecturers'>
+            </ListItem>
+          </Link>
+          <Link style={navStyle} to='/lecturers'>
+            <ListItem button>
               <ListItemText>Lecturers</ListItemText>
-            </Link>
-          </ListItem>
-          <ListItem button>
-            <Link style={navStyle} to='/location'>
+            </ListItem>
+          </Link>
+          <Link style={navStyle} to='/location'>
+            <ListItem button>
               <ListItemText>Location</ListItemText>
-            </Link>
-          </ListItem>
+            </ListItem>
+          </Link>
           <Link style={navStyle} to='/session'>
             <ListItem button>
               <ListItemText>Session</ListItemText>
             </ListItem>
           </Link>
-          <ListItem button>
-            <Link style={navStyle} to='/student'>
+          <Link style={navStyle} to='/student'>
+            <ListItem button>
               <ListItemText>Student</ListItemText>
-            </Link>
-          </ListItem>
-          <ListItem button>
-            <Link style={navStyle} to='/subject'>
+            </ListItem>
+          </Link>
+          <Link style={navStyle} to='/subject'>
+            <ListItem button>
               <ListItemText>Subject</ListItemText>
-            </Link>
-          </ListItem>
+            </ListItem>
+          </Link>
         </List>
       </Drawer>
       <main
