@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -14,12 +14,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ExpansionPanel from '../ExpansionPanel/ExpansionPanel';
-import { Container } from '@material-ui/core';
 
 const drawerWidth = 240;
+
+const navStyle = {
+  color: '#22063d',
+  textDecoration: 'none',
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    background: '#f6f0ff',
   },
   drawerHeader: {
     display: 'flex',
@@ -82,14 +85,6 @@ export default function PersistentDrawerLeft() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
-  const navLinks = [
-    { url: '/', name: 'Home' },
-    { url: '/test', name: 'About Us' },
-    { url: '/projects', name: 'Projects' },
-    { url: '/services', name: 'Services' },
-    { url: '/contact-us', name: 'Contact Us' },
-  ];
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -143,13 +138,36 @@ export default function PersistentDrawerLeft() {
         </div>
         <Divider />
         <List>
-          {navLinks.map(({ url, name }) => (
-            <div>
-              <ListItem button key={url}>
-                <ListItemText primary={name} />
-              </ListItem>
-            </div>
-          ))}
+          <ListItem button>
+            <Link style={navStyle} to='/time'>
+              <ListItemText>Time Manager</ListItemText>
+            </Link>
+          </ListItem>
+          <ListItem button>
+            <Link style={navStyle} to='/lecturers'>
+              <ListItemText>Lecturers</ListItemText>
+            </Link>
+          </ListItem>
+          <ListItem button>
+            <Link style={navStyle} to='/location'>
+              <ListItemText>Location</ListItemText>
+            </Link>
+          </ListItem>
+          <ListItem button>
+            <Link style={navStyle} to='/session'>
+              <ListItemText>Session</ListItemText>
+            </Link>
+          </ListItem>
+          <ListItem button>
+            <Link style={navStyle} to='/student'>
+              <ListItemText>Student</ListItemText>
+            </Link>
+          </ListItem>
+          <ListItem button>
+            <Link style={navStyle} to='/subject'>
+              <ListItemText>Subject</ListItemText>
+            </Link>
+          </ListItem>
         </List>
       </Drawer>
       <main
@@ -158,10 +176,10 @@ export default function PersistentDrawerLeft() {
         })}
       >
         <div className={classes.drawerHeader} />
-        <Container>
+        {/* <Container>
           <ExpansionPanel></ExpansionPanel>
           <ExpansionPanel></ExpansionPanel>
-        </Container>
+        </Container> */}
       </main>
     </div>
   );
