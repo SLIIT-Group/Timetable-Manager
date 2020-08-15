@@ -6,6 +6,7 @@ import SessionManager from './Sessions/SessionManager';
 import StudentManager from './Students/StudentManager';
 import SubjectManager from './Subjects/SubjectManager';
 import Lecturer from './Lecturer/Lecturer';
+import Lecturer2 from './Lecturer/addProductCategory.component'
 import TagManager from "./Tags/TagManager";
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
