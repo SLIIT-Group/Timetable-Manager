@@ -6,6 +6,7 @@ import SessionManager from './Sessions/SessionManager';
 import StudentManager from './Students/StudentManager';
 import SubjectManager from './Subjects/SubjectManager';
 import Lecturer from './Lecturer/Lecturer';
+import TagManager from "./Tags/TagManager";
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -21,6 +22,7 @@ const App = () => {
           <Route exact path='/session' component={SessionManager}></Route>
           <Route exact path='/student' component={StudentManager}></Route>
           <Route exact path='/subject' component={SubjectManager}></Route>
+          <Route exact path='/tags' component={TagManager}></Route>
         </Switch>
       </div>
     </Router>

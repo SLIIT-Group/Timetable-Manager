@@ -168,6 +168,11 @@ export default function PersistentDrawerLeft() {
               <ListItemText>Subject</ListItemText>
             </ListItem>
           </Link>
+          <Link style={navStyle} to='/tags'>
+            <ListItem button>
+              <ListItemText>Tags</ListItemText>
+            </ListItem>
+          </Link>
         </List>
       </Drawer>
       <main
