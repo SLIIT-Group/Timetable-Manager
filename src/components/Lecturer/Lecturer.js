@@ -9,6 +9,11 @@ function Lecturer() {
       <Container>
         <ExpansionPanel></ExpansionPanel>
       </Container>
+
+        <div> Thanuja Chamika</div>
+        <div> Thanuja Chamika</div>
+
+
     </div>
   );
 }
