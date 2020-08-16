@@ -6,12 +6,27 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+
+const currencies = [
+  {
+    value: "USD",
+    label: "$",
+    name: "Hello",
+  },
+  {
+    value: "EUR",
+    label: "€",
+    name: "Bro",
+  },
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    margin: "10px",
-    marginRight: "10px",
+    margin: "0px",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -75,49 +90,57 @@ export default function LocationManager() {
                   Add
                 </button>
               </form>
-
-              <div className={classes.root}>
-                <div className="main">
-                  <div className="input-group">
-                    <input type="text" className="form-control" />
-                    <div className="input-group-append">
-                      <button className="btn btn-secondary" type="button">
-                        <i className="fa fa-search" />
-                      </button>
+              <div
+                style={{
+                  border: "3px solid #dff2ed",
+                  padding: "25px",
+                  borderRadius: "10px",
+                  width: "100%",
+                }}
+              >
+                <div className={classes.root}>
+                  <div className="main">
+                    <div className="input-group">
+                      <input type="text" className="form-control" />
+                      <div className="input-group-append">
+                        <button className="btn btn-secondary" type="button">
+                          <i className="fa fa-search" />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <br />
-                <table
-                  className="table table-striped table-info"
-                  style={{ textAlign: "center" }}
-                >
-                  <thead>
-                    <tr>
-                      <th scope="col">Buildings</th>
-                      <th scope="col" colSpan="2">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  {buildings.map((item) => (
-                    <tbody>
+                  <br />
+                  <table
+                    className="table table-striped table-info"
+                    style={{ textAlign: "center" }}
+                  >
+                    <thead>
                       <tr>
-                        <th scope="row">{item}</th>
-                        <td>
-                          <button type="button" class="btn btn-warning">
-                            Edit
-                          </button>
-                        </td>
-                        <td>
-                          <button type="button" class="btn btn-danger">
-                            Delete
-                          </button>
-                        </td>
+                        <th scope="col">Buildings</th>
+                        <th scope="col" colSpan="2">
+                          Action
+                        </th>
                       </tr>
-                    </tbody>
-                  ))}
-                </table>
+                    </thead>
+                    {buildings.map((item) => (
+                      <tbody>
+                        <tr>
+                          <th scope="row">{item}</th>
+                          <td>
+                            <button type="button" class="btn btn-warning">
+                              Edit
+                            </button>
+                          </td>
+                          <td>
+                            <button type="button" class="btn btn-danger">
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    ))}
+                  </table>
+                </div>
               </div>
             </div>
           </Typography>
@@ -134,8 +157,100 @@ export default function LocationManager() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            <div style={{ display: "inline-flex", marginLeft: "50px" }}>
+              <Grid>
+                <TextField
+                  select
+                  label="Buildings"
+                  variant="outlined"
+                  disabled={!buildings.length}
+                  style={{ width: "160px" }}
+                >
+                  {buildings.map((option) => (
+                    <MenuItem value={option}>{option}</MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <div style={{ flexDirection: "column", marginLeft: "100px" }}>
+                <p>Room</p>
+                <p>Capacity</p>
+              </div>
+              <div style={{ marginLeft: "5px" }}>
+                <input
+                  type="text"
+                  style={{ width: "70px", borderRadius: "10px" }}
+                />
+                <br />
+
+                <input
+                  type="text"
+                  style={{
+                    marginTop: "8px",
+                    width: "70px",
+                    borderRadius: "10px",
+                  }}
+                />
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn btn-info"
+              style={{
+                width: "100px",
+                height: "35px",
+                textAlign: "center",
+                marginLeft: "50px",
+                borderRadius: "15px",
+                marginTop: "40px",
+              }}
+            >
+              Add
+            </button>
+            <div style={{ marginLeft: "10px", padding: "50px" }}>
+              <div className="input-group">
+                <input type="text" className="form-control" />
+                <div className="input-group-append">
+                  <button className="btn btn-secondary" type="button">
+                    <i className="fa fa-search" />
+                  </button>
+                </div>
+              </div>
+              <br />
+              <table
+                className="table table-striped table-info"
+                style={{ textAlign: "center" }}
+              >
+                <thead>
+                  <tr>
+                    <th scope="col">Buildings</th>
+                    <th scope="col">Rooms</th>
+                    <th scope="col">Room Capacity</th>
+                    <th scope="col" colSpan="2">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                {currencies.map((item) => (
+                  <tbody>
+                    <tr>
+                      <th scope="row">{item.value}</th>
+                      <td>{item.label}</td>
+                      <td>{item.name}</td>
+                      <td>
+                        <button type="button" class="btn btn-warning">
+                          Edit
+                        </button>
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-danger">
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                ))}
+              </table>
+            </div>
           </Typography>
         </AccordionDetails>
       </Accordion>
