@@ -7,19 +7,27 @@ import GrpNumAllocation from "./Panels/GrpNumAllocation";
 import ProgramAllocation from "./Panels/ProgramAllocation";
 import SubGrpNumAllocation from "./Panels/SubGrpNumAllocation";
 import ViewStudentDetails from "./Panels/ViewStudentDetails";
+import NewAcademicYrSem from "./Panels/NewAcademicYrSem";
+import NewProgramAllocation from "./Panels/NewProgramAllocation";
+import NewGrpNumAllocation from "./Panels/NewGrpNumAllocation";
+import NewSubGrpNumAllocation from "./Panels/NewSubGrpNumAllocation";
 
 function StudentManager() {
   return (
       <div style={{ textAlign: 'center' }}>
           Student Manager
           <Container>
-              <AcademicYrSem />
-              <GenerateGrpIDs />
-              <GenerateSubGrpIDs />
-              <GrpNumAllocation />
-              <ProgramAllocation />
-              <SubGrpNumAllocation />
               <ViewStudentDetails />
+              <NewAcademicYrSem />
+              <AcademicYrSem />
+              <NewProgramAllocation />
+              <ProgramAllocation />
+              <NewSubGrpNumAllocation />
+              <GrpNumAllocation />
+              <GenerateGrpIDs />
+              <NewSubGrpNumAllocation />
+              <SubGrpNumAllocation />
+              <GenerateSubGrpIDs />
           </Container>
       </div>
   );
