@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -17,14 +17,34 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
   },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  },
+  divider: {
+    height: 28,
+    margin: 4,
+  },
 }));
 
 export default function LocationManager() {
   const classes = useStyles();
+  const [buildings, setBuilding] = useState([]);
+  const [input, setInput] = useState("");
+  const [search, setsearch] = useState("");
+
+  const addBuilding = (e) => {
+    e.preventDefault();
+    setBuilding([...buildings, input]);
+    setInput("");
+  };
 
   return (
     <div className={classes.root}>
-      <Accordion>
+      <Accordion style={{ backgroundColor: "#e8dddc" }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -39,10 +59,20 @@ export default function LocationManager() {
             <div style={{ marginLeft: "100px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
-                  <input type="text" className="form-control" />
+                  <input
+                    value={input}
+                    onChange={(event) => setInput(event.target.value)}
+                    type="text"
+                    className="form-control"
+                  />
                 </div>
-                <button type="submit" className="btn btn-primary mb-2">
-                  ADD
+                <button
+                  disabled={!input}
+                  type="submit"
+                  className="btn btn-info mb-2"
+                  onClick={addBuilding}
+                >
+                  Add
                 </button>
               </form>
 
@@ -57,34 +87,36 @@ export default function LocationManager() {
                     </div>
                   </div>
                 </div>
-                <table className="table table-bordered">
+                <br />
+                <table
+                  className="table table-striped table-info"
+                  style={{ textAlign: "center" }}
+                >
                   <thead>
                     <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">First</th>
-                      <th scope="col">Last</th>
-                      <th scope="col">Handle</th>
+                      <th scope="col">Buildings</th>
+                      <th scope="col" colSpan="2">
+                        Action
+                      </th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Mark</td>
-                      <td>Otto</td>
-                      <td>@mdo</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Jacob</td>
-                      <td>Thornton</td>
-                      <td>@fat</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td colSpan={2}>Larry the Bird</td>
-                      <td>@twitter</td>
-                    </tr>
-                  </tbody>
+                  {buildings.map((item) => (
+                    <tbody>
+                      <tr>
+                        <th scope="row">{item}</th>
+                        <td>
+                          <button type="button" class="btn btn-warning">
+                            Edit
+                          </button>
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-danger">
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  ))}
                 </table>
               </div>
             </div>
@@ -92,7 +124,7 @@ export default function LocationManager() {
         </AccordionDetails>
       </Accordion>
       <br />
-      <Accordion>
+      <Accordion style={{ backgroundColor: "#fae5e3" }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"

@@ -77,6 +77,24 @@ const useStyles = makeStyles((theme) => ({
 function AddWorkingDays() {
   const classes = useStyles();
   const [day, setDay] = React.useState('5');
+  const [toggle, setToggle] = React.useState({
+    value: 'EDIT',
+    isEdit: true,
+  });
+
+  const onClick = (e) => {
+    if (toggle.value === 'EDIT') {
+      setToggle({
+        value: 'SAVE',
+        isEdit: false,
+      });
+    } else {
+      setToggle({
+        value: 'EDIT',
+        isEdit: true,
+      });
+    }
+  };
 
   const handleChange = (event) => {
     setDay(event.target.value);
@@ -101,8 +119,13 @@ function AddWorkingDays() {
           ))}
         </TextField>
       </div>
-      <Button style={{ float: 'right' }} variant='contained' color='primary'>
-        EDIT
+      <Button
+        onClick={onClick}
+        style={{ float: 'right' }}
+        variant='contained'
+        color='primary'
+      >
+        {toggle.value}
       </Button>
     </form>
   );
