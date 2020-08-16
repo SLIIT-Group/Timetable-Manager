@@ -5,6 +5,10 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { Col } from 'reactstrap';
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,9 +50,17 @@ export default function NewAcademicYrSem() {
 
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Academic Yr and Sem Blah Blah.
-          </Typography>
+          <div className="col-md-12 row px-5">
+            <div className="input-field col s6">
+              <TextField id="standard-basic" label="Enter New Academic Year and Semester" fullWidth={true} />
+            </div>
+            <Col sm="6 pb-0">
+              <Button variant="contained" color="primary" className="btn-block">
+                Add
+              </Button>
+            </Col>
+          </div>
+
         </AccordionDetails>
       </Accordion>
     </div>
