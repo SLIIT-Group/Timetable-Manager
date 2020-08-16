@@ -5,7 +5,13 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import TextField from "@material-ui/core/TextField";
+import {Col} from "reactstrap";
+import Button from "@material-ui/core/Button";
+import Row from "react-bootstrap/Row";
+import classNames from 'classnames/bind';
 
+let cx = classNames;
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -42,13 +48,36 @@ export default function AcademicYrSem() {
           aria-controls='panel1bh-content'
           id='panel1bh-header'
         >
-          <Typography className={classes.heading}>Academic Year and Semester Allocation</Typography>
-
+          <Typography className={cx(classes.heading, "mt-2")}>Academic Year and Semester Allocation</Typography>
+          <Typography className={classes.secondaryHeading}>
+            <button type="button" className="btn btn-warning font-weight-bold">Sample Text</button>
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Academic Yr and Sem Blah Blah.
-          </Typography>
+          <div className="col-md-12 row px-5">
+            <div className="input-field col s6">
+              <div className="form-group">
+                <input type="text" className="form-control" />
+              </div>
+            </div>
+            <Col sm="6 pb-0">
+              <Row>
+                <Col>
+                  <Button variant="contained" color="primary" className="btn-block pr-1">
+                  Update
+                </Button>
+                </Col>
+                <Col>
+                  <Button variant="contained" color="secondary" className="btn-block pl-1">
+                    Delete
+                  </Button>
+                </Col>
+
+              </Row>
+
+            </Col>
+          </div>
+
         </AccordionDetails>
       </Accordion>
     </div>
