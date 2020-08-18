@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
+import "./LocationManager.css";
 
 const currencies = [
   {
@@ -25,8 +26,19 @@ const currencies = [
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
-    margin: "0px",
+    width: "98%",
+    margin: "10px",
+    marginRight: "10px",
+  },
+  layout: {
+    width: "auto",
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+      width: 600,
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -50,16 +62,40 @@ export default function LocationManager() {
   const [buildings, setBuilding] = useState([]);
   const [input, setInput] = useState("");
   const [search, setsearch] = useState("");
+  const [toggle, setToggle] = React.useState({
+    value: "Add",
+    isEdit: true,
+  });
+  const onClick = (e) => {
+    if (toggle.value === "Add") {
+      setToggle({
+        value: "Save",
+        isEdit: false,
+      });
+    } else {
+      setToggle({
+        value: "Add",
+        isEdit: true,
+      });
+    }
+  };
 
   const addBuilding = (e) => {
     e.preventDefault();
-    setBuilding([...buildings, input]);
-    setInput("");
+    if (toggle.value === "Save") {
+      setToggle({
+        value: "Add",
+        isEdit: false,
+      });
+    } else {
+      setBuilding([...buildings, input]);
+      setInput("");
+    }
   };
 
   return (
-    <div className={classes.root}>
-      <Accordion style={{ backgroundColor: "#e8dddc" }}>
+    <div className={classes.layout}>
+      <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -87,7 +123,7 @@ export default function LocationManager() {
                   className="btn btn-info mb-2"
                   onClick={addBuilding}
                 >
-                  Add
+                  {toggle.value}
                 </button>
               </form>
               <div
@@ -101,12 +137,11 @@ export default function LocationManager() {
                 <div className={classes.root}>
                   <div className="main">
                     <div className="input-group">
-                      <input type="text" className="form-control" />
-                      <div className="input-group-append">
-                        <button className="btn btn-secondary" type="button">
-                          <i className="fa fa-search" />
-                        </button>
-                      </div>
+                      <input
+                        type="text"
+                        className="input"
+                        style={{ width: "100%" }}
+                      />
                     </div>
                   </div>
                   <br />
@@ -127,7 +162,11 @@ export default function LocationManager() {
                         <tr>
                           <th scope="row">{item}</th>
                           <td>
-                            <button type="button" class="btn btn-warning">
+                            <button
+                              type="button"
+                              class="btn btn-warning"
+                              onClick={onClick}
+                            >
                               Edit
                             </button>
                           </td>
@@ -147,7 +186,7 @@ export default function LocationManager() {
         </AccordionDetails>
       </Accordion>
       <br />
-      <Accordion style={{ backgroundColor: "#fae5e3" }}>
+      <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
@@ -171,11 +210,11 @@ export default function LocationManager() {
                   ))}
                 </TextField>
               </Grid>
-              <div style={{ flexDirection: "column", marginLeft: "100px" }}>
+              <div style={{ flexDirection: "column", marginLeft: "30px" }}>
                 <p>Room</p>
                 <p>Capacity</p>
               </div>
-              <div style={{ marginLeft: "5px" }}>
+              <div style={{ marginLeft: "2px" }}>
                 <input
                   type="text"
                   style={{ width: "70px", borderRadius: "10px" }}
@@ -206,14 +245,13 @@ export default function LocationManager() {
             >
               Add
             </button>
-            <div style={{ marginLeft: "10px", padding: "50px" }}>
+            <div style={{ padding: "50px" }}>
               <div className="input-group">
-                <input type="text" className="form-control" />
-                <div className="input-group-append">
-                  <button className="btn btn-secondary" type="button">
-                    <i className="fa fa-search" />
-                  </button>
-                </div>
+                <input
+                  type="text"
+                  className="input"
+                  style={{ width: "100%" }}
+                />
               </div>
               <br />
               <table
