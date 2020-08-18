@@ -27,7 +27,17 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "98%",
     margin: "10px",
-    marginRight: "10px",
+    marginRight: "100px",
+  },
+  layout: {
+    width: "auto",
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+      width: 600,
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -83,7 +93,7 @@ export default function Rooms() {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.layout}>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -94,7 +104,7 @@ export default function Rooms() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ marginLeft: "150px" }}>
+            <div style={{ marginLeft: "20px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
                   <Grid>
@@ -103,7 +113,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px" }}
+                      style={{ width: "130px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -116,7 +126,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px", marginLeft: "10px" }}
+                      style={{ width: "130px", marginLeft: "10px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -129,7 +139,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px", marginLeft: "10px" }}
+                      style={{ width: "130px", marginLeft: "10px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -224,7 +234,7 @@ export default function Rooms() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ marginLeft: "150px" }}>
+            <div style={{ marginLeft: "20px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
                   <Grid>
@@ -233,7 +243,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px" }}
+                      style={{ width: "130px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -246,7 +256,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px", marginLeft: "10px" }}
+                      style={{ width: "130px", marginLeft: "10px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -259,7 +269,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px", marginLeft: "10px" }}
+                      style={{ width: "130px", marginLeft: "10px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -352,7 +362,7 @@ export default function Rooms() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ marginLeft: "250px" }}>
+            <div style={{ marginLeft: "80px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
                   <Grid>
@@ -361,7 +371,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px" }}
+                      style={{ width: "130px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -374,7 +384,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px", marginLeft: "10px" }}
+                      style={{ width: "130px", marginLeft: "10px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -465,7 +475,7 @@ export default function Rooms() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ marginLeft: "150px" }}>
+            <div style={{ marginLeft: "20px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
                   <Grid>
@@ -474,7 +484,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px" }}
+                      style={{ width: "130px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -487,7 +497,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px", marginLeft: "10px" }}
+                      style={{ width: "130px", marginLeft: "10px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -592,7 +602,7 @@ export default function Rooms() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ marginLeft: "150px" }}>
+            <div style={{ marginLeft: "20px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
                   <Grid>
@@ -601,7 +611,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px" }}
+                      style={{ width: "130px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -614,7 +624,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px", marginLeft: "10px" }}
+                      style={{ width: "130px", marginLeft: "10px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -627,7 +637,7 @@ export default function Rooms() {
                       label="Buildings"
                       variant="outlined"
                       disabled={!buildings.length}
-                      style={{ width: "160px", marginLeft: "10px" }}
+                      style={{ width: "130px", marginLeft: "10px" }}
                     >
                       {buildings.map((option) => (
                         <MenuItem value={option}>{option}</MenuItem>

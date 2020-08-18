@@ -16,6 +16,16 @@ const useStyles = makeStyles((theme) => ({
     margin: "10px",
     marginRight: "10px",
   },
+  layout: {
+    width: "auto",
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+      width: 600,
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
+  },
   heading: {
     fontSize: theme.typography.pxToRem(15),
     flexBasis: "33.33%",
@@ -37,7 +47,7 @@ export default function Stats() {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.layout}>
       <Accordion
         expanded={expanded === "panel1"}
         onChange={handleChange("panel1")}
@@ -51,7 +61,7 @@ export default function Stats() {
             Statistical Informations
           </Typography>
         </AccordionSummary>
-        <div style={{ marginLeft: "400px" }}>
+        <div style={{ marginLeft: "150px" }}>
           <AccordionDetails>
             <Typography>
               <Grid>
@@ -72,7 +82,7 @@ export default function Stats() {
         </div>
         <div>
           <PieChart
-            style={{ width: "300px", height: "300px", marginLeft: "350px" }}
+            style={{ width: "250px", height: "250px", marginLeft: "130px" }}
             data={[
               { title: "One", value: 50, color: "#E38627" },
               { title: "Two", value: 50, color: "#C13C37" },
