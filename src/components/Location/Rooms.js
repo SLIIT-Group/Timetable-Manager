@@ -25,8 +25,9 @@ const currencies = [
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
-    margin: "0px",
+    width: "98%",
+    margin: "10px",
+    marginRight: "10px",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -83,7 +84,7 @@ export default function Rooms() {
 
   return (
     <div className={classes.root}>
-      <Accordion style={{ backgroundColor: "#e8dddc" }}>
+      <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -93,7 +94,7 @@ export default function Rooms() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ marginLeft: "80px" }}>
+            <div style={{ marginLeft: "150px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
                   <Grid>
@@ -211,7 +212,7 @@ export default function Rooms() {
 
       <br />
 
-      <Accordion style={{ backgroundColor: "#e8dddc" }}>
+      <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -223,7 +224,7 @@ export default function Rooms() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ marginLeft: "80px" }}>
+            <div style={{ marginLeft: "150px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
                   <Grid>
@@ -339,7 +340,7 @@ export default function Rooms() {
         </AccordionDetails>
       </Accordion>
       <br />
-      <Accordion style={{ backgroundColor: "#e8dddc" }}>
+      <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -351,7 +352,7 @@ export default function Rooms() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ marginLeft: "80px" }}>
+            <div style={{ marginLeft: "250px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
                   <Grid>
@@ -452,7 +453,7 @@ export default function Rooms() {
         </AccordionDetails>
       </Accordion>
       <br />
-      <Accordion style={{ backgroundColor: "#e8dddc" }}>
+      <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -464,7 +465,7 @@ export default function Rooms() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ marginLeft: "80px" }}>
+            <div style={{ marginLeft: "150px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
                   <Grid>
@@ -579,7 +580,7 @@ export default function Rooms() {
         </AccordionDetails>
       </Accordion>
       <br />
-      <Accordion style={{ backgroundColor: "#e8dddc" }}>
+      <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -591,7 +592,7 @@ export default function Rooms() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ marginLeft: "80px" }}>
+            <div style={{ marginLeft: "150px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
                   <Grid>
