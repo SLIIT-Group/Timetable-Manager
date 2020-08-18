@@ -30,6 +30,16 @@ const useStyles = makeStyles((theme) => ({
     margin: "10px",
     marginRight: "10px",
   },
+  layout: {
+    width: "auto",
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+      width: 600,
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
+  },
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
@@ -84,7 +94,7 @@ export default function LocationManager() {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.layout}>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -97,7 +107,7 @@ export default function LocationManager() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ marginLeft: "300px" }}>
+            <div style={{ marginLeft: "100px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
                   <input
@@ -186,7 +196,7 @@ export default function LocationManager() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ display: "inline-flex", marginLeft: "200px" }}>
+            <div style={{ display: "inline-flex", marginLeft: "50px" }}>
               <Grid>
                 <TextField
                   select
@@ -200,11 +210,11 @@ export default function LocationManager() {
                   ))}
                 </TextField>
               </Grid>
-              <div style={{ flexDirection: "column", marginLeft: "100px" }}>
+              <div style={{ flexDirection: "column", marginLeft: "30px" }}>
                 <p>Room</p>
                 <p>Capacity</p>
               </div>
-              <div style={{ marginLeft: "5px" }}>
+              <div style={{ marginLeft: "2px" }}>
                 <input
                   type="text"
                   style={{ width: "70px", borderRadius: "10px" }}
@@ -235,7 +245,7 @@ export default function LocationManager() {
             >
               Add
             </button>
-            <div style={{ marginLeft: "180px", padding: "50px" }}>
+            <div style={{ padding: "50px" }}>
               <div className="input-group">
                 <input
                   type="text"
