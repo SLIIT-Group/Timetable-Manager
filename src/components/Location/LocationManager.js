@@ -50,11 +50,35 @@ export default function LocationManager() {
   const [buildings, setBuilding] = useState([]);
   const [input, setInput] = useState("");
   const [search, setsearch] = useState("");
+  const [toggle, setToggle] = React.useState({
+    value: "Add",
+    isEdit: true,
+  });
+  const onClick = (e) => {
+    if (toggle.value === "Add") {
+      setToggle({
+        value: "Save",
+        isEdit: false,
+      });
+    } else {
+      setToggle({
+        value: "Add",
+        isEdit: true,
+      });
+    }
+  };
 
   const addBuilding = (e) => {
     e.preventDefault();
-    setBuilding([...buildings, input]);
-    setInput("");
+    if (toggle.value === "Save") {
+      setToggle({
+        value: "Add",
+        isEdit: false,
+      });
+    } else {
+      setBuilding([...buildings, input]);
+      setInput("");
+    }
   };
 
   return (
@@ -87,7 +111,7 @@ export default function LocationManager() {
                   className="btn btn-info mb-2"
                   onClick={addBuilding}
                 >
-                  Add
+                  {toggle.value}
                 </button>
               </form>
               <div
@@ -127,7 +151,11 @@ export default function LocationManager() {
                         <tr>
                           <th scope="row">{item}</th>
                           <td>
-                            <button type="button" class="btn btn-warning">
+                            <button
+                              type="button"
+                              class="btn btn-warning"
+                              onClick={onClick}
+                            >
                               Edit
                             </button>
                           </td>
