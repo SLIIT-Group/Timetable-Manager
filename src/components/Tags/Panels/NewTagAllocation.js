@@ -49,16 +49,45 @@ export default function NewTagAllocation() {
 
         </AccordionSummary>
         <AccordionDetails>
-          <div className="col-md-12 row px-5">
-            <div className="input-field col s6">
-              <TextField id="standard-basic" label="Add New Tag" fullWidth={true} />
+          <>
+            <div className="col-md-12 row px-5">
+
+              <div className="row col-md-12">
+                <Col sm="6 pb-0">
+                  <div className="h5 font-weight-bold text-center pt-4">
+                    Enter New Tag Name :
+                  </div>
+                </Col>
+                <div className="input-field col s6">
+                  <TextField
+                      id="standard-full-width"
+                      label="Enter New Tag Name"
+                      style={{ margin: 8 }}
+                      placeholder="Eg: Lab, Lecture"
+                      fullWidth
+                      margin="normal"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                  />
+                </div>
+              </div>
+
+
+              <div className="col-md-12 row px-1 mt-3">
+                <Col sm="6 pb-0">
+                  <Button variant="contained" color="secondary" className="btn-block">
+                    Reset
+                  </Button>
+                </Col>
+                <Col sm="6 pb-0">
+                  <Button variant="contained" color="primary" className="btn-block">
+                    Add
+                  </Button>
+                </Col>
+              </div>
             </div>
-            <Col sm="6 pb-0">
-              <Button variant="contained" color="primary" className="btn-block">
-                Add
-              </Button>
-            </Col>
-          </div>
+          </>
         </AccordionDetails>
       </Accordion>
     </div>

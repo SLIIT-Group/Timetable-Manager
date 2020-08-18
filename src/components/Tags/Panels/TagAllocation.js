@@ -5,22 +5,16 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import clsx from 'clsx';
-import {  useTheme } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import ListItemText from '@material-ui/core/ListItemText';
-import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
-import Chip from '@material-ui/core/Chip';
-import TextField from "@material-ui/core/TextField";
 import {Col} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import Row from "react-bootstrap/Row";
+import classNames from 'classnames/bind';
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
 
-
+let cx = classNames;
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -36,57 +30,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-    maxWidth: 300,
-  },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  chip: {
-    margin: 2,
-  },
-  noLabel: {
-    marginTop: theme.spacing(3),
-  },
 }));
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-
-];
-
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-        personName.indexOf(name) === -1
-            ? theme.typography.fontWeightRegular
-            : theme.typography.fontWeightMedium,
-  };
-}
-
 
 export default function TagAllocation() {
   const classes = useStyles();
@@ -96,88 +40,87 @@ export default function TagAllocation() {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const theme = useTheme();
-  const [tag, setTag] = React.useState([]);
-
+  const [tag, setTag] = React.useState('');
+  console.log(tag);
   const handleTagChange = (event) => {
     setTag(event.target.value);
   };
-
-  const handleChangeMultiple = (event) => {
-    const { options } = event.target;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    setTag(value);
-  };
-
-  const OnTagChange = (event) => {
-    setTag(event.target.value);
-  };
-
   return (
-    <div className={classes.root}>
-      <Accordion
-        expanded={expanded === 'panel1'}
-        onChange={handleChange('panel1')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls='panel1bh-content'
-          id='panel1bh-header'
+      <div className={classes.root}>
+        <Accordion
+            expanded={expanded === 'panel1'}
+            onChange={handleChange('panel1')}
         >
-          <Typography className={classes.heading}>Tag Allocation</Typography>
+          <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls='panel1bh-content'
+              id='panel1bh-header'
+          >
+            <Typography className={cx(classes.heading, "mt-2")}>View and Edit Tag</Typography>
 
-        </AccordionSummary>
-        <AccordionDetails>
-          <div className="col-md-12 row px-5">
-            <div className="input-field col s6">
-              <FormControl className={classes.formControl}>
-                <InputLabel shrink htmlFor="select-multiple-native">
-                  Tags List
-                </InputLabel>
-                <Select
-                    multiple
-                    native
-                    value={tag}
-                    onChange={handleChangeMultiple}
-                    inputProps={{
-                      id: 'select-multiple-native',
-                    }}
-                >
-                  {names.map((name) => (
-                      <option key={name} value={name}>
-                        {name}
-                      </option>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-            <Col sm="6 pb-0">
-              <div className="form-group">
-                <input type="text" className="form-control" value={tag} onChange={OnTagChange}/>
+          </AccordionSummary>
+          <AccordionDetails>
+            <>
+              <div className="col-md-12 row px-5">
+
+                <div className="row col-md-12">
+                  <Col sm="6 pb-0">
+                    <label className="mt-3 h5 font-weight-bold">Select Tag :</label>
+                  </Col>
+                  <div className="input-field col s6 d-flex flex-column">
+                    <FormControl variant="outlined" className={classes.formControl}>
+                      <InputLabel id="demo-simple-select-outlined-label px-4">Select</InputLabel>
+                      <Select
+                          labelId="demo-simple-select-outlined-label"
+                          id="demo-simple-select-outlined"
+                          value={tag}
+                          onChange={handleTagChange}
+                          label="tag"
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </div>
+                </div>
+
+
+                <div className="row col-md-12 mt-3">
+
+                  <div className="input-field col s6">
+                    <div className="form-group">
+                      <input type="text" className="form-control" value={tag} onChange=""/>
+                    </div>
+                  </div>
+                  <Col sm="6 pb-0">
+                    <Row>
+                      <Col>
+                        <Button variant="contained" color="primary" className="btn-block pr-1">
+                          Update
+                        </Button>
+                      </Col>
+                      <Col>
+                        <Button variant="contained" color="secondary" className="btn-block pl-1">
+                          Delete
+                        </Button>
+                      </Col>
+
+                    </Row>
+
+                  </Col>
+
+                </div>
+
               </div>
+            </>
 
-              <Row>
-                <Col>
-                  <Button variant="contained" color="primary" className="btn-block pr-1">
-                    Update
-                  </Button>
-                </Col>
-                <Col>
-                  <Button variant="contained" color="secondary" className="btn-block pl-1">
-                    Delete
-                  </Button>
-                </Col>
-              </Row>
-            </Col>
-          </div>
 
-        </AccordionDetails>
-      </Accordion>
-    </div>
+          </AccordionDetails>
+        </Accordion>
+      </div>
   );
 }
