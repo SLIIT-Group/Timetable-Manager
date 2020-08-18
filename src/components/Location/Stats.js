@@ -12,7 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { PieChart } from "react-minimal-pie-chart";
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: "98%",
     margin: "10px",
     marginRight: "10px",
   },
@@ -47,9 +47,11 @@ export default function Stats() {
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
-          <Typography className={classes.heading}>Rooms</Typography>
+          <Typography className={classes.heading}>
+            Statistical Informations
+          </Typography>
         </AccordionSummary>
-        <div style={{ marginLeft: "200px" }}>
+        <div style={{ marginLeft: "400px" }}>
           <AccordionDetails>
             <Typography>
               <Grid>
@@ -70,7 +72,7 @@ export default function Stats() {
         </div>
         <div>
           <PieChart
-            style={{ width: "300px", height: "300px", marginLeft: "170px" }}
+            style={{ width: "300px", height: "300px", marginLeft: "350px" }}
             data={[
               { title: "One", value: 50, color: "#E38627" },
               { title: "Two", value: 50, color: "#C13C37" },

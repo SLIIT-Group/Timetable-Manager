@@ -26,8 +26,9 @@ const currencies = [
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
-    margin: "0px",
+    width: "98%",
+    margin: "10px",
+    marginRight: "10px",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -84,7 +85,7 @@ export default function LocationManager() {
 
   return (
     <div className={classes.root}>
-      <Accordion style={{ backgroundColor: "#e8dddc" }}>
+      <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -96,7 +97,7 @@ export default function LocationManager() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ marginLeft: "100px" }}>
+            <div style={{ marginLeft: "300px" }}>
               <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
                   <input
@@ -175,7 +176,7 @@ export default function LocationManager() {
         </AccordionDetails>
       </Accordion>
       <br />
-      <Accordion style={{ backgroundColor: "#fae5e3" }}>
+      <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
@@ -185,7 +186,7 @@ export default function LocationManager() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <div style={{ display: "inline-flex", marginLeft: "50px" }}>
+            <div style={{ display: "inline-flex", marginLeft: "200px" }}>
               <Grid>
                 <TextField
                   select
@@ -234,7 +235,7 @@ export default function LocationManager() {
             >
               Add
             </button>
-            <div style={{ marginLeft: "10px", padding: "50px" }}>
+            <div style={{ marginLeft: "180px", padding: "50px" }}>
               <div className="input-group">
                 <input
                   type="text"
