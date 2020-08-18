@@ -156,12 +156,11 @@ export default function Rooms() {
                 <div className={classes.root}>
                   <div className="main">
                     <div className="input-group">
-                      <input type="text" className="form-control" />
-                      <div className="input-group-append">
-                        <button className="btn btn-secondary" type="button">
-                          <i className="fa fa-search" />
-                        </button>
-                      </div>
+                      <input
+                        type="text"
+                        className="input"
+                        style={{ width: "100%" }}
+                      />
                     </div>
                   </div>
                   <br />
@@ -287,12 +286,11 @@ export default function Rooms() {
                 <div className={classes.root}>
                   <div className="main">
                     <div className="input-group">
-                      <input type="text" className="form-control" />
-                      <div className="input-group-append">
-                        <button className="btn btn-secondary" type="button">
-                          <i className="fa fa-search" />
-                        </button>
-                      </div>
+                      <input
+                        type="text"
+                        className="input"
+                        style={{ width: "100%" }}
+                      />
                     </div>
                   </div>
                   <br />
@@ -403,12 +401,11 @@ export default function Rooms() {
                 <div className={classes.root}>
                   <div className="main">
                     <div className="input-group">
-                      <input type="text" className="form-control" />
-                      <div className="input-group-append">
-                        <button className="btn btn-secondary" type="button">
-                          <i className="fa fa-search" />
-                        </button>
-                      </div>
+                      <input
+                        type="text"
+                        className="input"
+                        style={{ width: "100%" }}
+                      />
                     </div>
                   </div>
                   <br />
@@ -530,12 +527,11 @@ export default function Rooms() {
                 <div className={classes.root}>
                   <div className="main">
                     <div className="input-group">
-                      <input type="text" className="form-control" />
-                      <div className="input-group-append">
-                        <button className="btn btn-secondary" type="button">
-                          <i className="fa fa-search" />
-                        </button>
-                      </div>
+                      <input
+                        type="text"
+                        className="input"
+                        style={{ width: "100%" }}
+                      />
                     </div>
                   </div>
                   <br />
@@ -545,7 +541,7 @@ export default function Rooms() {
                   >
                     <thead>
                       <tr>
-                        <th scope="col">Time Slot</th>
+                        <th scope="col">Session</th>
                         <th scope="col">Room</th>
                         <th scope="col" colSpan="2">
                           Action
@@ -658,12 +654,11 @@ export default function Rooms() {
                 <div className={classes.root}>
                   <div className="main">
                     <div className="input-group">
-                      <input type="text" className="form-control" />
-                      <div className="input-group-append">
-                        <button className="btn btn-secondary" type="button">
-                          <i className="fa fa-search" />
-                        </button>
-                      </div>
+                      <input
+                        type="text"
+                        className="input"
+                        style={{ width: "100%" }}
+                      />
                     </div>
                   </div>
                   <br />

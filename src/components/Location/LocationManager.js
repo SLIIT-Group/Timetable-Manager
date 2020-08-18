@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
+import "./LocationManager.css";
 
 const currencies = [
   {
@@ -125,12 +126,11 @@ export default function LocationManager() {
                 <div className={classes.root}>
                   <div className="main">
                     <div className="input-group">
-                      <input type="text" className="form-control" />
-                      <div className="input-group-append">
-                        <button className="btn btn-secondary" type="button">
-                          <i className="fa fa-search" />
-                        </button>
-                      </div>
+                      <input
+                        type="text"
+                        className="input"
+                        style={{ width: "100%" }}
+                      />
                     </div>
                   </div>
                   <br />
@@ -236,12 +236,11 @@ export default function LocationManager() {
             </button>
             <div style={{ marginLeft: "10px", padding: "50px" }}>
               <div className="input-group">
-                <input type="text" className="form-control" />
-                <div className="input-group-append">
-                  <button className="btn btn-secondary" type="button">
-                    <i className="fa fa-search" />
-                  </button>
-                </div>
+                <input
+                  type="text"
+                  className="input"
+                  style={{ width: "100%" }}
+                />
               </div>
               <br />
               <table
