@@ -30,6 +30,11 @@ function ConfigureWorkingDays() {
   const [dropdownValue, setDropdownValue] = useState('Monday');
   const [hours, setHours] = useState('8');
   const [allocation, setAllocation] = useState([]);
+  const [isEdititng, setIsEditing] = useState(false);
+  const [currentItem, setCurrentItem] = useState({
+    days: null,
+    noOfHours: null,
+  });
 
   const toggle = () => setOpen(!dropdownOpen);
 
@@ -48,49 +53,104 @@ function ConfigureWorkingDays() {
       noOfHours: hours,
     };
     setAllocation([...allocation, addedAllocation]);
-    console.log(days.splice(days.indexOf(addedAllocation.day), 1));
+    days.splice(days.indexOf(addedAllocation.day), 1);
     setDays(days);
     setDropdownValue(days[days.indexOf(addedAllocation.day) + 1]);
   };
 
+  const deleteDay = (item) => {
+    setAllocation(allocation.filter((alloc) => alloc.day !== item.day));
+    if (days.indexOf(item.day) === -1) {
+      days.push(item.day);
+    }
+  };
+
+  const editDay = (item) => {};
+
   return (
     <Container>
       <Row>
-        <Form>
-          <Row>
-            <Col>
-              <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
-                <DropdownToggle caret>{dropdownValue}</DropdownToggle>
-                <DropdownMenu>
-                  {days.map((day) => (
-                    <DropdownItem key={day} value={day} onClick={changeValue}>
-                      {day}
-                    </DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </ButtonDropdown>{' '}
-            </Col>
-            <Col>
-              <InputGroup>
-                <Input
-                  onChange={changeHourValue}
-                  placeholder='Hours'
-                  type='number'
-                  step='1'
-                  defaultValue='8'
-                >
-                  {hours}
-                </Input>
-                <InputGroupAddon addonType='append'>H</InputGroupAddon>
-              </InputGroup>
-            </Col>
-            <Col>
-              <Button onClick={addDay} className='success'>
-                Add
-              </Button>
-            </Col>
-          </Row>
-        </Form>
+        {isEdititng ? (
+          <Form>
+            <Row>
+              <Col>
+                <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
+                  <DropdownToggle caret>{dropdownValue}</DropdownToggle>
+                  <DropdownMenu>
+                    {days.map((day) => (
+                      <DropdownItem
+                        key={day}
+                        value={day}
+                        selected={currentItem.day}
+                        onClick={changeValue}
+                      >
+                        {day}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </ButtonDropdown>{' '}
+              </Col>
+              <Col>
+                <InputGroup>
+                  <Input
+                    onChange={changeHourValue}
+                    placeholder='Hours'
+                    type='number'
+                    step='1'
+                    defaultValue='1'
+                  ></Input>
+                  <InputGroupAddon addonType='append'>H</InputGroupAddon>
+                </InputGroup>
+              </Col>
+              <Col>
+                <Button onClick={editDay} className='success'>
+                  Edit
+                </Button>
+              </Col>
+              <Col>
+                <Button onClick={() => setIsEditing(false)} className='success'>
+                  Cancel
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        ) : (
+          <Form>
+            <Row>
+              <Col>
+                <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
+                  <DropdownToggle caret>{dropdownValue}</DropdownToggle>
+                  <DropdownMenu>
+                    {days.map((day) => (
+                      <DropdownItem key={day} value={day} onClick={changeValue}>
+                        {day}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </ButtonDropdown>{' '}
+              </Col>
+              <Col>
+                <InputGroup>
+                  <Input
+                    onChange={changeHourValue}
+                    placeholder='Hours'
+                    type='number'
+                    step='1'
+                    defaultValue='8'
+                  >
+                    {hours}
+                  </Input>
+                  <InputGroupAddon addonType='append'>H</InputGroupAddon>
+                </InputGroup>
+              </Col>
+              <Col>
+                <Button onClick={addDay} className='success'>
+                  Add
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        )}
       </Row>
       <br></br>
       <Row>
@@ -104,9 +164,31 @@ function ConfigureWorkingDays() {
           <tbody>
             {allocation.map((item) => (
               <tr key={item.day}>
-                {console.log(item)}
                 <td>{item.day}</td>
                 <td>{item.noOfHours}</td>
+                <td>
+                  <Button
+                    onClick={() => {
+                      setIsEditing(true);
+                      setCurrentItem({
+                        day: item.day,
+                        noOfHours: item.noOfHours,
+                      });
+                      console.log(currentItem);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </td>
+                <td>
+                  <Button
+                    onClick={() => {
+                      deleteDay(item);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>
