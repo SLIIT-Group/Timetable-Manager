@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles, emphasize } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -13,6 +13,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
+import axios from "axios";
 
 let cx = classNames;
 const useStyles = makeStyles((theme) => ({
@@ -41,10 +42,51 @@ export default function TagAllocation() {
   };
 
   const [tag, setTag] = React.useState('');
-  console.log(tag);
+  const [prvTag, setPrvTag] = React.useState('');
   const handleTagChange = (event) => {
     setTag(event.target.value);
+    setPrvTag(event.target.value);
   };
+  const [tagList, setTagList] = useState([]);
+
+  useEffect(() => {
+    axios
+
+        .get("http://localhost:5000/api/tags/all")
+        .then((res) => {
+          setTagList(res.data);
+        });
+
+  });
+  const deleteTag = () => {
+    axios
+        .get(
+            `http://localhost:5000/api/tags/delete/${tag}`
+        )
+        .then((res) => {
+          alert("Tag Deleted Successfully");
+        })
+        .catch((err) => alert("Tag Deletion Failed"));
+  };
+
+  const updateTag = () => {
+    const req = {
+      tag: tag,
+    };
+
+    axios.post(`http://localhost:5000/api/tags/update/${prvTag}`, req).then((res) => {
+      if (res.data.success) {
+        console.log(res.data);
+        alert("Tag Update Successfully");
+      }else{
+        alert("Tag Updating Failed");
+      }
+    });
+    setTag("");
+    setPrvTag("");
+  };
+
+
   return (
       <div className={classes.root}>
         <Accordion
@@ -80,9 +122,9 @@ export default function TagAllocation() {
                         <MenuItem value="">
                           <em>None</em>
                         </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        {tagList.map((item) => (
+                        <MenuItem value={item.tag}>{item.tag}</MenuItem>
+                            ))}
                       </Select>
                     </FormControl>
                   </div>
@@ -93,18 +135,18 @@ export default function TagAllocation() {
 
                   <div className="input-field col s6">
                     <div className="form-group">
-                      <input type="text" className="form-control" value={tag} onChange=""/>
+                      <input type="text" className="form-control" value={tag} onChange={handleTagChange}/>
                     </div>
                   </div>
                   <Col sm="6 pb-0">
                     <Row>
                       <Col>
-                        <Button variant="contained" color="primary" className="btn-block pr-1">
+                        <Button variant="contained" color="primary" className="btn-block pr-1" onClick={updateTag}>
                           Update
                         </Button>
                       </Col>
                       <Col>
-                        <Button variant="contained" color="secondary" className="btn-block pl-1">
+                        <Button variant="contained" color="secondary" className="btn-block pl-1" onClick={deleteTag}>
                           Delete
                         </Button>
                       </Col>
