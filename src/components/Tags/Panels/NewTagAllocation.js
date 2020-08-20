@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles, emphasize } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextField from "@material-ui/core/TextField";
 import {Col} from "reactstrap";
 import Button from "@material-ui/core/Button";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +34,33 @@ export default function NewTagAllocation() {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  const [tag, setTag] = useState('');
+  function handleTagChange(e) {
+    setTag(e.target.value)
+
+  }
+
+  const saveTag = () => {
+    const req = {
+      tag: tag,
+    };
+
+    axios.post("http://localhost:5000/api/tags/add", req).then((res) => {
+      if (res.data.success) {
+        console.log(res.data);
+        alert("Tag Saved Successfully");
+      }else{
+        alert("Tag Saving Failed");
+      }
+    });
+    setTag("");
+  };
+
+  const resetTag = () => {
+    setTag("");
+  };
+
 
   return (
     <div className={classes.root}>
@@ -60,6 +88,9 @@ export default function NewTagAllocation() {
                 </Col>
                 <div className="input-field col s6">
                   <TextField
+                      name="tag"
+                      value={tag}
+                      onChange={handleTagChange}
                       id="standard-full-width"
                       label="Enter New Tag Name"
                       style={{ margin: 8 }}
@@ -76,12 +107,12 @@ export default function NewTagAllocation() {
 
               <div className="col-md-12 row px-1 mt-3">
                 <Col sm="6 pb-0">
-                  <Button variant="contained" color="secondary" className="btn-block">
+                  <Button variant="contained" color="secondary" className="btn-block" onClick={resetTag}>
                     Reset
                   </Button>
                 </Col>
                 <Col sm="6 pb-0">
-                  <Button variant="contained" color="primary" className="btn-block">
+                  <Button variant="contained" color="primary" className="btn-block" onClick={saveTag}>
                     Add
                   </Button>
                 </Col>
