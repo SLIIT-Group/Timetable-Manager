@@ -67,7 +67,7 @@ export default function Stats() {
               <Grid>
                 <TextField
                   select
-                  label="Buildings"
+                  label="Select"
                   variant="outlined"
                   disabled={!stats.length}
                   style={{ width: "160px" }}
