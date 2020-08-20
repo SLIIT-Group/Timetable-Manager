@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Container,
-  Form,
-  Col,
   ButtonDropdown,
-  Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
@@ -23,7 +19,9 @@ function ConfigureWorkingDays({ clickHandler, days, setDay, day }) {
   return (
     <div>
       <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
-        <DropdownToggle caret>{day}</DropdownToggle>
+        <DropdownToggle style={dropDownStyle} caret>
+          {day}
+        </DropdownToggle>
         <DropdownMenu>
           {days.map((day) => (
             <DropdownItem key={day} value={day} onClick={changeValue}>
@@ -35,5 +33,11 @@ function ConfigureWorkingDays({ clickHandler, days, setDay, day }) {
     </div>
   );
 }
+
+const dropDownStyle = {
+  color: 'grey',
+  backgroundColor: 'white',
+  borderColor: '#291d99',
+};
 
 export default ConfigureWorkingDays;

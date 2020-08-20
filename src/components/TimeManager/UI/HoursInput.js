@@ -17,6 +17,7 @@ function HoursInput({ changeHandler }) {
         type='number'
         step='1'
         defaultValue={hours}
+        style={{ borderColor: '#291d99' }}
       ></Input>
       <InputGroupAddon addonType='append'>H</InputGroupAddon>
     </InputGroup>

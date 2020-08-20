@@ -6,6 +6,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Container } from '@material-ui/core';
+import TimeSlotAddForm from '../Forms/TimeSlotAddForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,6 +36,11 @@ function TimeSlot() {
     <div className={classes.root}>
       <Container>
         <Accordion
+          style={
+            expanded
+              ? { backgroundColor: 'white' }
+              : { backgroundColor: '#f6f5ff' }
+          }
           expanded={expanded === 'panel1'}
           onChange={handleChange('panel1')}
         >
@@ -48,10 +54,7 @@ function TimeSlot() {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-              Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
-              feugiat. Aliquam eget maximus est, id dignissim quam.
-            </Typography>
+            <TimeSlotAddForm></TimeSlotAddForm>
           </AccordionDetails>
         </Accordion>
       </Container>

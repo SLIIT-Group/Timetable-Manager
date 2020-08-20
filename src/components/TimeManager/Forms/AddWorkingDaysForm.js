@@ -5,6 +5,11 @@ import HoursInput from '../UI/HoursInput';
 import AllocationsTable from '../UI/AllocationsTable';
 
 function ConfigureWorkingDays() {
+  const buttonStyle = {
+    backgroundColor: '#291d99',
+    border: 'none',
+  };
+  
   const [days, setDays] = useState([
     'Monday',
     'Tuesday',
@@ -28,9 +33,6 @@ function ConfigureWorkingDays() {
     setDays(days.filter((day) => day !== newAllocation.day));
     setDay(days[days.indexOf(e.target.value) + 1]);
   };
-  const view = (e) => {
-    console.log(allocationData);
-  };
 
   return (
     <div>
@@ -51,13 +53,19 @@ function ConfigureWorkingDays() {
             <HoursInput changeHandler={setHours}></HoursInput>
           </Col>
           <Col>
-            <Button onClick={add}>Add</Button>
+            <Button style={buttonStyle} onClick={add}>
+              Add
+            </Button>
           </Col>
-          
         </Row>
       </Form>
       <Row style={{ margin: '20px' }}>
-        <AllocationsTable allocationData={allocationData}></AllocationsTable>
+        <AllocationsTable
+          setAllocationData={setAllocationData}
+          allocationData={allocationData}
+          setDays={setDays}
+          days={days}
+        ></AllocationsTable>
       </Row>
     </div>
   );
