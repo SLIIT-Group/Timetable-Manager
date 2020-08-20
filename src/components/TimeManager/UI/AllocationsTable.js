@@ -6,6 +6,8 @@ function AllocationsTable({
   setAllocationData,
   days,
   setDays,
+  setEditingItem,
+  setIsEditing,
 }) {
   const deleteItem = (item) => {
     setAllocationData(allocationData.filter((alloc) => alloc.day !== item.day));
@@ -32,7 +34,15 @@ function AllocationsTable({
             <td>{item.day}</td>
             <td>{item.hours}</td>
             <td>
-              <Button style={buttonStyle}>Edit</Button>
+              <Button
+                style={buttonStyle}
+                onClick={() => {
+                  setEditingItem(item);
+                  setIsEditing(true);
+                }}
+              >
+                Edit
+              </Button>
             </td>
             <td>
               <Button

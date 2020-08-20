@@ -1,34 +1,34 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import clsx from 'clsx';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const drawerWidth = 240;
 
 const navStyle = {
-  color: "#22063d",
-  textDecoration: "none",
+  color: '#fff',
+  textDecoration: 'none',
 };
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
+    display: 'flex',
   },
   appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
+    transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
+    transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   hide: {
-    display: "none",
+    display: 'none',
   },
   drawer: {
     width: drawerWidth,
@@ -53,27 +53,27 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    background: "#f6f0ff",
+    backgroundImage: 'linear-gradient( #EDDE5D, #5C258D)',
   },
   drawerHeader: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    transition: theme.transitions.create("margin", {
+    transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: -drawerWidth,
   },
   contentShift: {
-    transition: theme.transitions.create("margin", {
+    transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -98,30 +98,30 @@ export default function PersistentDrawerLeft() {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
-        position="fixed"
+        position='fixed'
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
       >
         <Toolbar>
           <IconButton
-            color="inherit"
-            aria-label="open drawer"
+            color='inherit'
+            aria-label='open drawer'
             onClick={handleDrawerOpen}
-            edge="start"
+            edge='start'
             className={clsx(classes.menuButton, open && classes.hide)}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant='h6' noWrap>
             Timetable Manager
           </Typography>
         </Toolbar>
       </AppBar>
       <Drawer
         className={classes.drawer}
-        variant="persistent"
-        anchor="left"
+        variant='persistent'
+        anchor='left'
         open={open}
         classes={{
           paper: classes.drawerPaper,
@@ -129,7 +129,7 @@ export default function PersistentDrawerLeft() {
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
+            {theme.direction === 'ltr' ? (
               <ChevronLeftIcon />
             ) : (
               <ChevronRightIcon />
@@ -138,47 +138,47 @@ export default function PersistentDrawerLeft() {
         </div>
         <Divider />
         <List>
-          <Link style={navStyle} to="/time">
+          <Link style={navStyle} to='/time'>
             <ListItem button>
               <ListItemText>Time Manager</ListItemText>
             </ListItem>
           </Link>
-          <Link style={navStyle} to="/lecturers">
+          <Link style={navStyle} to='/lecturers'>
             <ListItem button>
               <ListItemText>Lecturers</ListItemText>
             </ListItem>
           </Link>
-          <Link style={navStyle} to="/location">
+          <Link style={navStyle} to='/location'>
             <ListItem button>
               <ListItemText>Location</ListItemText>
             </ListItem>
           </Link>
-          <Link style={navStyle} to="/session">
+          <Link style={navStyle} to='/session'>
             <ListItem button>
               <ListItemText>Session</ListItemText>
             </ListItem>
           </Link>
-          <Link style={navStyle} to="/student">
+          <Link style={navStyle} to='/student'>
             <ListItem button>
               <ListItemText>Student</ListItemText>
             </ListItem>
           </Link>
-          <Link style={navStyle} to="/subject">
+          <Link style={navStyle} to='/subject'>
             <ListItem button>
               <ListItemText>Subject</ListItemText>
             </ListItem>
           </Link>
-          <Link style={navStyle} to="/tags">
+          <Link style={navStyle} to='/tags'>
             <ListItem button>
               <ListItemText>Tags</ListItemText>
             </ListItem>
           </Link>
-          <Link style={navStyle} to="/stats">
+          <Link style={navStyle} to='/stats'>
             <ListItem button>
               <ListItemText>Statistical Informations</ListItemText>
             </ListItem>
           </Link>
-          <Link style={navStyle} to="/rooms">
+          <Link style={navStyle} to='/rooms'>
             <ListItem button>
               <ListItemText>Rooms</ListItemText>
             </ListItem>
@@ -191,10 +191,6 @@ export default function PersistentDrawerLeft() {
         })}
       >
         <div className={classes.drawerHeader} />
-        {/* <Container>
-          <ExpansionPanel></ExpansionPanel>
-          <ExpansionPanel></ExpansionPanel>
-        </Container> */}
       </main>
     </div>
   );
