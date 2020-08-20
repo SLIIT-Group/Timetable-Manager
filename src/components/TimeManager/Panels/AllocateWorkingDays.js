@@ -6,6 +6,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Container } from '@material-ui/core';
+import AddWorkingDaysForm from '../Forms/AddWorkingDaysForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,6 +36,11 @@ function AllocateWorkingDays() {
     <div className={classes.root}>
       <Container>
         <Accordion
+          style={
+            expanded
+              ? { backgroundColor: 'white' }
+              : { backgroundColor: '#f6f5ff' }
+          }
           expanded={expanded === 'panel1'}
           onChange={handleChange('panel1')}
         >
@@ -42,13 +48,18 @@ function AllocateWorkingDays() {
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1bh-content'
             id='panel1bh-header'
+            
           >
-            <Typography className={classes.heading}>
+            <Typography
+              className={classes.heading}
+              style={{ borderColor: '#291d99' }}
+            >
               Allocate Working Days
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            
+            {/* Form element */}
+            <AddWorkingDaysForm></AddWorkingDaysForm>
           </AccordionDetails>
         </Accordion>
       </Container>
