@@ -214,7 +214,7 @@ export default function LocationManager() {
                 <p>Room</p>
                 <p>Capacity</p>
               </div>
-              <div style={{ marginLeft: "2px" }}>
+              <div style={{ marginLeft: "10px" }}>
                 <input
                   type="text"
                   style={{ width: "70px", borderRadius: "10px" }}
@@ -238,7 +238,7 @@ export default function LocationManager() {
                 width: "100px",
                 height: "35px",
                 textAlign: "center",
-                marginLeft: "50px",
+                marginLeft: "30px",
                 borderRadius: "15px",
                 marginTop: "40px",
               }}
