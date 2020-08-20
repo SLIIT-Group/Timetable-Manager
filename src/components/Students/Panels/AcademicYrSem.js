@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles, emphasize } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -13,6 +13,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
+import axios from "axios";
 
 let cx = classNames;
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +45,46 @@ export default function AcademicYrSem() {
   console.log(yrSem);
   const handleYrSemChange = (event) => {
     setYrSem(event.target.value);
+  };
+
+  const [studentList, setStudentList] = useState([]);
+
+  useEffect(() => {
+    axios
+
+        .get("http://localhost:5000/api/students/all")
+        .then((res) => {
+          setStudentList(res.data);
+        });
+
+  });
+  const deleteStudent = () => {
+    axios
+        .get(
+            `http://localhost:5000/api/students/delete/${yrSem}`
+        )
+        .then((res) => {
+          alert("Student Entry Deleted Successfully");
+        })
+        .catch((err) => alert("Student Entry Deletion Failed"));
+
+    setYrSem("");
+  };
+
+  const updateStudent = () => {
+    const req = {
+      academicYrSem: yrSem,
+    };
+
+    axios.post(`http://localhost:5000/api/students/update/5f3e97b50387580c0c7cb426`, req).then((res) => {
+      if (res.data.success) {
+        alert("Student Entry Updating Failed");
+      }else{
+        alert("Student Entry Update Successful");
+      }
+    });
+    setYrSem("");
+
   };
   return (
     <div className={classes.root}>
@@ -80,9 +121,9 @@ export default function AcademicYrSem() {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      {studentList.map((item) => (
+                      <MenuItem value={item.academicYrSem}>{item.academicYrSem}</MenuItem>
+                          ))}
                     </Select>
                   </FormControl>
                 </div>
@@ -93,18 +134,18 @@ export default function AcademicYrSem() {
 
                 <div className="input-field col s6">
                   <div className="form-group">
-                    <input type="text" className="form-control" value={yrSem} onChange=""/>
+                    <input type="text" className="form-control" value={yrSem} onChange={handleYrSemChange}/>
                   </div>
                 </div>
                 <Col sm="6 pb-0">
                   <Row>
                     <Col>
-                      <Button variant="contained" color="primary" className="btn-block pr-1">
+                      <Button variant="contained" color="primary" className="btn-block pr-1" onClick={updateStudent}>
                         Update
                       </Button>
                     </Col>
                     <Col>
-                      <Button variant="contained" color="secondary" className="btn-block pl-1">
+                      <Button variant="contained" color="secondary" className="btn-block pl-1" onClick={deleteStudent}>
                         Delete
                       </Button>
                     </Col>

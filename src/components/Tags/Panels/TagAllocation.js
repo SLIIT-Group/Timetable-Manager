@@ -42,10 +42,10 @@ export default function TagAllocation() {
   };
 
   const [tag, setTag] = React.useState('');
-  const [prvTag, setPrvTag] = React.useState('');
+
   const handleTagChange = (event) => {
     setTag(event.target.value);
-    setPrvTag(event.target.value);
+
   };
   const [tagList, setTagList] = useState([]);
 
@@ -67,6 +67,7 @@ export default function TagAllocation() {
           alert("Tag Deleted Successfully");
         })
         .catch((err) => alert("Tag Deletion Failed"));
+    setTag("");
   };
 
   const updateTag = () => {
@@ -74,16 +75,15 @@ export default function TagAllocation() {
       tag: tag,
     };
 
-    axios.post(`http://localhost:5000/api/tags/update/${prvTag}`, req).then((res) => {
+    axios.post(`http://localhost:5000/api/tags/update/5f3e71c7cbbbf118c8aaf157`, req).then((res) => {
       if (res.data.success) {
-        console.log(res.data);
-        alert("Tag Update Successfully");
-      }else{
         alert("Tag Updating Failed");
+      }else{
+        alert("Tag Update Successfully");
       }
     });
     setTag("");
-    setPrvTag("");
+
   };
 
 

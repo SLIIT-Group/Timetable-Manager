@@ -87,9 +87,9 @@ export default function Programme() {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      <MenuItem value="Y1.S2">Y1.S2</MenuItem>
+                      <MenuItem value="Y3.S1">Y3.S1</MenuItem>
+
                     </Select>
                   </FormControl>
                 </div>
@@ -112,9 +112,9 @@ export default function Programme() {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      <MenuItem value="SE">SE</MenuItem>
+                      <MenuItem value="IT">IT</MenuItem>
+
                     </Select>
                   </FormControl>
                 </div>
