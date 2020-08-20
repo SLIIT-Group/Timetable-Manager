@@ -51,24 +51,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AddRoom() {
-  const currencies = [
-    {
-      value: "USD",
-      label: "$",
-    },
-    {
-      value: "EUR",
-      label: "€",
-    },
-    {
-      value: "BTC",
-      label: "฿",
-    },
-    {
-      value: "JPY",
-      label: "¥",
-    },
-  ];
   const classes = useStyles();
   const [buildings, setBuilding] = useState([]);
   const [input, setInput] = useState("");
