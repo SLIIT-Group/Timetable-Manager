@@ -51,22 +51,27 @@ export default function AddBuilding() {
   const classes = useStyles();
   const [buildings, setBuilding] = useState([]);
   const [input, setInput] = useState("");
-  const [search, setsearch] = useState([]);
+  const [search, setsearch] = useState("");
   const [number, setNumber] = useState("");
   const [room, setRoom] = useState("");
   const [capacity, setCapacity] = useState("");
   const [data, setData] = useState({});
+  const [filter, setFilter] = useState([]);
   const [toggle, setToggle] = React.useState({
     value: "Add",
     isEdit: true,
   });
   const onClick = (e) => {
-    fetch(`http://localhost:5000/api/building/${e.target.value}`)
+    console.log(e.target.value);
+    fetch(`http://localhost:5000/api/building/get/${e.target.value}`)
       .then((res) => res.json())
       .then(
         (result) => {
           setInput(result.building);
         },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
         (error) => {
           setError(error);
         }
@@ -175,6 +180,24 @@ export default function AddBuilding() {
     }
   };
 
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/building/${search}`)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          console.log(result);
+          const filteredArray = buildings.filter((item) => {
+            return item.building === result.building;
+          });
+
+          setFilter(filteredArray);
+        },
+        (error) => {
+          //setError(error);
+        }
+      );
+  }, [search]);
+
   return (
     <div className={classes.layout}>
       <Accordion>
@@ -224,50 +247,94 @@ export default function AddBuilding() {
                         type="text"
                         className="input"
                         style={{ width: "100%" }}
+                        onChange={(event) => setsearch(event.target.value)}
                       />
                     </div>
                   </div>
-                  <br/>
-                  <table
-                    className="table table-striped table-info"
-                    style={{ textAlign: "center" }}
-                  >
-                    <thead>
-                      <tr>
-                        <th scope="col">Buildings</th>
-                        <th scope="col" colSpan="2">
-                          Action
-                        </th>
-                      </tr>
-                    </thead>
-                    {buildings.map((item) => (
-                      <tbody>
+                  <br />
+                  {!search ? (
+                    <table
+                      className="table table-striped table-info"
+                      style={{ textAlign: "center" }}
+                    >
+                      <thead>
                         <tr>
-                          <th scope="row">{item.building}</th>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-warning"
-                              value={item._id}
-                              onClick={onClick}
-                            >
-                              Edit
-                            </button>
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-danger"
-                              value={item.building}
-                              onClick={deleteBuilding}
-                            >
-                              Delete
-                            </button>
-                          </td>
+                          <th scope="col">Buildings</th>
+                          <th scope="col" colSpan="2">
+                            Action
+                          </th>
                         </tr>
-                      </tbody>
-                    ))}
-                  </table>
+                      </thead>
+                      {buildings.map((item) => (
+                        <tbody>
+                          <tr>
+                            <th scope="row">{item.building}</th>
+                            <td>
+                              <button
+                                type="button"
+                                class="btn btn-warning"
+                                value={item._id}
+                                onClick={onClick}
+                              >
+                                Edit
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                type="button"
+                                class="btn btn-danger"
+                                value={item.building}
+                                onClick={deleteBuilding}
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      ))}
+                    </table>
+                  ) : (
+                    <table
+                      className="table table-striped table-info"
+                      style={{ textAlign: "center" }}
+                    >
+                      <thead>
+                        <tr>
+                          <th scope="col">Buildings</th>
+                          <th scope="col" colSpan="2">
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      {filter.map((item) => (
+                        <tbody>
+                          <tr>
+                            <th scope="row">{item.building}</th>
+                            <td>
+                              <button
+                                type="button"
+                                class="btn btn-warning"
+                                value={item._id}
+                                onClick={onClick}
+                              >
+                                Edit
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                type="button"
+                                class="btn btn-danger"
+                                value={item.building}
+                                onClick={deleteBuilding}
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      ))}
+                    </table>
+                  )}
                 </div>
               </div>
             </div>

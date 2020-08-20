@@ -78,6 +78,8 @@ export default function AddRoom() {
   const [capacity, setCapacity] = useState("");
   const [buildings_room, setBuilding_room] = useState([]);
   const [data, setData] = useState({});
+  const [search, setsearch] = useState("");
+  const [filter, setFilter] = useState([]);
   const [toggle, setToggle] = React.useState({
     value: "Add",
     isEdit: true,
@@ -205,6 +207,25 @@ export default function AddRoom() {
     }
   };
 
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/room/search/${search}`)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          const filteredArray = buildings_room.filter((item) => {
+            console.log(result);
+            return item.Building === result.Building;
+          });
+
+          setFilter(filteredArray);
+          console.log(filteredArray);
+        },
+        (error) => {
+          //setError(error);
+        }
+      );
+  }, [search]);
+
   return (
     <div className={classes.layout}>
       <Accordion>
@@ -282,53 +303,102 @@ export default function AddRoom() {
                   type="text"
                   className="input"
                   style={{ width: "100%" }}
+                  onChange={(e) => setsearch(e.target.value)}
+                  value={search}
                 />
               </div>
               <br />
-              <table
-                className="table table-striped table-info"
-                style={{ textAlign: "center" }}
-              >
-                <thead>
-                  <tr>
-                    <th scope="col">Buildings</th>
-                    <th scope="col">Rooms</th>
-                    <th scope="col">Room Capacity</th>
-                    <th scope="col" colSpan="2">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                {buildings_room.map((item) => (
-                  <tbody>
+              {!search ? (
+                <table
+                  className="table table-striped table-info"
+                  style={{ textAlign: "center" }}
+                >
+                  <thead>
                     <tr>
-                      <th scope="row">{item.Building}</th>
-                      <td>{item.Room}</td>
-                      <td>{item.Capacity}</td>
-                      <td>
-                        <button
-                          type="button"
-                          class="btn btn-warning"
-                          value={item._id}
-                          onClick={onClick}
-                        >
-                          Edit
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          type="button"
-                          class="btn btn-danger"
-                          value={item._id}
-                          onClick={deleteRoom}
-                        >
-                          Delete
-                        </button>
-                      </td>
+                      <th scope="col">Buildings</th>
+                      <th scope="col">Rooms</th>
+                      <th scope="col">Room Capacity</th>
+                      <th scope="col" colSpan="2">
+                        Action
+                      </th>
                     </tr>
-                  </tbody>
-                ))}
-              </table>
+                  </thead>
+                  {buildings_room.map((item) => (
+                    <tbody>
+                      <tr>
+                        <th scope="row">{item.Building}</th>
+                        <td>{item.Room}</td>
+                        <td>{item.Capacity}</td>
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-warning"
+                            value={item._id}
+                            onClick={onClick}
+                          >
+                            Edit
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-danger"
+                            value={item._id}
+                            onClick={deleteRoom}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  ))}
+                </table>
+              ) : (
+                <table
+                  className="table table-striped table-info"
+                  style={{ textAlign: "center" }}
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">Buildings</th>
+                      <th scope="col">Rooms</th>
+                      <th scope="col">Room Capacity</th>
+                      <th scope="col" colSpan="2">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  {filter.map((item) => (
+                    <tbody>
+                      <tr>
+                        <th scope="row">{item.Building}</th>
+                        <td>{item.Room}</td>
+                        <td>{item.Capacity}</td>
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-warning"
+                            value={item._id}
+                            onClick={onClick}
+                          >
+                            Edit
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-danger"
+                            value={item._id}
+                            onClick={deleteRoom}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  ))}
+                </table>
+              )}
             </div>
           </Typography>
         </AccordionDetails>
