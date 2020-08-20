@@ -227,7 +227,7 @@ export default function AddBuilding() {
                       />
                     </div>
                   </div>
-                  <br />
+                  <br/>
                   <table
                     className="table table-striped table-info"
                     style={{ textAlign: "center" }}

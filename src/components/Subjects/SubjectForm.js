@@ -7,6 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from "@material-ui/core/Button";
+import axios from "axios";
 
 const hours = [
     {
@@ -56,6 +57,71 @@ export default function AddressForm() {
         setCurrency(event.target.value);
     };
 
+    const [subName, setSubName] = React.useState('Subject Name');
+    const [subCode, setSubCode] = React.useState('Subject Code');
+    const [offeredYear, setOfferedYear] = React.useState('Offered Year');
+    const [offeredSemester, setOfferedSemester] = React.useState('Offered Semester');
+    const [lecHo, setLecHo] = React.useState('');
+    const [tuteHo, setTuteHo] = React.useState('');
+    const [labHo, setLabHo] = React.useState('');
+    const [evaHo, setEvaHo] = React.useState('');
+
+    const handleSubNameChange = (event) => {
+        setSubName(event.target.value);
+    };
+    const handleSubCodeChange = (event) => {
+        setSubCode(event.target.value);
+    };
+    const handleOfferedYearChange = (event) => {
+        setOfferedYear(event.target.value);
+    };
+    const handleOfferedSemesterChange = (event) => {
+        setOfferedSemester(event.target.value);
+    };
+    const handleLecHoChange = (event) => {
+        setLecHo(event.target.value);
+    };
+    const handleTuteHoChange = (event) => {
+        setTuteHo(event.target.value);
+    };
+    const handleLabHoChange = (event) => {
+        setLabHo(event.target.value);
+    };
+    const handleEvaHoChange = (event) => {
+        setEvaHo(event.target.value);
+    };
+
+    const saveSubject = () => {
+        const req = {
+            subName: subName,
+            subCode: subCode,
+            offeredYear: offeredYear,
+            offeredSemester: offeredSemester,
+            lecHo: lecHo,
+            tuteHo: tuteHo,
+            labHo: labHo,
+            evaHo: evaHo
+        };
+
+        axios.post("http://localhost:5000/api/subjects/add", req).then((res) => {
+            if (res.data.success) {
+                console.log(res.data);
+                alert("Subject Saved Successfully");
+            }else{
+                alert("Subject Saving Failed");
+            }
+        });
+
+        setSubName("");
+        setSubCode("");
+        setOfferedYear("");
+        setOfferedSemester("");
+        setLecHo("");
+        setTuteHo("");
+        setLabHo("");
+        setEvaHo("");
+    };
+
     return (
         <React.Fragment>
             <Grid container spacing={3}>
@@ -64,9 +130,10 @@ export default function AddressForm() {
                         required
                         id="employeeID"
                         name="employeeID"
-                        label="Subject Name"
+                        label= {subName}
                         fullWidth
                         autoComplete="shipping address-line1"
+                        onChange={handleSubNameChange}
                     />
                 </Grid>
 
@@ -75,9 +142,10 @@ export default function AddressForm() {
                         required
                         id="employeeID"
                         name="employeeID"
-                        label="Subject Code"
+                        label={subCode}
                         fullWidth
                         autoComplete="shipping address-line1"
+                        onChange={handleSubCodeChange}
                     />
                 </Grid>
 
@@ -86,9 +154,10 @@ export default function AddressForm() {
                         required
                         id="firstName"
                         name="firstName"
-                        label="Offered Year"
+                        label={offeredYear}
                         fullWidth
                         autoComplete="given-name"
+                        onChange={handleOfferedYearChange}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -96,9 +165,10 @@ export default function AddressForm() {
                         required
                         id="employeeID"
                         name="employeeID"
-                        label="Offered Semester"
+                        label={offeredSemester}
                         fullWidth
                         autoComplete="shipping address-line1"
+                        onChange={handleOfferedSemesterChange}
                     />
                 </Grid>
 
@@ -107,8 +177,8 @@ export default function AddressForm() {
                         id="filled-select-currency"
                         select
                         label="No. of lecture hours"
-                        value={currency}
-                        onChange={handleChange}
+                        value={lecHo}
+                        onChange={handleLecHoChange}
                         variant="filled"
                         fullWidth
                     >
@@ -125,8 +195,8 @@ export default function AddressForm() {
                         id="filled-select-currency"
                         select
                         label="No. of tutorial hours"
-                        value={currency}
-                        onChange={handleChange}
+                        value={tuteHo}
+                        onChange={handleTuteHoChange}
                         variant="filled"
                         fullWidth
                     >
@@ -143,8 +213,8 @@ export default function AddressForm() {
                         id="filled-select-currency"
                         select
                         label="No of lab hours"
-                        value={currency}
-                        onChange={handleChange}
+                        value={labHo}
+                        onChange={handleLabHoChange}
                         variant="filled"
                         fullWidth
                     >
@@ -161,8 +231,8 @@ export default function AddressForm() {
                         id="filled-select-currency"
                         select
                         label="No of evaluation hours"
-                        value={currency}
-                        onChange={handleChange}
+                        value={evaHo}
+                        onChange={handleEvaHoChange}
                         variant="filled"
                         fullWidth
                     >
@@ -181,8 +251,9 @@ export default function AddressForm() {
                     color="primary"
                     // onClick={}
                     className={classes.button}
+                    onClick={saveSubject}
                 >
-                    Next
+                    Add
                 </Button>
             </div>
         </React.Fragment>

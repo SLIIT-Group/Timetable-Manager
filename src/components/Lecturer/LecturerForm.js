@@ -7,6 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from "@material-ui/core/Button";
+import axios from "axios";
 
 const departments = [
     {
@@ -134,6 +135,78 @@ export default function LecturerForm() {
         setCurrency(event.target.value);
     };
 
+    const [fname, setFname] = React.useState('');
+    const [lname, setLname] = React.useState('');
+    const [empid, setEmpid] = React.useState('');
+    const [faculty, setFaculty] = React.useState('');
+    const [department, setDepartment] = React.useState('');
+    const [center, setCenter] = React.useState('');
+    const [building1, setBuilding1] = React.useState('');
+    const [level1, setLevel1] = React.useState('');
+    const [rank, setRank] = React.useState('');
+
+    const handleFnameChange = (event) => {
+        setFname(event.target.value);
+    };
+    const handleLnameChange = (event) => {
+        setLname(event.target.value);
+    };
+    const handleEmpidChange = (event) => {
+        setEmpid(event.target.value);
+    };
+    const handleFacultyChange = (event) => {
+        setFaculty(event.target.value);
+    };
+    const handleDepartmentChange = (event) => {
+        setDepartment(event.target.value);
+    };
+    const handleCenterChange = (event) => {
+        setCenter(event.target.value);
+    };
+    const handleBuilding1Change = (event) => {
+        setBuilding1(event.target.value);
+    };
+    const handleLevel1Change = (event) => {
+        setLevel1(event.target.value);
+    };
+    const handleRankChange = (event) => {
+        setRank(event.target.value);
+    };
+
+    const saveLecturer = () => {
+        const req = {
+            fname: fname,
+            lname: lname,
+            empid: empid,
+            faculty: faculty,
+            department: department,
+            center: center,
+            building1: building1,
+            level1: level1,
+            rank: rank
+        };
+
+        axios.post("http://localhost:5000/api/lecturers/add", req).then((res) => {
+            if (res.data.success) {
+                console.log(res.data);
+                alert("Lecturer Saved Successfully");
+            }else{
+                alert("Lecturer Saving Failed");
+            }
+        });
+
+        setFname("");
+        setLname("");
+        setEmpid("");
+        setFaculty("");
+        setDepartment("");
+        setCenter("");
+        setBuilding1("");
+        setLevel1("");
+        setRank("");
+    };
+
+
     return (
         <React.Fragment>
             <Grid container spacing={3}>
@@ -145,6 +218,7 @@ export default function LecturerForm() {
                         label="First name"
                         fullWidth
                         autoComplete="given-name"
+                        onChange={handleFnameChange}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -155,6 +229,7 @@ export default function LecturerForm() {
                         label="Last name"
                         fullWidth
                         autoComplete="family-name"
+                        onChange={handleLnameChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -165,6 +240,7 @@ export default function LecturerForm() {
                         label="Employee ID"
                         fullWidth
                         autoComplete="shipping address-line1"
+                        onChange={handleEmpidChange}
                     />
                 </Grid>
 
@@ -173,14 +249,14 @@ export default function LecturerForm() {
                         id="filled-select-currency"
                         select
                         label="Faculty"
-                        value={currency}
-                        onChange={handleChange}
+                        value={faculty}
+                        onChange={handleFacultyChange}
                         variant="filled"
                         fullWidth
                     >
                         {faculities.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
-                                {option.label}
+                                {option.value}
                             </MenuItem>
                         ))}
                     </TextField>
@@ -191,8 +267,8 @@ export default function LecturerForm() {
                         id="filled-select-currency"
                         select
                         label="Department"
-                        value={currency}
-                        onChange={handleChange}
+                        value={department}
+                        onChange={handleDepartmentChange}
                         variant="filled"
                         fullWidth
                     >
@@ -209,8 +285,8 @@ export default function LecturerForm() {
                         id="filled-select-currency"
                         select
                         label="Centre"
-                        value={currency}
-                        onChange={handleChange}
+                        value={center}
+                        onChange={handleCenterChange}
                         variant="filled"
                         fullWidth
                     >
@@ -227,8 +303,8 @@ export default function LecturerForm() {
                         id="filled-select-currency"
                         select
                         label="Building"
-                        value={currency}
-                        onChange={handleChange}
+                        value={building1}
+                        onChange={handleBuilding1Change}
                         variant="filled"
                         fullWidth
                     >
@@ -245,8 +321,8 @@ export default function LecturerForm() {
                         id="filled-select-currency"
                         select
                         label="Level"
-                        value={currency}
-                        onChange={handleChange}
+                        value={level1}
+                        onChange={handleLevel1Change}
                         variant="filled"
                         fullWidth
                     >
@@ -265,6 +341,8 @@ export default function LecturerForm() {
                         label="Rank"
                         fullWidth
                         autoComplete="shipping address-line2"
+                        value = {level1+ "." +empid}
+                        onChange={handleRankChange}
                     />
                 </Grid>
 
@@ -282,8 +360,9 @@ export default function LecturerForm() {
                     color="primary"
                     // onClick={}
                     className={classes.button}
+                    onClick={saveLecturer}
                 >
-                    Next
+                    Add
                 </Button>
             </div>
         </React.Fragment>
