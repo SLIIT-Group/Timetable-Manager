@@ -1,11 +1,16 @@
-import React from 'react';
-import { Button, Table } from 'reactstrap';
+import React from "react";
+import { Button, Table } from "reactstrap";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import AddIcon from "@material-ui/icons/Add";
 
 function AllocationsTable({
   allocationData,
   setAllocationData,
   days,
   setDays,
+  setEditingItem,
+  setIsEditing,
 }) {
   const deleteItem = (item) => {
     setAllocationData(allocationData.filter((alloc) => alloc.day !== item.day));
@@ -13,8 +18,8 @@ function AllocationsTable({
   };
 
   const buttonStyle = {
-    backgroundColor: '#291d99',
-    border: 'none',
+    backgroundColor: "#291d99",
+    border: "none",
   };
   return (
     <Table hover>
@@ -32,17 +37,19 @@ function AllocationsTable({
             <td>{item.day}</td>
             <td>{item.hours}</td>
             <td>
-              <Button style={buttonStyle}>Edit</Button>
+              <EditIcon
+                onClick={() => {
+                  setEditingItem(item);
+                  setIsEditing(true);
+                }}
+              ></EditIcon>
             </td>
             <td>
-              <Button
-                style={buttonStyle}
+              <DeleteIcon
                 onClick={() => {
                   deleteItem(item);
                 }}
-              >
-                Delete
-              </Button>
+              ></DeleteIcon>
             </td>
           </tr>
         ))}
