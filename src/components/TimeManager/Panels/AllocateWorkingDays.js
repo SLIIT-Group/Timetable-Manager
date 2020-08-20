@@ -6,7 +6,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Container } from '@material-ui/core';
-import ConfigureWorkingDays from '../Forms/ConfigureWorkingDays';
+import AddWorkingDaysForm from '../Forms/AddWorkingDaysForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +49,8 @@ function AllocateWorkingDays() {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <ConfigureWorkingDays></ConfigureWorkingDays>
+            {/* Form element */}
+            <AddWorkingDaysForm></AddWorkingDaysForm>
           </AccordionDetails>
         </Accordion>
       </Container>
