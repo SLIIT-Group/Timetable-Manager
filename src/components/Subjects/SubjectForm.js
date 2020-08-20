@@ -6,23 +6,28 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
+import Button from "@material-ui/core/Button";
 
-const currencies = [
+const hours = [
     {
-        value: 'USD',
-        label: '$',
+        value: 1,
+        label: 1,
     },
     {
-        value: 'EUR',
-        label: '€',
+        value: 2,
+        label: 2,
     },
     {
-        value: 'BTC',
-        label: '฿',
+        value: 3,
+        label: 3,
     },
     {
-        value: 'JPY',
-        label: '¥',
+        value: 4,
+        label: 4,
+    },
+    {
+        value: 5,
+        label: 5,
     },
 ];
 
@@ -32,6 +37,14 @@ const useStyles = makeStyles((theme) => ({
             margin: theme.spacing(1),
             width: '25ch',
         },
+    },
+    buttons: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+    },
+    button: {
+        marginTop: theme.spacing(3),
+        marginLeft: theme.spacing(1),
     },
 }));
 
@@ -46,12 +59,34 @@ export default function AddressForm() {
     return (
         <React.Fragment>
             <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        id="employeeID"
+                        name="employeeID"
+                        label="Subject Name"
+                        fullWidth
+                        autoComplete="shipping address-line1"
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        id="employeeID"
+                        name="employeeID"
+                        label="Subject Code"
+                        fullWidth
+                        autoComplete="shipping address-line1"
+                    />
+                </Grid>
+
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
                         id="firstName"
                         name="firstName"
-                        label="First name"
+                        label="Offered Year"
                         fullWidth
                         autoComplete="given-name"
                     />
@@ -59,115 +94,97 @@ export default function AddressForm() {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
-                        id="lastName"
-                        name="lastName"
-                        label="Last name"
-                        fullWidth
-                        autoComplete="family-name"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        required
                         id="employeeID"
                         name="employeeID"
-                        label="Employee ID"
+                        label="Offered Semester"
                         fullWidth
                         autoComplete="shipping address-line1"
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        id="address2"
-                        name="address2"
-                        label="Address line 2"
-                        fullWidth
-                        autoComplete="shipping address-line2"
-                    />
-                </Grid>
+
                 <Grid item xs={12} sm={6}>
                     <TextField
                         id="filled-select-currency"
                         select
-                        label="Department"
+                        label="No. of lecture hours"
                         value={currency}
                         onChange={handleChange}
                         variant="filled"
                         fullWidth
                     >
-                        {currencies.map((option) => (
+                        {hours.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
                                 {option.label}
                             </MenuItem>
                         ))}
                     </TextField>
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
                     <TextField
                         id="filled-select-currency"
                         select
-                        label="Faculty"
+                        label="No. of tutorial hours"
                         value={currency}
                         onChange={handleChange}
                         variant="filled"
                         fullWidth
                     >
-                        {currencies.map((option) => (
+                        {hours.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
                                 {option.label}
                             </MenuItem>
                         ))}
                     </TextField>
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
                     <TextField
                         id="filled-select-currency"
                         select
-                        label="Centre"
+                        label="No of lab hours"
                         value={currency}
                         onChange={handleChange}
                         variant="filled"
                         fullWidth
                     >
-                        {currencies.map((option) => (
+                        {hours.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
                                 {option.label}
                             </MenuItem>
                         ))}
                     </TextField>
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
-                    {/*<TextField*/}
-                    {/*    required*/}
-                    {/*    id="country"*/}
-                    {/*    name="country"*/}
-                    {/*    label="Country"*/}
-                    {/*    fullWidth*/}
-                    {/*    autoComplete="shipping country"*/}
-                    {/*/>*/}
                     <TextField
                         id="filled-select-currency"
                         select
-                        label="Building"
+                        label="No of evaluation hours"
                         value={currency}
                         onChange={handleChange}
                         variant="filled"
                         fullWidth
                     >
-                        {currencies.map((option) => (
+                        {hours.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
                                 {option.label}
                             </MenuItem>
                         ))}
                     </TextField>
-                </Grid>
-                <Grid item xs={12}>
-                    <FormControlLabel
-                        control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-                        label="I hearby certify that above details are true"
-                    />
                 </Grid>
             </Grid>
+
+            <div className={classes.buttons}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    // onClick={}
+                    className={classes.button}
+                >
+                    Next
+                </Button>
+            </div>
         </React.Fragment>
     );
 }

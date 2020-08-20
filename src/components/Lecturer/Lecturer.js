@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import AddressForm from './AddressForm';
+import LecturerForm from './LecturerForm';
 
 
 function Copyright() {
@@ -70,18 +70,9 @@ function Lecturer() {
                     <Typography component="h1" variant="h4" align="center">
                         Lecturer Details
                     </Typography>
+
                     <React.Fragment>
-                        <AddressForm/>
-                        <div className={classes.buttons}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                // onClick={}
-                                className={classes.button}
-                            >
-                                Next
-                            </Button>
-                        </div>
+                        <LecturerForm/>
                     </React.Fragment>
                 </Paper>
                 <Copyright />
