@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
-import DaysDropDown from '../UI/DaysDropdown';
-import { Row, Form, Col, Button } from 'reactstrap';
-import HoursInput from '../UI/HoursInput';
-import AllocationsTable from '../UI/AllocationsTable';
-import EditForm from './EditForm';
+import React, { useState } from "react";
+import DaysDropDown from "../UI/DaysDropdown";
+import { Row, Form, Col, Button } from "reactstrap";
+import HoursInput from "../UI/HoursInput";
+import AllocationsTable from "../UI/AllocationsTable";
+import EditForm from "./EditForm";
+import AddIcon from "@material-ui/icons/Add";
 
 function ConfigureWorkingDays() {
   const [days, setDays] = useState([
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
   ]);
-  const [day, setDay] = useState('Monday');
-  const [hours, setHours] = useState('8');
+  const [day, setDay] = useState("Monday");
+  const [hours, setHours] = useState("8");
   const allocations = [];
   const [allocationData, setAllocationData] = useState(allocations);
   const [editingItem, setEditingItem] = useState();
@@ -62,13 +63,13 @@ function ConfigureWorkingDays() {
             </Col>
             <Col>
               <Button style={buttonStyle} onClick={add}>
-                Add
+                <AddIcon></AddIcon>Add
               </Button>
             </Col>
           </Row>
         </Form>
       )}
-      <Row style={{ margin: '20px' }}>
+      <Row style={{ margin: "20px" }}>
         <AllocationsTable
           setAllocationData={setAllocationData}
           allocationData={allocationData}
@@ -82,8 +83,8 @@ function ConfigureWorkingDays() {
   );
 }
 const buttonStyle = {
-  backgroundColor: '#291d99',
-  border: 'none',
+  backgroundColor: "#291d99",
+  border: "none",
 };
 
 export default ConfigureWorkingDays;

@@ -1,5 +1,6 @@
-import React from 'react';
-import { Button, Table } from 'reactstrap';
+import React from "react";
+import { Button, Table } from "reactstrap";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 function AllocationsTable({ addedSlot, setAddedSlot }) {
   const deleteItem = (slot) => {
@@ -13,11 +14,11 @@ function AllocationsTable({ addedSlot, setAddedSlot }) {
   };
 
   const buttonStyle = {
-    backgroundColor: '#291d99',
-    border: 'none',
+    backgroundColor: "#291d99",
+    border: "none",
   };
   return (
-    <Table style={{ marginTop: '20px' }} hover>
+    <Table style={{ marginTop: "20px" }} hover>
       <thead>
         <tr>
           <th>Start Time</th>
@@ -32,9 +33,7 @@ function AllocationsTable({ addedSlot, setAddedSlot }) {
             <td>{slot.startTime}</td>
             <td>{slot.endTime}</td>
             <td>
-              <Button style={buttonStyle} onClick={() => deleteItem(slot)}>
-                Delete
-              </Button>
+              <DeleteIcon onClick={() => deleteItem(slot)}></DeleteIcon>
             </td>
           </tr>
         ))}
