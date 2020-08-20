@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 const departments = [
     {
@@ -364,6 +365,17 @@ export default function LecturerForm() {
                 >
                     Add
                 </Button>
+                <Link to="/lecturerTable">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        // onClick={}
+                        className={classes.button}
+                        //onClick={saveLecturer}
+                    >
+                        View Lecturers
+                    </Button>
+                </Link>
             </div>
         </React.Fragment>
     );

@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 const hours = [
     {
@@ -130,7 +131,7 @@ export default function AddressForm() {
                         required
                         id="employeeID"
                         name="employeeID"
-                        label= {subName}
+                        label= "Subject Name"
                         fullWidth
                         autoComplete="shipping address-line1"
                         onChange={handleSubNameChange}
@@ -142,7 +143,7 @@ export default function AddressForm() {
                         required
                         id="employeeID"
                         name="employeeID"
-                        label={subCode}
+                        label= "Subject Code"
                         fullWidth
                         autoComplete="shipping address-line1"
                         onChange={handleSubCodeChange}
@@ -154,7 +155,7 @@ export default function AddressForm() {
                         required
                         id="firstName"
                         name="firstName"
-                        label={offeredYear}
+                        label= "Offered Year"
                         fullWidth
                         autoComplete="given-name"
                         onChange={handleOfferedYearChange}
@@ -165,7 +166,7 @@ export default function AddressForm() {
                         required
                         id="employeeID"
                         name="employeeID"
-                        label={offeredSemester}
+                        label= "Offered Semester"
                         fullWidth
                         autoComplete="shipping address-line1"
                         onChange={handleOfferedSemesterChange}
@@ -255,6 +256,17 @@ export default function AddressForm() {
                 >
                     Add
                 </Button>
+                <Link to="/subjectTable">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        // onClick={}
+                        className={classes.button}
+                        //onClick={saveLecturer}
+                    >
+                        View Subjects
+                    </Button>
+                </Link>
             </div>
         </React.Fragment>
     );
