@@ -19,7 +19,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 const drawerWidth = 240;
 
 const navStyle = {
-  color: "#22063d",
+  color: "#fff",
   textDecoration: "none",
 };
 
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    background: "#f6f0ff",
+    backgroundImage: "linear-gradient(  #4389A2, #42275a)",
   },
   drawerHeader: {
     display: "flex",
@@ -191,10 +191,6 @@ export default function PersistentDrawerLeft() {
         })}
       >
         <div className={classes.drawerHeader} />
-        {/* <Container>
-          <ExpansionPanel></ExpansionPanel>
-          <ExpansionPanel></ExpansionPanel>
-        </Container> */}
       </main>
     </div>
   );

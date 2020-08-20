@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   InputGroup,
   Input,
@@ -12,18 +12,19 @@ import {
   DropdownItem,
   Button,
   Table,
-} from 'reactstrap';
-import TimeSlotTable from '../UI/TimeSlotTable';
+} from "reactstrap";
+import TimeSlotTable from "../UI/TimeSlotTable";
+import AddIcon from "@material-ui/icons/Add";
 
 function TimeSlotAddForm() {
   const [dropdownOpen, setOpen] = useState(false);
   const toggle = () => setOpen(!dropdownOpen);
   const [error, setError] = useState(false);
-  const slots = ['1-Hour-Slot', '1/2 Hour Slot'];
+  const slots = ["1-Hour-Slot", "1/2 Hour Slot"];
   const [addedSlot, setAddedSlot] = useState([]);
 
   //Form values
-  const [dropDownValue, setDropDownValue] = useState('1-Hour-Slot');
+  const [dropDownValue, setDropDownValue] = useState("1-Hour-Slot");
   const [hourValue, setHourValue] = useState();
   const [minsValue, setMinsValue] = useState();
 
@@ -47,22 +48,22 @@ function TimeSlotAddForm() {
 
   const isValidSlot = (slot) => {
     console.log(slot);
-    let pattern = new RegExp('^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
+    let pattern = new RegExp("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
     return pattern.test(slot);
   };
 
-  const zeroPad = (num, places) => String(num).padStart(places, '0');
+  const zeroPad = (num, places) => String(num).padStart(places, "0");
 
   const getNextSlot = (type) => {
-    if (type === '1-Hour-Slot') {
+    if (type === "1-Hour-Slot") {
       let nextSlotHour = parseInt(hourValue) + 1;
       let nextSlotMin = minsValue;
       if (nextSlotHour < 10) {
         nextSlotHour = zeroPad(nextSlotHour, 2);
       }
-      return nextSlotHour + ':' + nextSlotMin;
+      return nextSlotHour + ":" + nextSlotMin;
     }
-    if (type === '1/2 Hour Slot') {
+    if (type === "1/2 Hour Slot") {
       let nextSlotHour = parseInt(hourValue);
       let nextSlotMins = parseInt(minsValue);
       nextSlotMins = nextSlotMins + 30;
@@ -75,9 +76,9 @@ function TimeSlotAddForm() {
         if (nextSlotMins < 10) {
           nextSlotMins = zeroPad(nextSlotMins, 2);
         }
-        return nextSlotHour + ':' + nextSlotMins;
+        return nextSlotHour + ":" + nextSlotMins;
       } else if (nextSlotMins < 60) {
-        return nextSlotHour + ':' + nextSlotMins;
+        return nextSlotHour + ":" + nextSlotMins;
       }
     }
   };
@@ -91,7 +92,7 @@ function TimeSlotAddForm() {
       setHourValue(zeroPad(hourValue, 2));
     }
 
-    let slot = hourValue + ':' + minsValue;
+    let slot = hourValue + ":" + minsValue;
     if (!isValidSlot(slot)) {
       setError(true);
     }
@@ -117,22 +118,22 @@ function TimeSlotAddForm() {
         <Col>
           <InputGroup>
             <Input
-              style={{ borderColor: '#291d99' }}
+              style={{ borderColor: "#291d99" }}
               onChange={changeHours}
-              type='number'
+              type="number"
             ></Input>
-            <InputGroupAddon addonType='append'>H</InputGroupAddon>
+            <InputGroupAddon addonType="append">H</InputGroupAddon>
           </InputGroup>
         </Col>
         {/* Minutes */}
         <Col>
           <InputGroup>
             <Input
-              style={{ borderColor: '#291d99' }}
+              style={{ borderColor: "#291d99" }}
               onChange={changeMinutes}
-              type='number'
+              type="number"
             ></Input>
-            <InputGroupAddon addonType='append'>M</InputGroupAddon>
+            <InputGroupAddon addonType="append">M</InputGroupAddon>
           </InputGroup>
         </Col>
         <Col>
@@ -154,7 +155,7 @@ function TimeSlotAddForm() {
         </Col>
         <Col>
           <Button style={buttonStyle} onClick={buildSlot} block>
-            Add
+            <AddIcon></AddIcon> Add
           </Button>
         </Col>
       </Row>
@@ -172,18 +173,18 @@ function TimeSlotAddForm() {
 }
 
 const errorStyle = {
-  color: 'red',
-  marginLeft: '50px',
-  marginTop: '20px',
+  color: "red",
+  marginLeft: "50px",
+  marginTop: "20px",
 };
 const dropDownStyle = {
-  color: 'grey',
-  backgroundColor: 'white',
-  borderColor: '#291d99',
+  color: "grey",
+  backgroundColor: "white",
+  borderColor: "#291d99",
 };
 
 const buttonStyle = {
-  backgroundColor: '#291d99',
-  border: 'none',
+  backgroundColor: "#291d99",
+  border: "none",
 };
 export default TimeSlotAddForm;
