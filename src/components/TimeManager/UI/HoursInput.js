@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { InputGroup, Input, InputGroupAddon } from 'reactstrap';
 
-function HoursInput({ changeHandler }) {
-  const [hours, setHours] = useState('8');
+function HoursInput({ changeHandler, hours, setHours }) {
+  // const [hours, setHours] = useState('8');
 
   const changeHourValue = (e) => {
-    setHours(e.target.value);
+    // setHours(e.target.value);
     changeHandler(e.target.value);
   };
 
@@ -16,7 +16,7 @@ function HoursInput({ changeHandler }) {
         placeholder='Hours'
         type='number'
         step='1'
-        defaultValue={hours}
+        value={hours}
         style={{ borderColor: '#291d99' }}
       ></Input>
       <InputGroupAddon addonType='append'>H</InputGroupAddon>
