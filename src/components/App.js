@@ -11,6 +11,8 @@ import Stats from "./Location/Stats";
 import Rooms from "./Location/Rooms";
 import LecturerTable from "./Lecturer/fullTable.component";
 import SubjectTable from "./Subjects/fullTable.component";
+import EditLecturer from "./Lecturer/EditLecturer";
+
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App = () => {
@@ -30,6 +32,8 @@ const App = () => {
           <Route exact path="/rooms" component={Rooms}></Route>
           <Route exact path="/lecturerTable" component={LecturerTable}></Route>
           <Route exact path="/subjectTable" component={SubjectTable}></Route>
+          <Route exact path="/edit/:id" component={EditLecturer}/>
+
         </Switch>
       </div>
     </Router>
