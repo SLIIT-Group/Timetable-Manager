@@ -12,7 +12,7 @@ import {Link} from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.info.dark,
         color: theme.palette.common.white,
     },
     body: {
@@ -28,18 +28,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
 const useStyles = makeStyles({
     table: {
         minWidth: 700,
@@ -50,39 +38,62 @@ export default function CustomizedTables() {
     const classes = useStyles();
     const [lecturers, setLecturers] = useState([]);
 
-    useEffect(() => {
-        // axios.get("http://localhost:5000/api/lecturers")
-        //     .then((response) => {
-        //         const arr = response.data;
-        //         console.log(arr);
-        //         setLecturers([response.data]);
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
-        // console.log('variable' +lecturers)
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+    const handleChange = e => {
+        setSearchTerm(e.target.value);
+    };
 
-        fetch(`http://localhost:5000/api/lecturers/`)
-            .then((res) => res.json())
-            .then(
-                (result) => {
-                    setLecturers(result);
-                },
-                (error) => {
-                    console.log(error);
-                    //setError(error);
-                }
-            );
+    useEffect(() => {
+        axios.get("http://localhost:5000/api/lecturers")
+            .then((response) => {
+                setLecturers(response.data);
+                setSearchResults(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+
+        // fetch(`http://localhost:5000/api/lecturers/`)
+        //     .then((res) => res.json())
+        //     .then(
+        //         (result) => {
+        //             setLecturers(result);
+        //             setSearchResults(result);
+        //         },
+        //         (error) => {
+        //             console.log(error);
+        //         }
+        //     );
 
 
     }, []);
 
+    useEffect(() => {
+        const results = lecturers.filter(person =>
+            person.fname.toLowerCase().includes(searchTerm)
+        );
+        setSearchResults(results);
+    }, [searchTerm]);
+
     return (
         <div>
             <h3 align="center"> Lecturer List </h3>
-            <Link to={"/addLecturer"} className="btn btn-primary">
-                Add Lecturer
-            </Link>
+
+            <div className="form-group">
+                <Link to={"/addLecturer"}>
+                    <input type="submit" value="Add Lecturer" className= "btn btn-primary"
+                           style={{marginLeft: 10}}/>
+                </Link>
+                <div style={{width:"25px", display:"inline-block"}} />
+                <input
+                    type="text"
+                    placeholder="Search"
+                    value={searchTerm}
+                    onChange={handleChange}
+                />
+            </div>
 
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="customized table">
@@ -101,7 +112,7 @@ export default function CustomizedTables() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {lecturers.map((row) => (
+                        {searchResults.map((row) => (
                             <StyledTableRow key={row.fname}>
                                 <StyledTableCell component="th" scope="row">
                                     {row.fname}
