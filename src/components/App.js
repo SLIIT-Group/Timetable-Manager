@@ -9,6 +9,10 @@ import Lecturer from "./Lecturer/Lecturer";
 import TagManager from "./Tags/TagManager";
 import Stats from "./Location/Stats";
 import Rooms from "./Location/Rooms";
+import LecturerTable from "./Lecturer/LecturerTable2";
+import SubjectTable from "./Subjects/fullTable.component";
+import EditLecturer from "./Lecturer/EditLecturer2";
+
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App = () => {
@@ -18,7 +22,7 @@ const App = () => {
         <SideNav></SideNav>
         <Switch>
           <Route exact path="/time" component={TimeManager}></Route>
-          <Route exact path="/lecturers" component={Lecturer}></Route>
+          <Route exact path="/lecturers" component={LecturerTable}></Route>
           <Route exact path="/location" component={LocationManager}></Route>
           <Route exact path="/session" component={SessionManager}></Route>
           <Route exact path="/student" component={StudentManager}></Route>
@@ -26,6 +30,10 @@ const App = () => {
           <Route exact path="/tags" component={TagManager}></Route>
           <Route exact path="/stats" component={Stats}></Route>
           <Route exact path="/rooms" component={Rooms}></Route>
+          <Route exact path="/addLecturer" component={Lecturer}></Route>
+          <Route exact path="/subjectTable" component={SubjectTable}></Route>
+          <Route exact path="/edit/:id" component={EditLecturer}/>
+
         </Switch>
       </div>
     </Router>
