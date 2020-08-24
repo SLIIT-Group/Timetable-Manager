@@ -9,9 +9,9 @@ import Lecturer from "./Lecturer/Lecturer";
 import TagManager from "./Tags/TagManager";
 import Stats from "./Location/Stats";
 import Rooms from "./Location/Rooms";
-import LecturerTable from "./Lecturer/LecturerTable2";
+import LecturerTable from "./Lecturer/LecturerTable";
 import SubjectTable from "./Subjects/fullTable.component";
-import EditLecturer from "./Lecturer/EditLecturer2";
+import EditLecturer from "./Lecturer/EditLecturer";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 

@@ -158,7 +158,7 @@ export default function LecturerForm(props) {
     const [center, setCenter] = useState('');
     const [building1, setBuilding1] = useState('');
     const [level1, setLevel1] = useState('');
-    //const [rank, setRank] = useState('');
+    const [rank, setRank] = useState('');
 
     const handleFnameChange = (event) => {
         setFname(event.target.value);
