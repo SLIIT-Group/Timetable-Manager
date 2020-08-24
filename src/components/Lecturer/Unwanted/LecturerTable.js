@@ -1,22 +1,21 @@
 import React, { Component } from "react";
 //To keep backend and front end connectivity, we import axios
 import axios from "axios";
-import ProductTableRow from "./tableRow.component";
+import LecturerTableRow from "./LecturerTableRow";
 import { Link } from "react-router-dom";
 
 export default class FullTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      products: [],
+      lecturers: [],
     };
   }
 
   componentDidMount() {
-    //type of request is 'get'
     axios.get("http://localhost:5000/api/lecturers")
       .then((response) => {
-        this.setState({ products: response.data });
+        this.setState({ lecturers: response.data });
       })
       .catch(function (error) {
         console.log(error);
@@ -24,8 +23,8 @@ export default class FullTable extends Component {
   }
 
   tabRow() {
-    return this.state.products.map(function (object, i) {
-      return <ProductTableRow obj={object} key={i} />;
+    return this.state.lecturers.map(function (object, i) {
+      return <LecturerTableRow obj={object} key={i} />;
     });
   }
 
@@ -36,7 +35,7 @@ export default class FullTable extends Component {
           {" "}
           Add Lecturer{" "}
         </Link>
-        <h3 align="center"> Products List </h3>
+        <h3 align="center"> Lecturer List </h3>
         <table className="table table-striped" style={{ marginTop: 20 }}>
           <thead>
             <tr>
@@ -47,6 +46,8 @@ export default class FullTable extends Component {
               <th>Department</th>
               <th>Center</th>
               <th>Building</th>
+              <th>Level</th>
+              <th>Rank</th>
               <th colSpan="2">Edit/Delete</th>
             </tr>
           </thead>

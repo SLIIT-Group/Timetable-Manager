@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-//To keep connectivity between frontend 'ReactJS' and backend 'NodeJS', we import axios
 import axios from 'axios';
 import swal from "sweetalert";
 
@@ -37,7 +36,6 @@ export default class EditProduct extends Component{
                 console.log(error);
             })
 
-        //type of request is 'get'
         axios.get('http://localhost:5000/api/productcategory/')
             .then(response => {
                 this.setState({Categories : response.data});
@@ -134,7 +132,7 @@ export default class EditProduct extends Component{
 
     render() {
         return(
-            <div style={{marginTop: 10}}>
+            <div style={{marginTop: 10, marginLeft: 50, marginRight: 50}}>
                 <h3>Edit Lecturer details</h3>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">

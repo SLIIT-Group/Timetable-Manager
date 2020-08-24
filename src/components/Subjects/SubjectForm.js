@@ -10,6 +10,16 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {Link} from "react-router-dom";
 
+const semesters = [
+    {
+        value: '1st Semester',
+        label: '1st Semester',
+    },
+    {
+        value: '2nd Semester',
+        label: '2nd Semester',
+    }
+];
 const hours = [
     {
         value: 1,
@@ -52,16 +62,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AddressForm() {
     const classes = useStyles();
-    const [currency, setCurrency] = React.useState('EUR');
 
-    const handleChange = (event) => {
-        setCurrency(event.target.value);
-    };
-
-    const [subName, setSubName] = React.useState('Subject Name');
-    const [subCode, setSubCode] = React.useState('Subject Code');
-    const [offeredYear, setOfferedYear] = React.useState('Offered Year');
-    const [offeredSemester, setOfferedSemester] = React.useState('Offered Semester');
+    const [subName, setSubName] = React.useState('');
+    const [subCode, setSubCode] = React.useState('');
+    const [offeredYear, setOfferedYear] = React.useState('');
+    const [offeredSemester, setOfferedSemester] = React.useState('');
     const [lecHo, setLecHo] = React.useState('');
     const [tuteHo, setTuteHo] = React.useState('');
     const [labHo, setLabHo] = React.useState('');
@@ -132,6 +137,7 @@ export default function AddressForm() {
                         id="employeeID"
                         name="employeeID"
                         label= "Subject Name"
+                        value={subName}
                         fullWidth
                         autoComplete="shipping address-line1"
                         onChange={handleSubNameChange}
@@ -144,6 +150,7 @@ export default function AddressForm() {
                         id="employeeID"
                         name="employeeID"
                         label= "Subject Code"
+                        value={subCode}
                         fullWidth
                         autoComplete="shipping address-line1"
                         onChange={handleSubCodeChange}
@@ -156,6 +163,7 @@ export default function AddressForm() {
                         id="firstName"
                         name="firstName"
                         label= "Offered Year"
+                        value={offeredYear}
                         fullWidth
                         autoComplete="given-name"
                         onChange={handleOfferedYearChange}
@@ -163,14 +171,20 @@ export default function AddressForm() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        required
-                        id="employeeID"
-                        name="employeeID"
-                        label= "Offered Semester"
-                        fullWidth
-                        autoComplete="shipping address-line1"
+                        id="filled-select-currency"
+                        select
+                        label="Offered semester"
+                        value={offeredSemester}
                         onChange={handleOfferedSemesterChange}
-                    />
+                        variant="filled"
+                        fullWidth
+                    >
+                        {semesters.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
@@ -213,7 +227,7 @@ export default function AddressForm() {
                     <TextField
                         id="filled-select-currency"
                         select
-                        label="No of lab hours"
+                        label="No. of lab hours"
                         value={labHo}
                         onChange={handleLabHoChange}
                         variant="filled"
@@ -231,7 +245,7 @@ export default function AddressForm() {
                     <TextField
                         id="filled-select-currency"
                         select
-                        label="No of evaluation hours"
+                        label="No. of evaluation hours"
                         value={evaHo}
                         onChange={handleEvaHoChange}
                         variant="filled"

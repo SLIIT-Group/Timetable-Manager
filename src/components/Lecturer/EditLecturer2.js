@@ -5,8 +5,8 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import LecturerForm from './LecturerForm';
-import { BrowserRouter as Router, Route, Link as ReactLink, Switch } from "react-router-dom";
+import EditLecturerForm from './EditLecturerForm';
+import {Link as ReactLink} from "react-router-dom";
 
 
 function Copyright() {
@@ -59,34 +59,34 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Lecturer() {
+function Lecturer(props) {
     const classes = useStyles();
 
     return (
-    <div>
-        <React.Fragment>
-            <CssBaseline />
-            <ReactLink to="/lecturers">
-                <div style={{marginTop: -30, marginLeft: 20}}>
-                    <Button variant="contained" color="secondary"> Back </Button>
-                </div>
-            </ReactLink>
+        <div>
+            <React.Fragment>
+                <CssBaseline />
+                <ReactLink to="/lecturers">
+                    <div style={{marginTop: -30, marginLeft: 20}}>
+                        <Button variant="contained" color="secondary"> Back </Button>
+                    </div>
+                </ReactLink>
 
-            <main className={classes.layout}>
-                <Paper className={classes.paper}>
-                    <Typography component="h1" variant="h4" align="center">
-                        Lecturer Details
-                    </Typography>
+                <main className={classes.layout}>
+                    <Paper className={classes.paper}>
+                        <Typography component="h1" variant="h4" align="center">
+                            Lecturer Details
+                        </Typography>
 
-                    <React.Fragment>
-                        <LecturerForm/>
-                    </React.Fragment>
-                </Paper>
-                <Copyright />
-            </main>
-        </React.Fragment>
-    </div>
-  );
+                        <React.Fragment>
+                            <EditLecturerForm lecturerID={props.match.params.id}/>
+                        </React.Fragment>
+                    </Paper>
+                    <Copyright />
+                </main>
+            </React.Fragment>
+        </div>
+    );
 }
 
 export default Lecturer;
