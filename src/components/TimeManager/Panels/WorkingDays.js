@@ -6,6 +6,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Container } from '@material-ui/core';
+import AddDays from '../Forms/AddDays';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
 }));
-
 function TimeSlot() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
@@ -37,8 +37,8 @@ function TimeSlot() {
         <Accordion
           style={
             expanded
-              ? { backgroundColor: 'white' }
-              : { backgroundImage: 'linear-gradient(  #eef2f3, #8e9eab)' }
+              ? { backgroundColor: '#f5f5f5' }
+              : { backgroundImage: 'linear-gradient(#eef2f3, #8e9eab)' }
           }
           expanded={expanded === 'panel1'}
           onChange={handleChange('panel1')}
@@ -48,12 +48,10 @@ function TimeSlot() {
             aria-controls='panel1bh-content'
             id='panel1bh-header'
           >
-            <Typography className={classes.heading}>
-              Time Slot Allocation
-            </Typography>
+            <Typography className={classes.heading}>Working Days</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            {/* <TimeSlotAddForm></TimeSlotAddForm> */}
+            <AddDays></AddDays>
           </AccordionDetails>
         </Accordion>
       </Container>

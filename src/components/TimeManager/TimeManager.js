@@ -1,12 +1,11 @@
 import React from 'react';
 import TimeSlot from './Panels/TimeSlot';
-import AllocateWorkingDays from './Panels/AllocateWorkingDays';
-
+import WorkingDays from './Panels/WorkingDays';
 function TimeManager() {
   return (
     <div>
-      <AllocateWorkingDays></AllocateWorkingDays>
       <TimeSlot></TimeSlot>
+      <WorkingDays></WorkingDays>
     </div>
   );
 }
