@@ -15,12 +15,25 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
+import ExploreIcon from '@material-ui/icons/Explore';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import ApartmentIcon from '@material-ui/icons/Apartment';
 
 const drawerWidth = 240;
 
 const navStyle = {
   color: '#fff',
   textDecoration: 'none',
+};
+
+const iconStyle = {
+  marginRight: '20px',
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -140,47 +153,66 @@ export default function PersistentDrawerLeft() {
         <List>
           <Link style={navStyle} to='/time'>
             <ListItem button>
-              <ListItemText>Time Manager</ListItemText>
+              <ListItemText>
+                <ScheduleIcon style={iconStyle} /> Time Manager
+              </ListItemText>
             </ListItem>
           </Link>
           <Link style={navStyle} to='/lecturers'>
             <ListItem button>
-              <ListItemText>Lecturers</ListItemText>
+              <ListItemText>
+                <SupervisorAccountIcon style={iconStyle} /> Lecturers
+              </ListItemText>
             </ListItem>
           </Link>
           <Link style={navStyle} to='/location'>
             <ListItem button>
-              <ListItemText>Location</ListItemText>
+              <ListItemText>
+                <ExploreIcon style={iconStyle} /> Location
+              </ListItemText>
             </ListItem>
           </Link>
           <Link style={navStyle} to='/session'>
             <ListItem button>
-              <ListItemText>Session</ListItemText>
+              <ListItemText>
+                <CalendarViewDayIcon style={iconStyle} /> Session
+              </ListItemText>
             </ListItem>
           </Link>
           <Link style={navStyle} to='/student'>
             <ListItem button>
-              <ListItemText>Student</ListItemText>
+              <ListItemText>
+                <AccountBoxIcon style={iconStyle} /> Student
+              </ListItemText>
             </ListItem>
           </Link>
           <Link style={navStyle} to='/subject'>
             <ListItem button>
-              <ListItemText>Subject</ListItemText>
+              <ListItemText>
+                <MenuBookIcon style={iconStyle} /> Subject
+              </ListItemText>
             </ListItem>
           </Link>
           <Link style={navStyle} to='/tags'>
             <ListItem button>
-              <ListItemText>Tags</ListItemText>
+              <ListItemText>
+                <LocalOfferIcon style={iconStyle} /> Tags
+              </ListItemText>
             </ListItem>
           </Link>
           <Link style={navStyle} to='/stats'>
             <ListItem button>
-              <ListItemText>Statistical Informations</ListItemText>
+              <ListItemText>
+                <EqualizerIcon style={iconStyle} /> Statistics
+              </ListItemText>
             </ListItem>
           </Link>
           <Link style={navStyle} to='/rooms'>
             <ListItem button>
-              <ListItemText>Rooms</ListItemText>
+              <ListItemText>
+                <ApartmentIcon style={iconStyle} />
+                Rooms
+              </ListItemText>
             </ListItem>
           </Link>
         </List>
