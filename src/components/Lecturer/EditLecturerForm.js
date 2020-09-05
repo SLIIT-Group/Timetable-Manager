@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -147,18 +147,18 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function LecturerForm() {
+export default function LecturerForm(props) {
     const classes = useStyles();
 
-    const [fname, setFname] = React.useState('');
-    const [lname, setLname] = React.useState('');
-    const [empid, setEmpid] = React.useState('');
-    const [faculty, setFaculty] = React.useState('');
-    const [department, setDepartment] = React.useState('');
-    const [center, setCenter] = React.useState('');
-    const [building1, setBuilding1] = React.useState('');
-    const [level1, setLevel1] = React.useState('');
-    const [rank, setRank] = React.useState('');
+    const [fname, setFname] = useState('');
+    const [lname, setLname] = useState('');
+    const [empid, setEmpid] = useState('');
+    const [faculty, setFaculty] = useState('');
+    const [department, setDepartment] = useState('');
+    const [center, setCenter] = useState('');
+    const [building1, setBuilding1] = useState('');
+    const [level1, setLevel1] = useState('');
+    const [rank, setRank] = useState('');
 
     const handleFnameChange = (event) => {
         setFname(event.target.value);
@@ -184,11 +184,26 @@ export default function LecturerForm() {
     const handleLevel1Change = (event) => {
         setLevel1(event.target.value);
     };
-    // const handleRankChange = (event) => {
-    //     setRank(event.target.value);
-    // };
 
-    const saveLecturer = () => {
+    useEffect(() => {
+        console.log(props)
+        axios.get('http://localhost:5000/api/lecturers/edit/' +props.lecturerID)
+            .then(response => {
+                setFname(response.data.fname);
+                setLname(response.data.lname);
+                setEmpid(response.data.empid);
+                setFaculty(response.data.faculty);
+                setDepartment(response.data.department);
+                setCenter(response.data.center);
+                setBuilding1(response.data.building1);
+                setLevel1(response.data.level1);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }, []);
+
+    const updateLecturer = () => {
         const req = {
             fname: fname,
             lname: lname,
@@ -201,14 +216,14 @@ export default function LecturerForm() {
             rank: level1+ "." +empid
         };
 
-        axios.post("http://localhost:5000/api/lecturers/add", req).then((res) => {
-            if (res.data.success) {
-                // console.log(res.data);
-                swal("Successful", "Lecturer details added", "success");
-            }else{
-                swal("Unsuccessful", "Error while adding details", "error");
-            }
-        });
+        axios.post('http://localhost:5000/api/lecturers/update/' +props.lecturerID, req)
+            .then((res) => {
+                if(res.data == 'Update complete'){
+                    swal("Successful", "Lecturer details updated", "success");
+                }else{
+                    swal("Unsuccessful", "Error while updating details", "error");
+                }
+            });
 
         setFname("");
         setLname("");
@@ -221,6 +236,26 @@ export default function LecturerForm() {
         setRank("");
     };
 
+    const deleteLecturer = () => {
+        axios.get('http://localhost:5000/api/lecturers/delete/' +props.lecturerID)
+            .then((res) => {
+                if(res.data == 'Successfully removed'){
+                    swal("Successful", "Lecturer details removed", "success");
+                }else{
+                    swal("Unsuccessful", "Error while deleting details", "error");
+                }
+            });
+
+        setFname("");
+        setLname("");
+        setEmpid("");
+        setFaculty("");
+        setDepartment("");
+        setCenter("");
+        setBuilding1("");
+        setLevel1("");
+        setRank("");
+    }
 
     return (
         <React.Fragment>
@@ -376,10 +411,19 @@ export default function LecturerForm() {
                     variant="contained"
                     color="primary"
                     className={classes.button}
-                    onClick={saveLecturer}
+                    onClick={updateLecturer}
                 >
-                    Add
+                    Update
                 </Button>
+
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        className={classes.button}
+                        onClick={deleteLecturer}
+                    >
+                        Delete
+                    </Button>
 
             </div>
         </React.Fragment>
