@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 
 export default function CustomizedTables() {
     const classes = useStyles();
-    const [lecturers, setLecturers] = useState([]);
+    const [subjects, setSubjects] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
@@ -45,9 +45,9 @@ export default function CustomizedTables() {
     };
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/lecturers")
+        axios.get("http://localhost:5000/api/subjects")
             .then((response) => {
-                setLecturers(response.data);
+                setSubjects(response.data);
                 setSearchResults(response.data);
             })
             .catch(function (error) {
@@ -56,19 +56,19 @@ export default function CustomizedTables() {
     }, []);
 
     useEffect(() => {
-        const results = lecturers.filter(person =>
-            person.fname.toLowerCase().includes(searchTerm)
+        const results = subjects.filter(person =>
+            person.subName.toLowerCase().includes(searchTerm)
         );
         setSearchResults(results);
     }, [searchTerm]);
 
     return (
         <div>
-            <h3 align="center"> Lecturer List </h3>
+            <h3 align="center"> Subjects List </h3>
 
             <div className="form-group">
-                <Link to={"/addLecturer"}>
-                    <input type="submit" value="Add Lecturer" className= "btn btn-primary"
+                <Link to={"/addSubject"}>
+                    <input type="submit" value="Add Subject" className= "btn btn-primary"
                            style={{marginLeft: 10}}/>
                 </Link>
                 <div style={{width:"25px", display:"inline-block"}} />
@@ -84,34 +84,32 @@ export default function CustomizedTables() {
                 <Table className={classes.table} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell align="right">First name</StyledTableCell>
-                            <StyledTableCell align="right">Last name</StyledTableCell>
-                            <StyledTableCell align="right">Employee ID</StyledTableCell>
-                            <StyledTableCell align="right">Faculty</StyledTableCell>
-                            <StyledTableCell align="right">Department</StyledTableCell>
-                            <StyledTableCell align="right">Center</StyledTableCell>
-                            <StyledTableCell align="right">Building</StyledTableCell>
-                            <StyledTableCell align="right">Level</StyledTableCell>
-                            <StyledTableCell align="right">Rank</StyledTableCell>
+                            <StyledTableCell align="right">Subject name</StyledTableCell>
+                            <StyledTableCell align="right">Subject code</StyledTableCell>
+                            <StyledTableCell align="right">Offered year</StyledTableCell>
+                            <StyledTableCell align="right">Offered semester</StyledTableCell>
+                            <StyledTableCell align="right">Lecture hours</StyledTableCell>
+                            <StyledTableCell align="right">Tute hours</StyledTableCell>
+                            <StyledTableCell align="right">Lab hours</StyledTableCell>
+                            <StyledTableCell align="right">Evaluation hours</StyledTableCell>
                             <StyledTableCell align="right">Edit/Delete</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {searchResults.map((row) => (
-                            <StyledTableRow key={row.fname}>
+                            <StyledTableRow key={row.subName}>
                                 <StyledTableCell component="th" scope="row">
-                                    {row.fname}
+                                    {row.subName}
                                 </StyledTableCell>
-                                <StyledTableCell align="right">{row.lname}</StyledTableCell>
-                                <StyledTableCell align="right">{row.empid}</StyledTableCell>
-                                <StyledTableCell align="right">{row.faculty}</StyledTableCell>
-                                <StyledTableCell align="right">{row.department}</StyledTableCell>
-                                <StyledTableCell align="right">{row.center}</StyledTableCell>
-                                <StyledTableCell align="right">{row.building1}</StyledTableCell>
-                                <StyledTableCell align="right">{row.level1}</StyledTableCell>
-                                <StyledTableCell align="right">{row.rank}</StyledTableCell>
+                                <StyledTableCell align="right">{row.subCode}</StyledTableCell>
+                                <StyledTableCell align="right">{row.offeredYear}</StyledTableCell>
+                                <StyledTableCell align="right">{row.offeredSemester}</StyledTableCell>
+                                <StyledTableCell align="right">{row.lecHo}</StyledTableCell>
+                                <StyledTableCell align="right">{row.tuteHo}</StyledTableCell>
+                                <StyledTableCell align="right">{row.labHo}</StyledTableCell>
+                                <StyledTableCell align="right">{row.evaHo}</StyledTableCell>
                                 <StyledTableCell align="right">
-                                    <Link to={"/edit/" +row._id} className="btn btn-primary"> Edit/Delete </Link>
+                                    <Link to={"/subject/edit/" +row._id} className="btn btn-primary"> Edit/Delete </Link>
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}

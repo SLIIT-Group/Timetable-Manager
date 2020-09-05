@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function AddressForm() {
+export default function AddressForm(props) {
     const classes = useStyles();
 
     const [subName, setSubName] = React.useState('');
@@ -97,36 +97,23 @@ export default function AddressForm() {
         setEvaHo(event.target.value);
     };
 
-    const saveSubject = () => {
-        const req = {
-            subName: subName,
-            subCode: subCode,
-            offeredYear: offeredYear,
-            offeredSemester: offeredSemester,
-            lecHo: lecHo,
-            tuteHo: tuteHo,
-            labHo: labHo,
-            evaHo: evaHo
-        };
-
-        axios.post("http://localhost:5000/api/subjects/add", req).then((res) => {
-            if (res.data.success) {
-                console.log(res.data);
-                alert("Subject Saved Successfully");
-            }else{
-                alert("Subject Saving Failed");
-            }
-        });
-
-        setSubName("");
-        setSubCode("");
-        setOfferedYear("");
-        setOfferedSemester("");
-        setLecHo("");
-        setTuteHo("");
-        setLabHo("");
-        setEvaHo("");
-    };
+    useEffect(() => {
+        console.log(props)
+        axios.get('http://localhost:5000/api/subjects/edit/' +props.subjectID)
+            .then(response => {
+                setSubName(response.data.subName);
+                setSubCode(response.data.subCode);
+                setOfferedYear(response.data.offeredYear);
+                setOfferedSemester(response.data.offeredSemester);
+                setLecHo(response.data.lecHo);
+                setTuteHo(response.data.tuteHo);
+                setLabHo(response.data.labHo);
+                setEvaHo(response.data.evaHo);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }, []);
 
     return (
         <React.Fragment>
@@ -264,23 +251,21 @@ export default function AddressForm() {
                 <Button
                     variant="contained"
                     color="primary"
-                    // onClick={}
                     className={classes.button}
-                    onClick={saveSubject}
+                    // onClick={updateLecturer}
                 >
-                    Add
+                    Update
                 </Button>
-                {/*<Link to="/subjectTable">*/}
-                {/*    <Button*/}
-                {/*        variant="contained"*/}
-                {/*        color="primary"*/}
-                {/*        // onClick={}*/}
-                {/*        className={classes.button}*/}
-                {/*        //onClick={saveLecturer}*/}
-                {/*    >*/}
-                {/*        View Subjects*/}
-                {/*    </Button>*/}
-                {/*</Link>*/}
+
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    className={classes.button}
+                    // onClick={deleteLecturer}
+                >
+                    Delete
+                </Button>
+
             </div>
         </React.Fragment>
     );
