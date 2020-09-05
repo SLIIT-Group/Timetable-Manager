@@ -124,26 +124,27 @@ function Add({ allocations, counter, setCounter }) {
       {/* <Grid item sm={12}>
         <TextField id='standard-size-small' defaultValue='Small' size='small' />
       </Grid> */}
-      <Grid item sm={12}>
-        <Button
-          style={buttonStyle}
-          value='Add'
-          variant='contained'
-          color='primary'
-          width='block'
-          onClick={addAllocation}
-        >
-          Add
-        </Button>
-      </Grid>
+      {/* <Grid item sm={12}> */}
+      <Button
+        style={buttonStyle}
+        value='Add'
+        variant='contained'
+        color='primary'
+        width='block'
+        onClick={addAllocation}
+      >
+        Add
+      </Button>
+      {/* </Grid> */}
     </form>
   );
 }
 
 const buttonStyle = {
   margin: '20px',
-  alignContent: 'flex-end',
-  marginLeft: '20px',
+
+  // marginLeft: '30px',
+  width: '70%',
 };
 
 export default Add;
