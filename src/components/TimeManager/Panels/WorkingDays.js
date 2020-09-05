@@ -63,13 +63,13 @@ function TimeSlot(props) {
           style={
             expanded
               ? { backgroundColor: '#f5f5f5' }
-              : { backgroundImage: 'linear-gradient(#eef2f3, #8e9eab)' }
+              : { backgroundColor: '#3f51b5', color: '#fff' }
           }
           expanded={expanded === 'panel1'}
           onChange={handleChange('panel1')}
         >
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<ExpandMoreIcon style={{ color: '#fff' }} />}
             aria-controls='panel1bh-content'
             id='panel1bh-header'
           >

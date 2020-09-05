@@ -14,7 +14,7 @@ import axios from 'axios';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.info.dark,
+    backgroundColor: '#3f51b5',
     color: theme.palette.common.white,
   },
   body: {
