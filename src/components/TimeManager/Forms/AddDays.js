@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -103,14 +104,18 @@ const days = [
 
 const hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-function AddDays() {
+function AddDays({ allocations, counter, setCounter }) {
   const classes = useStyles();
 
   const initialState = { day: '', hours: '' };
   const [allocation, setAllocation] = useState(initialState);
+  const [filteredDays, setFilteredDays] = useState([]);
 
   const addAllocation = () => {
-    console.log(allocation);
+    axios
+      .post('http://localhost:5000/api/day', allocation)
+      .then((res) => setCounter(counter + 1))
+      .catch((err) => console.log(err));
   };
 
   const handleChange = (e) => {
@@ -118,17 +123,28 @@ function AddDays() {
       ...allocation,
       [e.target.name]: e.target.value,
     });
-    console.log(allocation);
   };
+
+  let addedDays = [];
+  const createDaysArray = () => {
+    addedDays = [];
+    allocations.map((alloc) => {
+      addedDays.push(alloc.day);
+    });
+  };
+
+  useEffect(() => {
+    createDaysArray();
+    setFilteredDays(days.filter((day) => !addedDays.includes(day.value)));
+  }, [allocations]);
 
   return (
     <div>
       <React.Fragment>
-        <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <React.Fragment>
-              <Grid container spacing={3}>
+              <Grid container spacing={5}>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     size='small'
@@ -141,7 +157,7 @@ function AddDays() {
                     variant='filled'
                     fullWidth
                   >
-                    {days.map((option) => (
+                    {filteredDays.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -171,6 +187,19 @@ function AddDays() {
                   >
                     Add
                   </Button>
+                  <Button
+                    onClick={() => {
+                      createDaysArray();
+                      console.log(
+                        days.filter((day) => !addedDays.includes(day.value))
+                      );
+                    }}
+                  >
+                  
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <p>Table</p>
                 </Grid>
               </Grid>
             </React.Fragment>

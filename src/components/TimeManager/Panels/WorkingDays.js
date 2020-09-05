@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Container } from '@material-ui/core';
 import AddDays from '../Forms/AddDays';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,13 +26,30 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
 }));
-function TimeSlot() {
+function TimeSlot(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [allocations, setAllocations] = useState([]);
+  const [counter, setCounter] = useState(0);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  const getAllAllocations = () => {
+    axios
+      .get(`http://localhost:5000/api/day`)
+      .then((res) => {
+        console.log(res.data);
+        setAllocations(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getAllAllocations();
+  }, [counter]);
+
   return (
     <div className={classes.root}>
       <Container>
@@ -51,7 +70,11 @@ function TimeSlot() {
             <Typography className={classes.heading}>Working Days</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <AddDays></AddDays>
+            <AddDays
+              allocations={allocations}
+              counter={counter}
+              setCounter={setCounter}
+            ></AddDays>
           </AccordionDetails>
         </Accordion>
       </Container>
