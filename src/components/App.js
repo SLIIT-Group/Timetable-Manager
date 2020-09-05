@@ -16,12 +16,12 @@ import SubjectsTable from "./Subjects/SubjectsTable";
 import SubjectsForm from "./Subjects/Subject";
 import EditSubject from "./Subjects/EditSubject";
 
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 const App = () => {
   return (
     <Router>
-      <div className="app">
+      <div className='app'>
         <SideNav></SideNav>
         <Switch>
           <Route exact path="/time" component={TimeManager}></Route>
