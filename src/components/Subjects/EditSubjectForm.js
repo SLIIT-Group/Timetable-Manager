@@ -9,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import swal from "sweetalert";
 
 const semesters = [
     {
@@ -114,6 +115,57 @@ export default function AddressForm(props) {
                 console.log(error);
             })
     }, []);
+
+    const updateSubject = () => {
+        const req = {
+            subName: subName,
+            subCode: subCode,
+            offeredYear: offeredYear,
+            offeredSemester: offeredSemester,
+            lecHo: lecHo,
+            tuteHo: tuteHo,
+            labHo: labHo,
+            evaHo: evaHo
+        };
+
+        axios.post('http://localhost:5000/api/subjects/update/' +props.subjectID, req)
+            .then((res) => {
+                if(res.data == 'Update complete'){
+                    swal("Successful", "Subject details updated", "success");
+                }else{
+                    swal("Unsuccessful", "Error while updating details", "error");
+                }
+            });
+
+        setSubName("");
+        setSubCode("");
+        setOfferedYear("");
+        setOfferedSemester("");
+        setLecHo("");
+        setTuteHo("");
+        setLabHo("");
+        setEvaHo("");
+    };
+
+    const deleteSubject = () => {
+        axios.get('http://localhost:5000/api/subjects/delete/' +props.subjectID)
+            .then((res) => {
+                if(res.data == 'Successfully removed'){
+                    swal("Successful", "Subject details removed", "success");
+                }else{
+                    swal("Unsuccessful", "Error while deleting details", "error");
+                }
+            });
+
+        setSubName("");
+        setSubCode("");
+        setOfferedYear("");
+        setOfferedSemester("");
+        setLecHo("");
+        setTuteHo("");
+        setLabHo("");
+        setEvaHo("");
+    }
 
     return (
         <React.Fragment>
@@ -252,7 +304,7 @@ export default function AddressForm(props) {
                     variant="contained"
                     color="primary"
                     className={classes.button}
-                    // onClick={updateLecturer}
+                    onClick={updateSubject}
                 >
                     Update
                 </Button>
@@ -261,7 +313,7 @@ export default function AddressForm(props) {
                     variant="contained"
                     color="secondary"
                     className={classes.button}
-                    // onClick={deleteLecturer}
+                    onClick={deleteSubject}
                 >
                     Delete
                 </Button>

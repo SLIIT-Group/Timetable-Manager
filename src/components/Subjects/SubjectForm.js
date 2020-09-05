@@ -9,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import swal from "sweetalert";
 
 const semesters = [
     {
@@ -111,10 +112,10 @@ export default function AddressForm() {
 
         axios.post("http://localhost:5000/api/subjects/add", req).then((res) => {
             if (res.data.success) {
-                console.log(res.data);
-                alert("Subject Saved Successfully");
+                //console.log(res.data);
+                swal("Successful", "Subject details added", "success");
             }else{
-                alert("Subject Saving Failed");
+                swal("Unsuccessful", "Error while adding details", "error");
             }
         });
 
@@ -270,17 +271,6 @@ export default function AddressForm() {
                 >
                     Add
                 </Button>
-                {/*<Link to="/subjectTable">*/}
-                {/*    <Button*/}
-                {/*        variant="contained"*/}
-                {/*        color="primary"*/}
-                {/*        // onClick={}*/}
-                {/*        className={classes.button}*/}
-                {/*        //onClick={saveLecturer}*/}
-                {/*    >*/}
-                {/*        View Subjects*/}
-                {/*    </Button>*/}
-                {/*</Link>*/}
             </div>
         </React.Fragment>
     );

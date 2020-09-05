@@ -111,7 +111,7 @@ export default function CustomizedTables() {
                                 <StyledTableCell align="right">{row.level1}</StyledTableCell>
                                 <StyledTableCell align="right">{row.rank}</StyledTableCell>
                                 <StyledTableCell align="right">
-                                    <Link to={"/edit/" +row._id} className="btn btn-primary"> Edit/Delete </Link>
+                                    <Link to={"/lecturer/edit/" +row._id} className="btn btn-primary"> Edit/Delete </Link>
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}
