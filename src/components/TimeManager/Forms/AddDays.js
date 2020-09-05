@@ -194,9 +194,7 @@ function AddDays({ allocations, counter, setCounter }) {
                         days.filter((day) => !addedDays.includes(day.value))
                       );
                     }}
-                  >
-                  
-                  </Button>
+                  ></Button>
                 </Grid>
                 <Grid item>
                   <p>Table</p>

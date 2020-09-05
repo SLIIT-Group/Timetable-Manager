@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, InputLabel } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useState } from 'react';
 import axios from 'axios';
@@ -18,17 +18,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Add({ allocations, counter, setCounter }) {
+function Edit({
+  allocations,
+  counter,
+  setCounter,
+  setIsEditing,
+  editingAllocation,
+}) {
   const classes = useStyles();
 
   const initialState = { day: '', hours: '' };
   const [allocation, setAllocation] = useState(initialState);
   const [filteredDays, setFilteredDays] = useState([]);
 
-  const addAllocation = () => {
+  const editAllocation = () => {
     axios
-      .post('http://localhost:5000/api/day', allocation)
-      .then(() => setCounter(counter + 1))
+      .patch(
+        `http://localhost:5000/api/day/${editingAllocation._id}`,
+        allocation
+      )
+      .then(() => {
+        setCounter(counter + 1);
+        setIsEditing(false);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -50,7 +62,11 @@ function Add({ allocations, counter, setCounter }) {
   useEffect(() => {
     createDaysArray();
     setFilteredDays(days.filter((day) => !addedDays.includes(day.value)));
-  }, [allocations]);
+    setAllocation({
+      day: editingAllocation.day,
+      hours: editingAllocation.hours,
+    });
+  }, [editingAllocation]);
   //Days
   const days = [
     {
@@ -102,6 +118,9 @@ function Add({ allocations, counter, setCounter }) {
         onChange={handleChange}
         fullWidth
       >
+        <MenuItem value={editingAllocation.day}>
+          {editingAllocation.day}
+        </MenuItem>
         {filteredDays.map((option) => (
           <MenuItem key={option.value} value={option.value}>
             {option.label}
@@ -124,17 +143,35 @@ function Add({ allocations, counter, setCounter }) {
       {/* <Grid item sm={12}>
         <TextField id='standard-size-small' defaultValue='Small' size='small' />
       </Grid> */}
-      <Grid item sm={12}>
-        <Button
-          style={buttonStyle}
-          value='Add'
-          variant='contained'
-          color='primary'
-          width='block'
-          onClick={addAllocation}
-        >
-          Add
-        </Button>
+      <Grid container>
+        <Grid item sm={6}>
+          <Button
+            style={buttonStyle}
+            size='small'
+            value='Add'
+            variant='contained'
+            color='primary'
+            width='block'
+            onClick={editAllocation}
+          >
+            Edit
+          </Button>
+        </Grid>
+        <Grid item sm={6}>
+          <Button
+            size='small'
+            style={buttonStyle}
+            value='Cancel'
+            variant='contained'
+            color='default'
+            width='block'
+            onClick={() => {
+              setIsEditing(false);
+            }}
+          >
+            Cancel
+          </Button>
+        </Grid>
       </Grid>
     </form>
   );
@@ -146,4 +183,4 @@ const buttonStyle = {
   marginLeft: '20px',
 };
 
-export default Add;
+export default Edit;

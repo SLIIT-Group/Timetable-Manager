@@ -5,10 +5,13 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Container } from '@material-ui/core';
+import { Container, Grid, Paper, Divider } from '@material-ui/core';
 import AddDays from '../Forms/AddDays';
+import Add from '../Forms/Add';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import Allocations from '../Tables/Allocations';
+import Edit from '../Forms/Edit';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +34,9 @@ function TimeSlot(props) {
   const [expanded, setExpanded] = React.useState(false);
   const [allocations, setAllocations] = useState([]);
   const [counter, setCounter] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+  const initialState = { day: '', hours: '' };
+  const [editingAllocation, setEditingAllocation] = useState(initialState);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -70,11 +76,56 @@ function TimeSlot(props) {
             <Typography className={classes.heading}>Working Days</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <AddDays
-              allocations={allocations}
-              counter={counter}
-              setCounter={setCounter}
-            ></AddDays>
+            {/* <Paper> */}
+            {/* <Grid container spacing={3}>
+                <Grid item sm={12}>
+                  <Add
+                    allocations={allocations}
+                    counter={counter}
+                    setCounter={setCounter}
+                  ></Add>
+                </Grid> */}
+            {/* <Grid item sm={8}>
+                  <Allocations allocations={allocations}></Allocations>
+                </Grid> */}
+            {/* </Grid> */}
+            {/* </Paper> */}
+            <Grid container spacing={3}>
+              <Grid item xs={3}>
+                {isEditing ? (
+                  <Paper className={classes.paper}>
+                    {' '}
+                    <Edit
+                      allocations={allocations}
+                      counter={counter}
+                      setCounter={setCounter}
+                      setIsEditing={setIsEditing}
+                      editingAllocation={editingAllocation}
+                    ></Edit>
+                  </Paper>
+                ) : (
+                  <Paper className={classes.paper}>
+                    {' '}
+                    <Add
+                      allocations={allocations}
+                      counter={counter}
+                      setCounter={setCounter}
+                    ></Add>
+                  </Paper>
+                )}
+              </Grid>
+              <Grid item xs={9}>
+                <Paper className={classes.paper}>
+                  <Allocations
+                    counter={counter}
+                    setCounter={setCounter}
+                    allocations={allocations}
+                    setIsEditing={setIsEditing}
+                    setEditingAllocation={setEditingAllocation}
+                  ></Allocations>
+                </Paper>
+              </Grid>
+            </Grid>
           </AccordionDetails>
         </Accordion>
       </Container>
