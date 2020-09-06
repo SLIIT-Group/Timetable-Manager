@@ -9,6 +9,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import axios from "axios";
 import {Link} from "react-router-dom";
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -111,7 +113,11 @@ export default function CustomizedTables() {
                                 <StyledTableCell align="right">{row.level1}</StyledTableCell>
                                 <StyledTableCell align="right">{row.rank}</StyledTableCell>
                                 <StyledTableCell align="right">
-                                    <Link to={"/lecturer/edit/" +row._id} className="btn btn-primary"> Edit/Delete </Link>
+                                    {/*<Link to={"/lecturer/edit/" +row._id} className="btn btn-primary"> Edit/Delete </Link>*/}
+                                    <Link to={"/lecturer/edit/" +row._id}>
+                                        <EditIcon></EditIcon>
+                                        <DeleteIcon></DeleteIcon>
+                                    </Link>
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}
