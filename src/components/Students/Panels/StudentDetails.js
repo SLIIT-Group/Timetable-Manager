@@ -9,7 +9,8 @@ import axios from "axios";
 import MenuItem from "@material-ui/core/MenuItem";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Students from "../Tables/Students";
+import Students from "../SubComponents/Students";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,12 +62,35 @@ export default function StudentDetails() {
 
         </AccordionSummary>
         <AccordionDetails>
+            <Row className="p-0 m-0  col-md-12 d-flex bd-highlight justify-content-center">
 
-            <Row className="p-0 m-0  col-md-12">
+
+                    <div className="form-group row col-md-12 d-flex bd-highlight mx-5 px-5">
+
+                            <Col className="d-flex justify-content-start">
+                                <Link to={"/addStudent"}>
+                                <input type="submit" value="Add Student Record" className= "btn btn-primary"/>
+                            </Link>
+                            </Col>
+                            <Col >
+                                <div className="main">
+                                    <div className="input-group">
+                                        <input
+                                            type="text"
+                                            className="input mt-1"
+                                            style={{ width: "100%" }}
+                                        />
+                                    </div>
+                                </div>
+                            </Col>
+
+
+                    </div>
+
             <Students />
             </Row>
 
-        </AccordionDetails>
+         </AccordionDetails>
       </Accordion>
     </div>
   );

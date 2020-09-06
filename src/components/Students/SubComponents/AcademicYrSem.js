@@ -1,21 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import { makeStyles, emphasize } from '@material-ui/core/styles';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { makeStyles } from '@material-ui/core/styles';
 import {Col} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import Row from "react-bootstrap/Row";
-import classNames from 'classnames/bind';
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import axios from "axios";
 
-let cx = classNames;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -35,14 +29,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AcademicYrSem() {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
 
   const [yrSem, setYrSem] = React.useState('');
-  console.log(yrSem);
   const handleYrSemChange = (event) => {
     setYrSem(event.target.value);
   };
@@ -57,7 +45,7 @@ export default function AcademicYrSem() {
           setStudentList(res.data);
         });
 
-  });
+  }, []);
   const deleteStudent = () => {
     axios
         .get(
@@ -87,25 +75,7 @@ export default function AcademicYrSem() {
 
   };
   return (
-    <div className={classes.root}>
-      <Accordion
-          style={
-            expanded
-                ? { backgroundColor: '#f5f5f5' }
-                : { backgroundColor: '#3f51b5', color: '#fff' }
-          }
-        expanded={expanded === 'panel1'}
-        onChange={handleChange('panel1')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls='panel1bh-content'
-          id='panel1bh-header'
-        >
-          <Typography className={cx(classes.heading, "mt-2")}>View and Edit Academic Year and Semester</Typography>
 
-        </AccordionSummary>
-        <AccordionDetails>
           <>
             <div className="col-md-12 row px-5">
 
@@ -165,8 +135,5 @@ export default function AcademicYrSem() {
           </>
 
 
-        </AccordionDetails>
-      </Accordion>
-    </div>
   );
 }

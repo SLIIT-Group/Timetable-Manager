@@ -1,20 +1,9 @@
 import React from 'react';
 import { Container } from '@material-ui/core';
-import AcademicYrSem from "./Panels/AcademicYrSem";
-import GrpIDs from "./Panels/GrpIDs";
-import SubGrpIDs from "./Panels/SubGrpIDs";
-import GrpNum from "./Panels/GrpNum";
-import Programme from "./Panels/Programme";
-import SubGrpNum from "./Panels/SubGrpNum";
 import StudentDetails from "./Panels/StudentDetails";
 import NewStudentEntry from "./Panels/NewStudentEntry";
 import UpdateDelete from "./Panels/UpdateDelete";
 import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Row from "react-bootstrap/Row";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -59,14 +48,8 @@ function StudentManager() {
           Student Manager
           <Container>
               <StudentDetails />
-              <UpdateDelete />
               <NewStudentEntry />
-              <AcademicYrSem />
-              <Programme />
-              <GrpNum />
-              <GrpIDs />
-              <SubGrpNum />
-              <SubGrpIDs />
+              <UpdateDelete />
           </Container>
       </div>
   );

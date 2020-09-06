@@ -57,7 +57,7 @@ export default function TagAllocation() {
           setTagList(res.data);
         });
 
-  });
+  },[]);
   const deleteTag = () => {
     axios
         .get(
@@ -90,6 +90,11 @@ export default function TagAllocation() {
   return (
       <div className={classes.root}>
         <Accordion
+            style={
+              expanded
+                  ? { backgroundColor: '#f5f5f5' }
+                  : { backgroundColor: '#3f51b5', color: '#fff' }
+            }
             expanded={expanded === 'panel1'}
             onChange={handleChange('panel1')}
         >
@@ -98,7 +103,7 @@ export default function TagAllocation() {
               aria-controls='panel1bh-content'
               id='panel1bh-header'
           >
-            <Typography className={cx(classes.heading, "mt-2")}>View and Edit Tag</Typography>
+            <Typography className={cx(classes.heading, "mt-2")}>Manage Tags</Typography>
 
           </AccordionSummary>
           <AccordionDetails>
