@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -18,6 +18,12 @@ import Paper from "@material-ui/core/Paper";
 import { Grid, Button } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import "react-notifications/lib/notifications.css";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,23 +55,124 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}))(TableRow);
-
 function AddBuilding(props) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
-  const [building, setBuilding] = React.useState("");
+  const [expanded, setExpanded] = useState(false);
+  const [buildings, setBuilding] = useState([]);
+  const [input, setInput] = useState("");
+  const [toggle, setToggle] = React.useState({
+    value: "Add",
+    isEdit: true,
+  });
+  const [number, setNumber] = useState("");
+  const [upRoom, setUpRoom] = useState("");
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
+  const addBuilding = (e) => {
+    e.preventDefault();
+    if (toggle.value === "Save") {
+      setToggle({
+        value: "Add",
+        isEdit: false,
+      });
+      const updateBuilding = {
+        building: input,
+      };
+      const updateRoom = {
+        Building: input,
+      };
+      axios
+
+        .post(
+          `http://localhost:5000/api/building/update/${number}`,
+          updateBuilding
+        ) //get data from userID
+        .then((res) => {
+          NotificationManager.info("Item is Successfully updated", "", 3000); //save retrieved data to the hook
+        });
+
+      axios
+
+        .put(`http://localhost:5000/api/room/updateOne/${upRoom}`, updateRoom) //get data from userID
+        .then((res) => {
+          console.log("updated"); //save retrieved data to the hook
+        });
+      setInput("");
+    } else {
+      //setBuilding([...buildings, input]);
+      setInput("");
+      const building_names = {
+        building: input,
+      };
+
+      axios
+        .post("http://localhost:5000/api/building/add", building_names)
+        .then((res) => {
+          if (res.data.success == true) {
+            NotificationManager.success("Success message", "Building Added");
+          } else {
+            NotificationManager.warning(
+              "Warning message",
+              "Building is already there",
+              3000
+            );
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/building/`)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setBuilding(result);
+        },
+        (error) => {
+          setError(error);
+        }
+      );
+  });
+  const deleteBuilding = (buildingName) => {
+    setInput("");
+    axios
+      .delete(`http://localhost:5000/api/building/delete/${buildingName}`)
+      .then((res) => {
+        NotificationManager.info("Item is Successfully deleted", "", 3000);
+      })
+      .catch((err) => console.log("Done"));
+    axios
+      .delete(`http://localhost:5000/api/room/delete/${buildingName}`)
+      .then((res) => {})
+      .catch((err) => console.log("Done"));
+  };
+
+  const onClick = (id) => {
+    setNumber(id);
+    buildings.map((item) => {
+      if (item._id == id) {
+        return setInput(item.building), setUpRoom(item.building);
+      }
+    });
+
+    if (toggle.value === "Add") {
+      setToggle({
+        value: "Save",
+        isEdit: false,
+      });
+    } else {
+      setToggle({
+        value: "Add",
+        isEdit: true,
+      });
+    }
+  };
   return (
     <div className={classes.root}>
       <Container>
@@ -94,61 +201,96 @@ function AddBuilding(props) {
                 alignItems: "center",
               }}
             >
-              <form className={classes.root} noValidate autoComplete="off">
+              <form
+                className={classes.root}
+                noValidate
+                autoComplete="off"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  border: "5px solid #3f51b5",
+                  borderRadius: 30,
+                  padding: 10,
+                  width: 300,
+                }}
+              >
                 <TextField
                   id="standard-secondary"
                   label="Add a Building"
-                  value={building}
+                  value={input}
                   onChange={(e) => {
-                    setBuilding(e.target.value);
+                    setInput(e.target.value);
                   }}
                 />
                 <Button
                   variant="contained"
                   color="primary"
                   style={{ marginTop: 10, marginLeft: 10 }}
-                  disabled={!building}
-                  onClick={() => console.log(building)}
+                  disabled={!input}
+                  onClick={addBuilding}
                 >
-                  Add
+                  {toggle.value}
                 </Button>
               </form>
-              <Grid items>
-                <TableContainer component={Paper}>
-                  <Table className={classes.table} aria-label="simple table">
-                    <TableHead
-                      style={{
-                        backgroundColor: "theme.palette.common.black",
-                        color: "theme.palette.common.white",
-                      }}
-                    >
-                      <TableRow align="center">
-                        <StyledTableCell align="center">
-                          Building
-                        </StyledTableCell>
-                        <StyledTableCell align="center">Delete</StyledTableCell>
-                        <StyledTableCell align="center">Edit</StyledTableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow hover>
-                        <TableCell align="center">sd</TableCell>
-                        <TableCell align="center">
-                          <DeleteIcon> </DeleteIcon>
-                        </TableCell>
-                        <TableCell align="center">
-                          {" "}
-                          <EditIcon>Edit</EditIcon>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Grid>
+              {buildings.length !== 0 ? (
+                <Grid>
+                  <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="simple table">
+                      <TableHead
+                        style={{
+                          backgroundColor: "theme.palette.common.black",
+                          color: "theme.palette.common.white",
+                        }}
+                      >
+                        <TableRow align="center">
+                          <StyledTableCell align="center">
+                            Building
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            Delete
+                          </StyledTableCell>
+                          <StyledTableCell align="center">Edit</StyledTableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {buildings.map((item) => (
+                          <TableRow hover key={item._id}>
+                            <TableCell align="center">
+                              {item.building}
+                            </TableCell>
+                            <TableCell align="center">
+                              <DeleteIcon
+                                onClick={() => {
+                                  deleteBuilding(item.building);
+                                }}
+                              >
+                                {" "}
+                              </DeleteIcon>
+                            </TableCell>
+                            <TableCell align="center">
+                              {" "}
+                              <EditIcon
+                                onClick={() => {
+                                  onClick(item._id);
+                                }}
+                              ></EditIcon>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Grid>
+              ) : (
+                <h1></h1>
+              )}
             </div>
           </AccordionDetails>
         </Accordion>
       </Container>
+      <NotificationContainer />
     </div>
   );
 }
