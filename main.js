@@ -60,6 +60,9 @@ function createMainWindow() {
         console.log('Error loading React DevTools: ', err)
       );
       mainWindow.webContents.openDevTools();
+
+      //setting window size full screen
+      mainWindow.maximize();
     }
   });
 
