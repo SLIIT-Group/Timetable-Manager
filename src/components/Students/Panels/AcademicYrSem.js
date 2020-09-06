@@ -89,6 +89,11 @@ export default function AcademicYrSem() {
   return (
     <div className={classes.root}>
       <Accordion
+          style={
+            expanded
+                ? { backgroundColor: '#f5f5f5' }
+                : { backgroundColor: '#3f51b5', color: '#fff' }
+          }
         expanded={expanded === 'panel1'}
         onChange={handleChange('panel1')}
       >

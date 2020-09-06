@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchStudentDetails() {
+export default function UpdateDelete() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -34,6 +34,11 @@ export default function SearchStudentDetails() {
   return (
     <div className={classes.root}>
       <Accordion
+          style={
+            expanded
+                ? { backgroundColor: '#f5f5f5' }
+                : { backgroundColor: '#3f51b5', color: '#fff' }
+          }
         expanded={expanded === 'panel1'}
         onChange={handleChange('panel1')}
       >
@@ -42,7 +47,7 @@ export default function SearchStudentDetails() {
           aria-controls='panel1bh-content'
           id='panel1bh-header'
         >
-          <Typography className={classes.heading}>Search Student Details</Typography>
+          <Typography className={classes.heading}>Update and Delete by Category</Typography>
 
         </AccordionSummary>
         <AccordionDetails>

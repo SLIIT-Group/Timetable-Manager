@@ -6,9 +6,9 @@ import SubGrpIDs from "./Panels/SubGrpIDs";
 import GrpNum from "./Panels/GrpNum";
 import Programme from "./Panels/Programme";
 import SubGrpNum from "./Panels/SubGrpNum";
-import ViewStudentDetails from "./Panels/ViewStudentDetails";
+import StudentDetails from "./Panels/StudentDetails";
 import NewStudentEntry from "./Panels/NewStudentEntry";
-import SearchStudentDetails from "./Panels/SearchStudentDetails";
+import UpdateDelete from "./Panels/UpdateDelete";
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -58,8 +58,8 @@ function StudentManager() {
       <div style={{ textAlign: 'center' }}>
           Student Manager
           <Container>
-              <ViewStudentDetails />
-              <SearchStudentDetails />
+              <StudentDetails />
+              <UpdateDelete />
               <NewStudentEntry />
               <AcademicYrSem />
               <Programme />
