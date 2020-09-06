@@ -5,21 +5,27 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { Container, Grid, Paper, Divider } from "@material-ui/core";
+import { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: "83%",
     margin: "10px",
-    marginRight: "10px",
+    // marginRight: "10px",
+    marginLeft: 240,
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
     flexBasis: "33.33%",
     flexShrink: 0,
   },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
+  },
 }));
-
-export default function AddRoom() {
+function AddRoom(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -29,21 +35,30 @@ export default function AddRoom() {
 
   return (
     <div className={classes.root}>
-      <Accordion
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
+      <Container>
+        <Accordion
+          style={
+            expanded
+              ? { backgroundColor: "#f5f5f5" }
+              : { backgroundColor: "#3f51b5", color: "#fff" }
+          }
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
         >
-          <Typography className={classes.heading}>Add Room</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>demo</Typography>
-        </AccordionDetails>
-      </Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon style={{ color: "#fff" }} />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+          >
+            <Typography className={classes.heading}>Add Room</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <h1>Hello</h1>
+          </AccordionDetails>
+        </Accordion>
+      </Container>
     </div>
   );
 }
+
+export default AddRoom;

@@ -4,12 +4,11 @@ import AddBuilding from "./AddBuilding";
 import AddRoom from "./AddRoom";
 
 export default function LocationManager() {
-  const classes = useStyles();
+  //const classes = useStyles();
 
   return (
-    <div className={classes.layout}>
+    <div>
       <AddBuilding />
-      <br />
       <AddRoom />
     </div>
   );
