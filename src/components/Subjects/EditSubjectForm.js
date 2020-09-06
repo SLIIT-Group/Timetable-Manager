@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function AddressForm() {
+export default function AddressForm(props) {
     const classes = useStyles();
 
     const [subName, setSubName] = React.useState('');
@@ -98,7 +98,25 @@ export default function AddressForm() {
         setEvaHo(event.target.value);
     };
 
-    const saveSubject = () => {
+    useEffect(() => {
+        console.log(props)
+        axios.get('http://localhost:5000/api/subjects/edit/' +props.subjectID)
+            .then(response => {
+                setSubName(response.data.subName);
+                setSubCode(response.data.subCode);
+                setOfferedYear(response.data.offeredYear);
+                setOfferedSemester(response.data.offeredSemester);
+                setLecHo(response.data.lecHo);
+                setTuteHo(response.data.tuteHo);
+                setLabHo(response.data.labHo);
+                setEvaHo(response.data.evaHo);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }, []);
+
+    const updateSubject = () => {
         const req = {
             subName: subName,
             subCode: subCode,
@@ -110,14 +128,14 @@ export default function AddressForm() {
             evaHo: evaHo
         };
 
-        axios.post("http://localhost:5000/api/subjects/add", req).then((res) => {
-            if (res.data.success) {
-                //console.log(res.data);
-                swal("Successful", "Subject details added", "success");
-            }else{
-                swal("Unsuccessful", "Error while adding details", "error");
-            }
-        });
+        axios.post('http://localhost:5000/api/subjects/update/' +props.subjectID, req)
+            .then((res) => {
+                if(res.data == 'Update complete'){
+                    swal("Successful", "Subject details updated", "success");
+                }else{
+                    swal("Unsuccessful", "Error while updating details", "error");
+                }
+            });
 
         setSubName("");
         setSubCode("");
@@ -128,6 +146,26 @@ export default function AddressForm() {
         setLabHo("");
         setEvaHo("");
     };
+
+    const deleteSubject = () => {
+        axios.get('http://localhost:5000/api/subjects/delete/' +props.subjectID)
+            .then((res) => {
+                if(res.data == 'Successfully removed'){
+                    swal("Successful", "Subject details removed", "success");
+                }else{
+                    swal("Unsuccessful", "Error while deleting details", "error");
+                }
+            });
+
+        setSubName("");
+        setSubCode("");
+        setOfferedYear("");
+        setOfferedSemester("");
+        setLecHo("");
+        setTuteHo("");
+        setLabHo("");
+        setEvaHo("");
+    }
 
     return (
         <React.Fragment>
@@ -265,12 +303,21 @@ export default function AddressForm() {
                 <Button
                     variant="contained"
                     color="primary"
-                    // onClick={}
                     className={classes.button}
-                    onClick={saveSubject}
+                    onClick={updateSubject}
                 >
-                    Add
+                    Update
                 </Button>
+
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    className={classes.button}
+                    onClick={deleteSubject}
+                >
+                    Delete
+                </Button>
+
             </div>
         </React.Fragment>
     );

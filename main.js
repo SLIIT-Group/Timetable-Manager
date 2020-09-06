@@ -1,7 +1,7 @@
-const path = require("path");
-const url = require("url");
-const { app, BrowserWindow } = require("electron");
-const connectDB = require("./config/db");
+const path = require('path');
+const url = require('url');
+const { app, BrowserWindow } = require('electron');
+const connectDB = require('./config/db');
 
 connectDB();
 
@@ -11,7 +11,7 @@ let isDev = false;
 
 if (
   process.env.NODE_ENV !== undefined &&
-  process.env.NODE_ENV === "development"
+  process.env.NODE_ENV === 'development'
 ) {
   isDev = true;
 }
@@ -28,17 +28,17 @@ function createMainWindow() {
 
   let indexPath;
 
-  if (isDev && process.argv.indexOf("--noDevServer") === -1) {
+  if (isDev && process.argv.indexOf('--noDevServer') === -1) {
     indexPath = url.format({
-      protocol: "http:",
-      host: "localhost:8080",
-      pathname: "index.html",
+      protocol: 'http:',
+      host: 'localhost:8080',
+      pathname: 'index.html',
       slashes: true,
     });
   } else {
     indexPath = url.format({
-      protocol: "file:",
-      pathname: path.join(__dirname, "dist", "index.html"),
+      protocol: 'file:',
+      pathname: path.join(__dirname, 'dist', 'index.html'),
       slashes: true,
     });
   }
@@ -46,7 +46,7 @@ function createMainWindow() {
   mainWindow.loadURL(indexPath);
 
   // Don't show until we are ready and loaded
-  mainWindow.once("ready-to-show", () => {
+  mainWindow.once('ready-to-show', () => {
     mainWindow.show();
 
     // Open devtools if dev
@@ -54,27 +54,27 @@ function createMainWindow() {
       const {
         default: installExtension,
         REACT_DEVELOPER_TOOLS,
-      } = require("electron-devtools-installer");
+      } = require('electron-devtools-installer');
 
       installExtension(REACT_DEVELOPER_TOOLS).catch((err) =>
-        console.log("Error loading React DevTools: ", err)
+        console.log('Error loading React DevTools: ', err)
       );
       mainWindow.webContents.openDevTools();
     }
   });
 
-  mainWindow.on("closed", () => (mainWindow = null));
+  mainWindow.on('closed', () => (mainWindow = null));
 }
 
-app.on("ready", createMainWindow);
+app.on('ready', createMainWindow);
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-app.on("activate", () => {
+app.on('activate', () => {
   if (mainWindow === null) {
     createMainWindow();
   }
