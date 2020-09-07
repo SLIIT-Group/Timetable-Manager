@@ -41,18 +41,6 @@ const iconStyle = {
   marginRight: '20px',
 };
 
-const navItems = [
-  { title: 'Time Manager', path: '/time' },
-  { title: 'Lecturers', path: '/lecturers' },
-  { title: 'Location', path: '/location' },
-  { title: 'Session', path: '/session' },
-  { title: 'Student', path: '/student' },
-  { title: 'Subject', path: '/subject' },
-  { title: 'Tags', path: '/tags' },
-  { title: 'Rooms', path: '/rooms' },
-  { title: 'Statistics', path: '/statistics' },
-];
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',

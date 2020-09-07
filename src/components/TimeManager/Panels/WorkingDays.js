@@ -6,7 +6,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Container, Grid, Paper, Divider } from '@material-ui/core';
+import { Container, Grid, Paper, Divider, Fade } from '@material-ui/core';
 import Add from '../Forms/Add';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
@@ -94,32 +94,20 @@ function TimeSlot(props) {
             <Typography className={classes.heading}>Working Days</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            {/* <Paper> */}
-            {/* <Grid container spacing={3}>
-                <Grid item sm={12}>
-                  <Add
-                    allocations={allocations}
-                    counter={counter}
-                    setCounter={setCounter}
-                  ></Add>
-                </Grid> */}
-            {/* <Grid item sm={8}>
-                  <Students allocations={allocations}></Students>
-                </Grid> */}
-            {/* </Grid> */}
-            {/* </Paper> */}
             <Grid container spacing={3}>
-              <Grid item xs={3}>
+              <Grid item xs={12} md={3}>
                 {isEditing ? (
                   <Paper className={classes.paper}>
                     {' '}
-                    <Edit
-                      allocations={allocations}
-                      counter={counter}
-                      setCounter={setCounter}
-                      setIsEditing={setIsEditing}
-                      editingAllocation={editingAllocation}
-                    ></Edit>
+                    <Fade in={false}>
+                      <Edit
+                        allocations={allocations}
+                        counter={counter}
+                        setCounter={setCounter}
+                        setIsEditing={setIsEditing}
+                        editingAllocation={editingAllocation}
+                      ></Edit>
+                    </Fade>
                   </Paper>
                 ) : (
                   <Paper className={classes.paper}>
@@ -132,7 +120,7 @@ function TimeSlot(props) {
                   </Paper>
                 )}
               </Grid>
-              <Grid item xs={9}>
+              <Grid item xs={12} md={9}>
                 <Paper className={classes.paper}>
                   <Allocations
                     counter={counter}

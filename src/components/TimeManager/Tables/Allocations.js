@@ -74,36 +74,40 @@ function Allocations({
             </TableRow>
           </TableHead>
           <TableBody>
-            {allocations.map((row) => (
-              <TableRow hover key={row._id}>
-                <TableCell align='center'>{row.day}</TableCell>
-                <TableCell align='center'>{row.hours}</TableCell>
-                <TableCell align='center'>
-                  <DeleteIcon
-                    onClick={() => {
-                      deleteAllocation(row._id);
-                    }}
-                  >
-                    {' '}
-                  </DeleteIcon>
-                </TableCell>
-                <TableCell align='center'>
-                  {' '}
-                  <EditIcon
-                    onClick={() => {
-                      setIsEditing(true);
-                      setEditingAllocation(row);
-                      console.log(row);
-                    }}
-                  >
-                    Edit
-                  </EditIcon>
-                </TableCell>
+            {allocations.length === 0 ? (
+              <TableRow hover>
+                <TableCell>No results found</TableCell>
               </TableRow>
-            ))}
+            ) : (
+              allocations.map((row) => (
+                <TableRow hover key={row._id}>
+                  <TableCell align='center'>{row.day}</TableCell>
+                  <TableCell align='center'>{row.hours}</TableCell>
+                  <TableCell align='center'>
+                    <DeleteIcon
+                      onClick={() => {
+                        deleteAllocation(row._id);
+                      }}
+                    >
+                      {' '}
+                    </DeleteIcon>
+                  </TableCell>
+                  <TableCell align='center'>
+                    {' '}
+                    <EditIcon
+                      onClick={() => {
+                        setIsEditing(true);
+                        setEditingAllocation(row);
+                        console.log(row);
+                      }}
+                    >
+                      Edit
+                    </EditIcon>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
-          {/* <TableBody>
-        </TableBody> */}
         </Table>
       </TableContainer>
     </Grid>
