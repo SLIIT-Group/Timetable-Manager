@@ -83,7 +83,8 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundImage: 'linear-gradient(  #4389A2, #42275a)',
+    // backgroundImage: 'linear-gradient(  #4389A2, #42275a)',
+    backgroundImage: 'linear-gradient(  #42275a, #4389A2)',
   },
   drawerHeader: {
     display: 'flex',
@@ -134,7 +135,7 @@ export default function PersistentDrawerLeft() {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar style={{ backgroundColor: '#65499c' }}>
+        <Toolbar style={{ backgroundColor: '#42275a' }}>
           <IconButton
             color='inherit'
             aria-label='open drawer'
