@@ -1,18 +1,13 @@
 import React from 'react';
-import { makeStyles, emphasize } from '@material-ui/core/styles';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { makeStyles } from '@material-ui/core/styles';
 import {Col} from "reactstrap";
+import Row from "react-bootstrap/Row";
 import Button from "@material-ui/core/Button";
 import classNames from 'classnames/bind';
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import Row from "react-bootstrap/Row";
 
 let cx = classNames;
 const useStyles = makeStyles((theme) => ({
@@ -32,14 +27,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GrpIDs() {
+export default function Programme() {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
-
   const [yrSem, setYrSem] = React.useState('');
   console.log(yrSem);
   const handleYrSemChange = (event) => {
@@ -51,29 +40,8 @@ export default function GrpIDs() {
   const handleProgChange = (event) => {
     setProg(event.target.value);
   };
-
-  const [grpID, setGrpID] = React.useState('');
-  console.log(grpID);
-  const handleGrpIDChange = (event) => {
-    setGrpID(event.target.value);
-  };
-
   return (
-    <div className={classes.root}>
-      <Accordion
-        expanded={expanded === 'panel1'}
-        onChange={handleChange('panel1')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls='panel1bh-content'
-          id='panel1bh-header'
-        >
-          <Typography className={cx(classes.heading, "mt-2")}>View and Edit Generated Group IDs</Typography>
 
-
-        </AccordionSummary>
-        <AccordionDetails>
           <>
             <div className="col-md-12 row px-5">
 
@@ -94,9 +62,9 @@ export default function GrpIDs() {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      <MenuItem value="Y1.S2">Y1.S2</MenuItem>
+                      <MenuItem value="Y3.S1">Y3.S1</MenuItem>
+
                     </Select>
                   </FormControl>
                 </div>
@@ -119,35 +87,9 @@ export default function GrpIDs() {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>
-                </div>
-              </div>
+                      <MenuItem value="SE">SE</MenuItem>
+                      <MenuItem value="IT">IT</MenuItem>
 
-
-              <div className="row col-md-12 mt-3">
-                <Col sm="6 pb-0">
-                  <label className="mt-3 h5 font-weight-bold">Select Group ID :</label>
-                </Col>
-                <div className="input-field col s6 d-flex flex-column">
-                  <FormControl variant="outlined" className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-outlined-label px-4">Select</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        value={grpID}
-                        onChange={handleGrpIDChange }
-                        label="grpID"
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
                     </Select>
                   </FormControl>
                 </div>
@@ -158,7 +100,7 @@ export default function GrpIDs() {
 
                 <div className="input-field col s6">
                   <div className="form-group">
-                    <input type="text" className="form-control" value={grpID} onChange=""/>
+                    <input type="text" className="form-control" value={prog} onChange=""/>
                   </div>
                 </div>
                 <Col sm="6 pb-0">
@@ -182,8 +124,6 @@ export default function GrpIDs() {
 
             </div>
           </>
-        </AccordionDetails>
-      </Accordion>
-    </div>
+
   );
 }

@@ -114,6 +114,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PersistentDrawerLeft() {
   const classes = useStyles();
   const theme = useTheme();
+  //navigation bar will always open
   const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {

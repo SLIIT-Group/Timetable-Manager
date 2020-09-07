@@ -5,7 +5,8 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import SubjectForm from "./SubjectForm";
+import SubjectForm from './SubjectForm';
+import { BrowserRouter as Router, Route, Link as ReactLink, Switch } from "react-router-dom";
 
 
 function Copyright() {
@@ -58,13 +59,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Subject() {
+function Lecturer() {
     const classes = useStyles();
 
     return (
         <div>
             <React.Fragment>
                 <CssBaseline />
+                <ReactLink to="/subject">
+                    <div style={{marginTop: -30, marginLeft: 20}}>
+                        <Button variant="contained" color="secondary"> Back </Button>
+                    </div>
+                </ReactLink>
+
                 <main className={classes.layout}>
                     <Paper className={classes.paper}>
                         <Typography component="h1" variant="h4" align="center">
@@ -82,4 +89,4 @@ function Subject() {
     );
 }
 
-export default Subject;
+export default Lecturer;

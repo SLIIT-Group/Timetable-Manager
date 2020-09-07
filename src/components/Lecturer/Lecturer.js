@@ -12,19 +12,8 @@ import {
   Link as ReactLink,
   Switch,
 } from 'react-router-dom';
+import Copyright from '../Commons/Copyright';
 
-export function Copyright() {
-  return (
-    <Typography variant='body2' color='textSecondary' align='center'>
-      {'Copyright © '}
-      <Link color='inherit' href='https://material-ui.com/'>
-        Team Nexus
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
