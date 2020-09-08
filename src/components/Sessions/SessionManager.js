@@ -1,5 +1,5 @@
 import React from 'react';
-import ExpansionPanel from '../ExpansionPanel/ExpansionPanel';
+import ExpansionPanel from '../Commons/ExpansionPanel';
 import { Container } from '@material-ui/core';
 
 function SessionManager() {

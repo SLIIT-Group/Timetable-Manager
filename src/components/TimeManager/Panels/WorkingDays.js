@@ -86,7 +86,7 @@ function TimeSlot(props) {
                   ></Add>
                 </Grid> */}
             {/* <Grid item sm={8}>
-                  <Allocations allocations={allocations}></Allocations>
+                  <Students allocations={allocations}></Students>
                 </Grid> */}
             {/* </Grid> */}
             {/* </Paper> */}

@@ -13,6 +13,7 @@ import SubjectsForm from "./Subjects/Subject";
 import EditSubject from "./Subjects/EditSubject";
 import LecturerExpansionPanel from "./Lecturer/LecturerExpansionPanel";
 import SubjectExpansionPanel from "./Subjects/SubjectExpansionPanel";
+import StudentForm from "./Students/SubComponents/StudentForm";
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -23,19 +24,20 @@ const App = () => {
         <SideNav></SideNav>
         <div style={{marginLeft:"240px"}}>
           <Switch>
-            <Route exact path="/time" component={TimeManager}></Route>
-            <Route exact path="/lecturers" component={LecturerExpansionPanel}></Route>
-            <Route exact path="/location" component={LocationManager}></Route>
-            <Route exact path="/session" component={SessionManager}></Route>
-            <Route exact path="/student" component={StudentManager}></Route>
-            <Route exact path="/subject" component={SubjectExpansionPanel}></Route>
-            <Route exact path="/tags" component={TagManager}></Route>
-            <Route exact path="/stats" component={Stats}></Route>
-            <Route exact path="/rooms" component={Rooms}></Route>
-            <Route exact path="/addLecturer" component={LecturerForm}></Route>
+            <Route exact path="/time" component={TimeManager}/>
+            <Route exact path="/lecturers" component={LecturerExpansionPanel}/>
+            <Route exact path="/location" component={LocationManager}/>
+            <Route exact path="/session" component={SessionManager}/>
+            <Route exact path="/student" component={StudentManager}/>
+            <Route exact path="/subject" component={SubjectExpansionPanel}/>
+            <Route exact path="/tags" component={TagManager}/>
+            <Route exact path="/stats" component={Stats}/>
+            <Route exact path="/rooms" component={Rooms}/>
+            <Route exact path="/addLecturer" component={LecturerForm}/>
             <Route exact path="/lecturer/edit/:id" component={EditLecturer}/>
-            <Route exact path="/addSubject" component={SubjectsForm}></Route>
+            <Route exact path="/addSubject" component={SubjectsForm}/>
             <Route exact path="/subject/edit/:id" component={EditSubject}/>
+            <Route exact path="/addStudent" component={StudentForm}/>
           </Switch>
         </div>
       </div>

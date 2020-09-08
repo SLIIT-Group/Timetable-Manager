@@ -1,10 +1,5 @@
 import React from 'react';
-import { makeStyles, emphasize } from '@material-ui/core/styles';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { makeStyles } from '@material-ui/core/styles';
 import {Col} from "reactstrap";
 import Row from "react-bootstrap/Row";
 import Button from "@material-ui/core/Button";
@@ -32,13 +27,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GrpNum() {
+export default function SubGrpIDs() {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
 
   const [yrSem, setYrSem] = React.useState('');
   console.log(yrSem);
@@ -58,21 +48,14 @@ export default function GrpNum() {
     setGrpNo(event.target.value);
   };
 
-  return (
-    <div className={classes.root}>
-      <Accordion
-        expanded={expanded === 'panel1'}
-        onChange={handleChange('panel1')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls='panel1bh-content'
-          id='panel1bh-header'
-        >
-          <Typography className={cx(classes.heading, "mt-2")}>View and Edit Group Number</Typography>
+  const [subGrpID, setSubGrpID] = React.useState('');
+  console.log(setSubGrpID);
+  const handleSubGrpIDChange = (event) => {
+    setSubGrpID(event.target.value);
+  };
 
-        </AccordionSummary>
-        <AccordionDetails>
+  return (
+
           <>
             <div className="col-md-12 row px-5">
 
@@ -154,10 +137,37 @@ export default function GrpNum() {
 
 
               <div className="row col-md-12 mt-3">
+                <Col sm="6 pb-0">
+                  <label className="mt-3 h5 font-weight-bold">Select Sub Group Number :</label>
+                </Col>
+                <div className="input-field col s6 d-flex flex-column">
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-outlined-label px-4">Select</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={subGrpID}
+                        onChange={handleSubGrpIDChange }
+                        label="subGrpID"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={10}>Ten</MenuItem>
+                      <MenuItem value={20}>Twenty</MenuItem>
+                      <MenuItem value={30}>Thirty</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+              </div>
+
+
+
+              <div className="row col-md-12 mt-3">
 
                 <div className="input-field col s6">
                   <div className="form-group">
-                    <input type="text" className="form-control" value={grpNo} onChange=""/>
+                    <input type="text" className="form-control" value={subGrpID} onChange=""/>
                   </div>
                 </div>
                 <Col sm="6 pb-0">
@@ -181,8 +191,6 @@ export default function GrpNum() {
 
             </div>
           </>
-        </AccordionDetails>
-      </Accordion>
-    </div>
+
   );
 }
