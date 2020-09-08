@@ -79,6 +79,8 @@ function AddRoom(props) {
   const [room, setRoom] = useState("");
   const [capacity, setCapacity] = useState("");
   const [number, setNumber] = useState("");
+  const [building_id, setBuildingId] = useState();
+  const [checkArray, setCheckArray] = useState(false);
   const [toggle, setToggle] = React.useState({
     value: "Add",
     isEdit: true,
@@ -106,13 +108,13 @@ function AddRoom(props) {
       .get(`http://localhost:5000/api/room/`) //get data from userID
       .then((res) => {
         setBuilding_room(res.data);
+
         setSearchFilter(res.data); //save retrieved data to the hook
       });
   }, [expanded, table]);
 
   const onClick = (id) => {
     setNumber(id);
-    console.log(building_room);
     building_room.map((item) => {
       if (item._id == id) {
         return (
@@ -143,7 +145,6 @@ function AddRoom(props) {
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
-        console.log(res.data);
       })
       .catch((err) => console.log("Error"));
   };
@@ -158,10 +159,16 @@ function AddRoom(props) {
         value: "Add",
         isEdit: false,
       });
+      buildings.map((item) => {
+        if (item.building == block) {
+          return setBuildingId(item._id);
+        }
+      });
       const updateBuilding = {
         Building: block,
         Room: room,
         Capacity: capacity,
+        Building_id: building_id,
       };
       axios
 
@@ -173,35 +180,61 @@ function AddRoom(props) {
         });
       setInput("");
     } else {
-      //setBuilding([...buildings, input]);
       setInput("");
+
       const room_name = {
         Building: block,
         Room: room,
         Capacity: capacity,
+        Building_id: building_id,
       };
 
-      axios
-        .post("http://localhost:5000/api/room/add", room_name)
-        .then((res) => {
-          if (res.data.success == true) {
-            NotificationManager.success("Success message", "Building Added");
-            setBlock("");
-            console.log(res.data);
-            setTable(true);
-          } else {
-            NotificationManager.warning(
-              "Warning message",
-              "Building is already there",
-              3000
-            );
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      if (checkArray) {
+        NotificationManager.warning(
+          "Warning message",
+          "Room is already allocated for building",
+          3000
+        );
+      } else {
+        axios
+          .post("http://localhost:5000/api/room/add", room_name)
+          .then((res) => {
+            if (res.data.success == true) {
+              NotificationManager.success("Success message", "Room Added");
+              setBlock("");
+              setTable(true);
+            } else {
+              NotificationManager.warning(
+                "Warning message",
+                "Room is already there",
+                3000
+              );
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
   };
+
+  useEffect(() => {
+    building_room.map((item) => {
+      if (item.Building == block && item.Room == room) {
+        return setCheckArray(true);
+      } else {
+        return setCheckArray(false);
+      }
+    });
+  }, [block, room]);
+
+  useEffect(() => {
+    buildings.map((item) => {
+      if (item.building == block) {
+        return setBuildingId(item._id);
+      }
+    });
+  }, [block]);
 
   useEffect(() => {
     const results = building_room.filter((roomName) =>
@@ -234,9 +267,9 @@ function AddRoom(props) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                flexDirection: "column",
+                flexDirection: "row",
                 alignItems: "center",
-                marginLeft: 250,
+                width: "100%",
               }}
             >
               <form
@@ -244,25 +277,33 @@ function AddRoom(props) {
                 noValidate
                 autoComplete="off"
                 style={{
-                  display: "flex",
                   justifyContent: "center",
-                  flexDirection: "column",
                   alignItems: "center",
                   border: "5px solid #3f51b5",
-                  borderRadius: 50,
-                  padding: 20,
-                  width: 300,
+                  borderRadius: 30,
+                  paddingLeft: 30,
+                  paddingBottom: 10,
+                  minWidth: 250,
+                  width: "100%",
+                  flex: 1,
                 }}
               >
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-label">
+                <FormControl
+                  className={classes.formControl}
+                  style={{ marginLeft: 5, marginTop: 20 }}
+                >
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    style={{ marginLeft: 7 }}
+                  >
                     Building
                   </InputLabel>
                   <Select
+                    variant="filled"
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={block}
-                    style={{ width: "160px" }}
+                    style={{ width: "150px" }}
                     disabled={!buildings.length}
                     onChange={(event) => setBlock(event.target.value)}
                   >
@@ -292,130 +333,161 @@ function AddRoom(props) {
                 <Button
                   variant="contained"
                   color="primary"
-                  style={{ marginTop: 10, marginLeft: 10 }}
+                  style={{ marginTop: 10, marginLeft: 50 }}
                   disabled={buildings.length == 0 || !room || !capacity}
                   onClick={addRoom}
                 >
                   {toggle.value}
                 </Button>
               </form>
-              <Paper
-                component="form"
-                className={classes.root}
+              <div
                 style={{
-                  justifyContent: "center",
-                  borderRadius: 20,
-                  padding: 10,
-                  textAlign: "center",
-                  border: "5px solid black",
+                  flex: 5,
+                  minWidth: 300,
+                  paddingLeft: 50,
                 }}
               >
-                <InputBase
-                  className={classes.input}
-                  placeholder="Search Rooms"
-                  value={search}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                  }}
-                />
-                <IconButton className={classes.iconButton} aria-label="search">
-                  <SearchIcon disabled />
-                </IconButton>
-              </Paper>
+                {building_room.length !== 0 ? (
+                  <Paper
+                    component="form"
+                    className={classes.root}
+                    style={{
+                      justifyContent: "center",
+                      borderRadius: 20,
+                      textAlign: "center",
+                      border: "2px solid #EC4C90",
+                      maxWidth: 500,
+                      display: "flex",
+                      flexDirection: "row",
+                      align: "space-between",
+                      paddingLeft: 5,
+                    }}
+                  >
+                    <InputBase
+                      className={classes.input}
+                      placeholder="Search Rooms"
+                      value={search}
+                      onChange={(e) => {
+                        setSearch(e.target.value);
+                      }}
+                      style={{ flex: 2 }}
+                    />
+                    <IconButton
+                      className={classes.iconButton}
+                      aria-label="search"
+                    >
+                      <SearchIcon disabled style={{ flex: 1 }} />
+                    </IconButton>
+                  </Paper>
+                ) : (
+                  <h1></h1>
+                )}
 
-              {building_room.length !== 0 ? (
-                <Grid>
-                  <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="simple table">
-                      <TableHead
-                        style={{
-                          backgroundColor: "theme.palette.common.black",
-                          color: "theme.palette.common.white",
-                        }}
+                {building_room.length !== 0 ? (
+                  <Grid style={{ flex: 5, maxWidth: 500 }}>
+                    <TableContainer component={Paper}>
+                      <Table
+                        className={classes.table}
+                        aria-label="simple table"
                       >
-                        <TableRow align="center">
-                          <StyledTableCell align="center">
-                            Building
-                          </StyledTableCell>
-                          <StyledTableCell align="center">Room</StyledTableCell>
-                          <StyledTableCell align="center">
-                            Capacity
-                          </StyledTableCell>
-                          <StyledTableCell align="center">
-                            Delete
-                          </StyledTableCell>
-                          <StyledTableCell align="center">Edit</StyledTableCell>
-                        </TableRow>
-                      </TableHead>
-                      {!search ? (
-                        <TableBody>
-                          {building_room.map((item) => (
-                            <TableRow hover key={item._id}>
-                              <TableCell align="center">
-                                {item.Building}
-                              </TableCell>
-                              <TableCell align="center">{item.Room}</TableCell>
-                              <TableCell align="center">
-                                {item.Capacity}
-                              </TableCell>
-                              <TableCell align="center">
-                                <DeleteIcon
-                                  onClick={() => {
-                                    deleteRoom(item._id);
-                                  }}
-                                >
+                        <TableHead
+                          style={{
+                            backgroundColor: "theme.palette.common.black",
+                            color: "theme.palette.common.white",
+                          }}
+                        >
+                          <TableRow align="center">
+                            <StyledTableCell align="center">
+                              Building
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Room
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Capacity
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Delete
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Edit
+                            </StyledTableCell>
+                          </TableRow>
+                        </TableHead>
+                        {!search ? (
+                          <TableBody>
+                            {building_room.map((item) => (
+                              <TableRow hover key={item._id}>
+                                <TableCell align="center">
+                                  {item.Building}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.Room}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.Capacity}
+                                </TableCell>
+                                <TableCell align="center">
+                                  <DeleteIcon
+                                    onClick={() => {
+                                      deleteRoom(item._id);
+                                    }}
+                                  >
+                                    {" "}
+                                  </DeleteIcon>
+                                </TableCell>
+                                <TableCell align="center">
                                   {" "}
-                                </DeleteIcon>
-                              </TableCell>
-                              <TableCell align="center">
-                                {" "}
-                                <EditIcon
-                                  onClick={() => {
-                                    onClick(item._id);
-                                  }}
-                                ></EditIcon>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      ) : (
-                        <TableBody>
-                          {searchFilter.map((item) => (
-                            <TableRow hover key={item._id}>
-                              <TableCell align="center">
-                                {item.Building}
-                              </TableCell>
-                              <TableCell align="center">{item.Room}</TableCell>
-                              <TableCell align="center">
-                                {item.Capacity}
-                              </TableCell>
-                              <TableCell align="center">
-                                <DeleteIcon
-                                  onClick={() => {
-                                    deleteRoom(item._id);
-                                  }}
-                                >
+                                  <EditIcon
+                                    onClick={() => {
+                                      onClick(item._id);
+                                    }}
+                                  ></EditIcon>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        ) : (
+                          <TableBody>
+                            {searchFilter.map((item) => (
+                              <TableRow hover key={item._id}>
+                                <TableCell align="center">
+                                  {item.Building}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.Room}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.Capacity}
+                                </TableCell>
+                                <TableCell align="center">
+                                  <DeleteIcon
+                                    onClick={() => {
+                                      deleteRoom(item._id);
+                                    }}
+                                  >
+                                    {" "}
+                                  </DeleteIcon>
+                                </TableCell>
+                                <TableCell align="center">
                                   {" "}
-                                </DeleteIcon>
-                              </TableCell>
-                              <TableCell align="center">
-                                {" "}
-                                <EditIcon
-                                  onClick={() => {
-                                    onClick(item._id);
-                                  }}
-                                ></EditIcon>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      )}
-                    </Table>
-                  </TableContainer>
-                </Grid>
-              ) : (
-                <h1></h1>
-              )}
+                                  <EditIcon
+                                    onClick={() => {
+                                      onClick(item._id);
+                                    }}
+                                  ></EditIcon>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        )}
+                      </Table>
+                    </TableContainer>
+                  </Grid>
+                ) : (
+                  <h1></h1>
+                )}
+              </div>
             </div>
           </AccordionDetails>
         </Accordion>

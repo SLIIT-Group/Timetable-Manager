@@ -96,7 +96,7 @@ function AddBuilding(props) {
 
       axios
 
-        .put(`http://localhost:5000/api/room/updateOne/${upRoom}`, updateRoom) //get data from userID
+        .put(`http://localhost:5000/api/room/updateOne/${number}`, updateRoom) //get data from userID
         .then((res) => {
           console.log("updated"); //save retrieved data to the hook
         });
@@ -197,9 +197,8 @@ function AddBuilding(props) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                flexDirection: "column",
+                flexDirection: "row",
                 alignItems: "center",
-                marginLeft: 250,
               }}
             >
               <form
@@ -207,14 +206,15 @@ function AddBuilding(props) {
                 noValidate
                 autoComplete="off"
                 style={{
-                  display: "flex",
+                  // display: "flex",
                   justifyContent: "center",
-                  flexDirection: "column",
+                  // flexDirection: "column",
                   alignItems: "center",
                   border: "5px solid #3f51b5",
                   borderRadius: 30,
-                  padding: 10,
-                  width: 300,
+                  padding: 20,
+                  width: 250,
+                  flex: 5,
                 }}
               >
                 <TextField
@@ -228,7 +228,7 @@ function AddBuilding(props) {
                 <Button
                   variant="contained"
                   color="primary"
-                  style={{ marginTop: 10, marginLeft: 10 }}
+                  style={{ marginTop: 10, marginLeft: 60 }}
                   disabled={!input}
                   onClick={addBuilding}
                 >
@@ -236,7 +236,7 @@ function AddBuilding(props) {
                 </Button>
               </form>
               {buildings.length !== 0 ? (
-                <Grid>
+                <Grid style={{ flex: 5, minWidth: 500, paddingLeft: 50 }}>
                   <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
                       <TableHead
