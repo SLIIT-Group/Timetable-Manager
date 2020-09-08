@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     margin: "10px",
-    marginLeft: 240,
+    marginLeft: 0,
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -199,6 +199,7 @@ function AddBuilding(props) {
                 justifyContent: "center",
                 flexDirection: "column",
                 alignItems: "center",
+                marginLeft: 250,
               }}
             >
               <form
