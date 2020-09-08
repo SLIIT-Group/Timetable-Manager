@@ -1,136 +1,74 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./LocationManager.css";
-import axios from "axios";
+import { Container } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import { Grid, Button } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import "react-notifications/lib/notifications.css";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "98%",
+    width: "100%",
     margin: "10px",
-    marginRight: "10px",
-  },
-  layout: {
-    width: "auto",
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
-      marginLeft: "auto",
-      marginRight: "auto",
-    },
+    marginLeft: 0,
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
+    flexBasis: "33.33%",
+    flexShrink: 0,
   },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
   },
-  iconButton: {
-    padding: 10,
-  },
-  divider: {
-    height: 28,
-    margin: 4,
+  table: {
+    minWidth: 200,
+    padding: 0,
   },
 }));
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: "#3f51b5",
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
-export default function AddBuilding() {
+function AddBuilding(props) {
   const classes = useStyles();
+  const [expanded, setExpanded] = useState(false);
   const [buildings, setBuilding] = useState([]);
   const [input, setInput] = useState("");
-  const [search, setsearch] = useState("");
-  const [number, setNumber] = useState("");
-  const [room, setRoom] = useState("");
-  const [capacity, setCapacity] = useState("");
-  const [data, setData] = useState({});
-  const [filter, setFilter] = useState([]);
   const [toggle, setToggle] = React.useState({
     value: "Add",
     isEdit: true,
   });
-  const onClick = (e) => {
-    console.log(e.target.value);
-    fetch(`http://localhost:5000/api/building/get/${e.target.value}`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setInput(result.building);
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          setError(error);
-        }
-      );
+  const [number, setNumber] = useState("");
+  const [upRoom, setUpRoom] = useState("");
 
-    if (toggle.value === "Add") {
-      setToggle({
-        value: "Save",
-        isEdit: false,
-      });
-
-      setNumber(e.target.value);
-    } else {
-      setToggle({
-        value: "Add",
-        isEdit: true,
-      });
-
-      setNumber(e.target.value);
-    }
-  };
-
-  useEffect(() => {
-    // axios
-
-    //   .get(`http://localhost:5000/api/building/`) //get data from userID
-    //   .then((res) => {
-    //     setBuilding(res.data); //save retrieved data to the hook
-    //   });
-
-    fetch(`http://localhost:5000/api/building/`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setBuilding(result);
-        },
-        (error) => {
-          setError(error);
-        }
-      );
-  });
-
-  const deleteBuilding = (e) => {
-    axios
-      .delete(`http://localhost:5000/api/building/delete/${e.target.value}`)
-      .then((res) => {
-        NotificationManager.info("Item is Successfully deleted", "", 3000);
-
-        console.log(res.data);
-      })
-      .catch((err) => console.log("Error"));
-    axios
-      .delete(`http://localhost:5000/api/room/delete/${e.target.value}`)
-      .then((res) => {
-        // NotificationManager.info("Item is Successfully deleted", "", 3000);
-
-        console.log(res.data);
-      })
-      .catch((err) => console.log("Error"));
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
   };
 
   const addBuilding = (e) => {
@@ -143,6 +81,9 @@ export default function AddBuilding() {
       const updateBuilding = {
         building: input,
       };
+      const updateRoom = {
+        Building: input,
+      };
       axios
 
         .post(
@@ -151,6 +92,13 @@ export default function AddBuilding() {
         ) //get data from userID
         .then((res) => {
           NotificationManager.info("Item is Successfully updated", "", 3000); //save retrieved data to the hook
+        });
+
+      axios
+
+        .put(`http://localhost:5000/api/room/updateOne/${number}`, updateRoom) //get data from userID
+        .then((res) => {
+          console.log("updated"); //save retrieved data to the hook
         });
       setInput("");
     } else {
@@ -165,11 +113,10 @@ export default function AddBuilding() {
         .then((res) => {
           if (res.data.success == true) {
             NotificationManager.success("Success message", "Building Added");
-            console.log(res.data);
           } else {
             NotificationManager.warning(
               "Warning message",
-              "Buiding is already there",
+              "Building is already there",
               3000
             );
           }
@@ -181,168 +128,172 @@ export default function AddBuilding() {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/building/${search}`)
+    fetch(`http://localhost:5000/api/building/`)
       .then((res) => res.json())
       .then(
         (result) => {
-          console.log(result);
-          const filteredArray = buildings.filter((item) => {
-            return item.building === result.building;
-          });
-
-          setFilter(filteredArray);
+          setBuilding(result);
         },
         (error) => {
-          //setError(error);
+          setError(error);
         }
       );
-  }, [search]);
+  });
+  const deleteBuilding = (buildingName) => {
+    setInput("");
+    axios
+      .delete(`http://localhost:5000/api/building/delete/${buildingName}`)
+      .then((res) => {
+        NotificationManager.info("Item is Successfully deleted", "", 3000);
+      })
+      .catch((err) => console.log("Done"));
+    axios
+      .delete(`http://localhost:5000/api/room/delete/${buildingName}`)
+      .then((res) => {})
+      .catch((err) => console.log("Done"));
+  };
 
+  const onClick = (id) => {
+    setNumber(id);
+    buildings.map((item) => {
+      if (item._id == id) {
+        return setInput(item.building), setUpRoom(item.building);
+      }
+    });
+
+    if (toggle.value === "Add") {
+      setToggle({
+        value: "Save",
+        isEdit: false,
+      });
+    } else {
+      setToggle({
+        value: "Add",
+        isEdit: true,
+      });
+    }
+  };
   return (
-    <div className={classes.layout}>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
+    <div className={classes.root}>
+      <Container>
+        <Accordion
+          style={
+            expanded
+              ? { backgroundColor: "#f5f5f5" }
+              : { backgroundColor: "#3f51b5", color: "#fff" }
+          }
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
         >
-          <Typography className={classes.heading}>
-            Allocate Buildings
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            <div style={{ marginLeft: "100px" }}>
-              <form className="form-inline">
-                <div className="form-group mx-sm-3 mb-2">
-                  <input
-                    value={input}
-                    id="input"
-                    onChange={(event) => setInput(event.target.value)}
-                    type="text"
-                    className="form-control"
-                  />
-                </div>
-                <button
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon style={{ color: "#fff" }} />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+          >
+            <Typography className={classes.heading}>Add Building</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <form
+                className={classes.root}
+                noValidate
+                autoComplete="off"
+                style={{
+                  // display: "flex",
+                  justifyContent: "center",
+                  // flexDirection: "column",
+                  alignItems: "center",
+                  border: "5px solid #3f51b5",
+                  borderRadius: 30,
+                  padding: 20,
+                  width: 250,
+                  flex: 5,
+                }}
+              >
+                <TextField
+                  id="standard-secondary"
+                  label="Add a Building"
+                  value={input}
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ marginTop: 10, marginLeft: 60 }}
                   disabled={!input}
-                  type="submit"
-                  className="btn btn-info mb-2"
                   onClick={addBuilding}
                 >
                   {toggle.value}
-                </button>
+                </Button>
               </form>
-              <div
-                style={{
-                  border: "3px solid #dff2ed",
-                  padding: "25px",
-                  borderRadius: "10px",
-                  width: "100%",
-                }}
-              >
-                <div className={classes.root}>
-                  <div className="main">
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="input"
-                        style={{ width: "100%" }}
-                        onChange={(event) => setsearch(event.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <br />
-                  {!search ? (
-                    <table
-                      className="table table-striped table-info"
-                      style={{ textAlign: "center" }}
-                    >
-                      <thead>
-                        <tr>
-                          <th scope="col">Buildings</th>
-                          <th scope="col" colSpan="2">
-                            Action
-                          </th>
-                        </tr>
-                      </thead>
-                      {buildings.map((item) => (
-                        <tbody>
-                          <tr>
-                            <th scope="row">{item.building}</th>
-                            <td>
-                              <button
-                                type="button"
-                                class="btn btn-warning"
-                                value={item._id}
-                                onClick={onClick}
+              {buildings.length !== 0 ? (
+                <Grid style={{ flex: 5, minWidth: 500, paddingLeft: 50 }}>
+                  <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="simple table">
+                      <TableHead
+                        style={{
+                          backgroundColor: "theme.palette.common.black",
+                          color: "theme.palette.common.white",
+                        }}
+                      >
+                        <TableRow align="center">
+                          <StyledTableCell align="center">
+                            Building
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            Delete
+                          </StyledTableCell>
+                          <StyledTableCell align="center">Edit</StyledTableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {buildings.map((item) => (
+                          <TableRow hover key={item._id}>
+                            <TableCell align="center">
+                              {item.building}
+                            </TableCell>
+                            <TableCell align="center">
+                              <DeleteIcon
+                                onClick={() => {
+                                  deleteBuilding(item.building);
+                                }}
                               >
-                                Edit
-                              </button>
-                            </td>
-                            <td>
-                              <button
-                                type="button"
-                                class="btn btn-danger"
-                                value={item.building}
-                                onClick={deleteBuilding}
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      ))}
-                    </table>
-                  ) : (
-                    <table
-                      className="table table-striped table-info"
-                      style={{ textAlign: "center" }}
-                    >
-                      <thead>
-                        <tr>
-                          <th scope="col">Buildings</th>
-                          <th scope="col" colSpan="2">
-                            Action
-                          </th>
-                        </tr>
-                      </thead>
-                      {filter.map((item) => (
-                        <tbody>
-                          <tr>
-                            <th scope="row">{item.building}</th>
-                            <td>
-                              <button
-                                type="button"
-                                class="btn btn-warning"
-                                value={item._id}
-                                onClick={onClick}
-                              >
-                                Edit
-                              </button>
-                            </td>
-                            <td>
-                              <button
-                                type="button"
-                                class="btn btn-danger"
-                                value={item.building}
-                                onClick={deleteBuilding}
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      ))}
-                    </table>
-                  )}
-                </div>
-              </div>
+                                {" "}
+                              </DeleteIcon>
+                            </TableCell>
+                            <TableCell align="center">
+                              {" "}
+                              <EditIcon
+                                onClick={() => {
+                                  onClick(item._id);
+                                }}
+                              ></EditIcon>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Grid>
+              ) : (
+                <h1></h1>
+              )}
             </div>
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <br />
+          </AccordionDetails>
+        </Accordion>
+      </Container>
       <NotificationContainer />
     </div>
   );
 }
+
+export default AddBuilding;

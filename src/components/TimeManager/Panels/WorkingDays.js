@@ -1,29 +1,29 @@
-import React from 'react';
-import { makeStyles, emphasize } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Container, Grid, Paper, Divider, Fade } from '@material-ui/core';
-import Add from '../Forms/Add';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import Allocations from '../Tables/Allocations';
-import Edit from '../Forms/Edit';
+import React from "react";
+import { makeStyles, emphasize } from "@material-ui/core/styles";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { Container, Grid, Paper, Divider } from "@material-ui/core";
+import AddDays from "../Forms/AddDays";
+import Add from "../Forms/Add";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import Allocations from "../Tables/Allocations";
+import Edit from "../Forms/Edit";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
-    margin: '10px',
-    marginRight: '10px',
+    width: "100%",
+    margin: "10px",
+    marginRight: "10px",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    flexBasis: '33.33%',
+    flexBasis: "33.33%",
     flexShrink: 0,
   },
   secondaryHeading: {
@@ -53,7 +53,7 @@ function TimeSlot(props) {
   const [allocations, setAllocations] = useState([]);
   const [counter, setCounter] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
-  const initialState = { day: '', hours: '' };
+  const initialState = { day: "", hours: "" };
   const [editingAllocation, setEditingAllocation] = useState(initialState);
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -80,38 +80,50 @@ function TimeSlot(props) {
         <Accordion
           style={
             expanded
-              ? { backgroundColor: '#f5f5f5' }
-              : { backgroundColor: '#3f51b5', color: '#fff' }
+              ? { backgroundColor: "#f5f5f5" }
+              : { backgroundColor: "#3f51b5", color: "#fff" }
           }
-          expanded={expanded === 'panel1'}
-          onChange={handleChange('panel1')}
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
         >
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon style={{ color: '#fff' }} />}
-            aria-controls='panel1bh-content'
-            id='panel1bh-header'
+            expandIcon={<ExpandMoreIcon style={{ color: "#fff" }} />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
           >
             <Typography className={classes.heading}>Working Days</Typography>
           </AccordionSummary>
           <AccordionDetails>
+            {/* <Paper> */}
+            {/* <Grid container spacing={3}>
+                <Grid item sm={12}>
+                  <Add
+                    allocations={allocations}
+                    counter={counter}
+                    setCounter={setCounter}
+                  ></Add>
+                </Grid> */}
+            {/* <Grid item sm={8}>
+                  <Students allocations={allocations}></Students>
+                </Grid> */}
+            {/* </Grid> */}
+            {/* </Paper> */}
             <Grid container spacing={3}>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={3}>
                 {isEditing ? (
                   <Paper className={classes.paper}>
-                    {' '}
-                    <Fade in={false}>
-                      <Edit
-                        allocations={allocations}
-                        counter={counter}
-                        setCounter={setCounter}
-                        setIsEditing={setIsEditing}
-                        editingAllocation={editingAllocation}
-                      ></Edit>
-                    </Fade>
+                    {" "}
+                    <Edit
+                      allocations={allocations}
+                      counter={counter}
+                      setCounter={setCounter}
+                      setIsEditing={setIsEditing}
+                      editingAllocation={editingAllocation}
+                    ></Edit>
                   </Paper>
                 ) : (
                   <Paper className={classes.paper}>
-                    {' '}
+                    {" "}
                     <Add
                       allocations={allocations}
                       counter={counter}
@@ -120,7 +132,7 @@ function TimeSlot(props) {
                   </Paper>
                 )}
               </Grid>
-              <Grid item xs={12} md={9}>
+              <Grid item xs={9}>
                 <Paper className={classes.paper}>
                   <Allocations
                     counter={counter}
