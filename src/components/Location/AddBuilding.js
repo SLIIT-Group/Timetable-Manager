@@ -210,7 +210,7 @@ function AddBuilding(props) {
                   justifyContent: "center",
                   // flexDirection: "column",
                   alignItems: "center",
-                  border: "5px solid #3f51b5",
+                  borderBottom: "5px solid #676664",
                   borderRadius: 30,
                   padding: 20,
                   width: 250,
@@ -238,7 +238,14 @@ function AddBuilding(props) {
               {buildings.length !== 0 ? (
                 <Grid style={{ flex: 5, minWidth: 500, paddingLeft: 50 }}>
                   <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="simple table">
+                    <Table
+                      className={classes.table}
+                      aria-label="simple table"
+                      style={{
+                        borderRadius: 20,
+                        borderBottom: "3px solid #3f51b5",
+                      }}
+                    >
                       <TableHead
                         style={{
                           backgroundColor: "theme.palette.common.black",
