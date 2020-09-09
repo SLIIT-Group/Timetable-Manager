@@ -279,7 +279,7 @@ function AddRoom(props) {
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
-                  border: "5px solid #3f51b5",
+                  borderBottom: "5px solid #676664",
                   borderRadius: 30,
                   paddingLeft: 30,
                   paddingBottom: 10,
@@ -355,12 +355,12 @@ function AddRoom(props) {
                       justifyContent: "center",
                       borderRadius: 20,
                       textAlign: "center",
-                      border: "2px solid #EC4C90",
+                      borderBottom: "2px solid #EC4C90",
                       maxWidth: 500,
                       display: "flex",
                       flexDirection: "row",
                       align: "space-between",
-                      paddingLeft: 5,
+                      paddingLeft: 25,
                     }}
                   >
                     <InputBase
@@ -370,7 +370,7 @@ function AddRoom(props) {
                       onChange={(e) => {
                         setSearch(e.target.value);
                       }}
-                      style={{ flex: 2 }}
+                      style={{ flex: 1 }}
                     />
                     <IconButton
                       className={classes.iconButton}
@@ -384,11 +384,20 @@ function AddRoom(props) {
                 )}
 
                 {building_room.length !== 0 ? (
-                  <Grid style={{ flex: 5, maxWidth: 500 }}>
+                  <Grid
+                    style={{
+                      flex: 5,
+                      maxWidth: 500,
+                    }}
+                  >
                     <TableContainer component={Paper}>
                       <Table
                         className={classes.table}
                         aria-label="simple table"
+                        style={{
+                          borderRadius: 20,
+                          borderBottom: "3px solid #3f51b5",
+                        }}
                       >
                         <TableHead
                           style={{
