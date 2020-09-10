@@ -5,7 +5,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import StudentForm from "../SubComponents/StudentForm";
+import TagForm from "../SubComponents/TagForm";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NewStudentEntry() {
+export default function NewTagEntry() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -50,11 +50,11 @@ export default function NewStudentEntry() {
           aria-controls='panel1bh-content'
           id='panel1bh-header'
         >
-          <Typography className={classes.heading}>New Student Entry</Typography>
+          <Typography className={classes.heading}>New Tag Entry</Typography>
 
         </AccordionSummary>
         <AccordionDetails>
-         <StudentForm noBackBtn={true}/>
+         <TagForm noBackBtn={true}/>
         </AccordionDetails>
       </Accordion>
     </div>

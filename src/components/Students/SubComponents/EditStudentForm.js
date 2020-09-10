@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
@@ -53,8 +53,10 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(1),
     },
 }));
-export default function StudentForm( {noBackBtn}) {
+export default function EditStudentForm(props) {
     const classes = useStyles();
+
+    const [_id, setID] = useState('');
 
     const [academicYrSem, setAcademicYrSem] = useState('');
     function handleAcademicYrSemChange(e) {
@@ -76,7 +78,7 @@ export default function StudentForm( {noBackBtn}) {
         setSubGrpNo(e.target.value)
     }
 
-    const saveStudent = () => {
+    const updateStudent = () => {
         const req = {
             academicYrSem: academicYrSem,
             programme: programme,
@@ -84,32 +86,55 @@ export default function StudentForm( {noBackBtn}) {
             grpID: academicYrSem+"."+programme+"."+grpNo,
             subGrpNo: subGrpNo,
             subGrpID : academicYrSem+"."+programme+"."+grpNo+"."+subGrpNo,
+            id: _id,
         };
-        
-        axios.post("http://localhost:5000/api/students/add", req).then((res) => {
-            if (res.data.success) {
-                console.log(res.data);
-                swal("Student Entry Saved Successfully");
+
+        axios.post("http://localhost:5000/api/students/update", req).then((res) => {
+            if (res.data === "Update complete") {
+                swal("Student Entry Updated Successfully");
             }else{
-                swal("Student Entry Saving Failed");
+                swal("Student Entry Updating Failed");
             }
+
         });
         setAcademicYrSem("");
         setProgramme("");
         setGrpNo("");
         setSubGrpNo("");
+        setID("");
     };
 
+
+    useEffect(() => {
+        axios
+
+            .get("http://localhost:5000/api/students/byID/"+props.match.params.id)
+            .then((res) => {
+
+                setAcademicYrSem(res.data.academicYrSem);
+                setProgramme(res.data.programme);
+                setGrpNo(res.data.grpNo);
+                setSubGrpNo(res.data.subGrpNo);
+                setID(res.data._id)
+            });
+
+
+    },[])
+
+
     const resetStudent = () => {
-        setAcademicYrSem("");
+       setAcademicYrSem("");
         setProgramme("");
         setGrpNo("");
         setSubGrpNo("");
+        setID("");
+
+
     };
 
     return (
         <React.Fragment>
-            {noBackBtn === true ?
+            {props.noBackBtn === true ?
                null : <>
                     <CssBaseline />
                     <ReactLink style={navStyle} to='/student'>
@@ -211,9 +236,9 @@ export default function StudentForm( {noBackBtn}) {
                                 variant="contained"
                                 color="primary"
                                 className={classes.button}
-                                onClick={saveStudent}
+                                onClick={updateStudent}
                             >
-                                Add
+                                Update
                             </Button>
 
                         </div>

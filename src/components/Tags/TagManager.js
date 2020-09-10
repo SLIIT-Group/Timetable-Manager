@@ -1,7 +1,8 @@
 import React from 'react';
 import {Container} from "@material-ui/core";
-import TagAllocation from "./Panels/TagAllocation";
+import TagDetails from "./Panels/TagDetails";
 import NewTagAllocation from "./Panels/NewTagAllocation";
+import NewTagEntry from "./Panels/NewTagEntry";
 
 function TagManager() {
   return (
@@ -9,7 +10,8 @@ function TagManager() {
           Tags Manager
           <Container>
               <NewTagAllocation />
-              <TagAllocation />
+              <TagDetails />
+              <NewTagEntry />
           </Container>
       </div>
   );
