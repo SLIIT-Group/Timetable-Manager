@@ -82,7 +82,6 @@ function Lecturer(props) {
                             <EditLecturerForm lecturerID={props.match.params.id}/>
                         </React.Fragment>
                     </Paper>
-                    <Copyright />
                 </main>
             </React.Fragment>
         </div>

@@ -13,6 +13,8 @@ import { useState, useEffect } from "react";
 import Allocations from "../Tables/Allocations";
 import Edit from "../Forms/Edit";
 
+const drawerWidth = 240;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -27,6 +29,22 @@ const useStyles = makeStyles((theme) => ({
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
   },
 }));
 function TimeSlot(props) {
