@@ -279,7 +279,7 @@ function AddRoom(props) {
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
-                  borderBottom: "5px solid #676664",
+                  borderBottom: "5px solid #DADADA",
                   borderRadius: 30,
                   paddingLeft: 30,
                   paddingBottom: 10,
