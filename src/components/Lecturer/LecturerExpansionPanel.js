@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Container } from '@material-ui/core';
 import LecturerTable from "./LecturerTable";
+import  Copyright  from '../Commons/Copyright';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,31 +34,34 @@ function TimeSlot() {
         setExpanded(isExpanded ? panel : false);
     };
     return (
-        <div className={classes.root}>
-            <Container>
-                <Accordion
-                    style={
-                        expanded
-                            ? { backgroundColor: '#f5f5f5' }
-                            : { backgroundColor: '#3f51b5', color: '#fff' }
-                    }
-                    expanded={expanded === 'panel1'}
-                    onChange={handleChange('panel1')}
-                >
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon style={{ color: '#fff' }} />}
-                        aria-controls='panel1bh-content'
-                        id='panel1bh-header'
+        <div>
+            <div className={classes.root}>
+                <Container>
+                    <Accordion
+                        style={
+                            expanded
+                                ? { backgroundColor: '#f5f5f5' }
+                                : { backgroundColor: '#3f51b5', color: '#fff' }
+                        }
+                        expanded={expanded === 'panel1'}
+                        onChange={handleChange('panel1')}
                     >
-                        <Typography className={classes.heading}>
-                            Adding lecturer details
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <LecturerTable></LecturerTable>
-                    </AccordionDetails>
-                </Accordion>
-            </Container>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon style={{ color: '#fff' }} />}
+                            aria-controls='panel1bh-content'
+                            id='panel1bh-header'
+                        >
+                            <Typography className={classes.heading}>
+                                Adding Lecturer Details
+                            </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <LecturerTable></LecturerTable>
+                        </AccordionDetails>
+                    </Accordion>
+                </Container>
+            </div>
+            <Copyright></Copyright>
         </div>
     );
 }
