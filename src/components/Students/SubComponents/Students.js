@@ -48,7 +48,7 @@ function Students() {
     axios.get('http://localhost:5000/api/students/delete/' + id)
         .then((res) => {
           if (res.data == 'Successfully removed') {
-            swal("Successful", "Lecturer details removed", "success");
+            swal("Successful", "Student details removed", "success");
           } else {
             swal("Unsuccessful", "Error while deleting details", "error");
           }

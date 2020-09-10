@@ -79,29 +79,34 @@ export default function EditStudentForm(props) {
     }
 
     const updateStudent = () => {
-        const req = {
-            academicYrSem: academicYrSem,
-            programme: programme,
-            grpNo: grpNo,
-            grpID: academicYrSem+"."+programme+"."+grpNo,
-            subGrpNo: subGrpNo,
-            subGrpID : academicYrSem+"."+programme+"."+grpNo+"."+subGrpNo,
-            id: _id,
-        };
+        if(academicYrSem === '' || programme === '' || grpNo === '' || subGrpNo === ''){
+            swal("Unsuccessful","Empty Fields", "error");
+        }else {
+            const req = {
+                academicYrSem: academicYrSem,
+                programme: programme,
+                grpNo: grpNo,
+                grpID: academicYrSem + "." + programme + "." + grpNo,
+                subGrpNo: subGrpNo,
+                subGrpID: academicYrSem + "." + programme + "." + grpNo + "." + subGrpNo,
+                id: _id,
+            };
 
-        axios.post("http://localhost:5000/api/students/update", req).then((res) => {
-            if (res.data === "Update complete") {
-                swal("Student Entry Updated Successfully");
-            }else{
-                swal("Student Entry Updating Failed");
-            }
+            axios.post("http://localhost:5000/api/students/update", req).then((res) => {
+                if (res.data === "Update complete") {
+                    swal("Successful","Student Entry Updated Successfully","success");
+                } else {
+                    swal("Unsuccessful","Student Entry Updating Failed", "error");
+                }
 
-        });
-        setAcademicYrSem("");
-        setProgramme("");
-        setGrpNo("");
-        setSubGrpNo("");
-        setID("");
+            });
+            setAcademicYrSem("");
+            setProgramme("");
+            setGrpNo("");
+            setSubGrpNo("");
+            setID("");
+            props.history.push('/student');
+        }
     };
 
 
@@ -194,6 +199,7 @@ export default function EditStudentForm(props) {
                         <Grid item xs={12}>
                             <TextField
                                 value={grpNo}
+                                type="number"
                                 onChange={handleGrpNo}
                                 id="standard-full-width"
                                 label="Enter New Group Number"
@@ -210,6 +216,7 @@ export default function EditStudentForm(props) {
                         <Grid item xs={12}>
                             <TextField
                                 value={subGrpNo}
+                                type="number"
                                 onChange={handleSubGrpNoChange}
                                 id="standard-full-width"
                                 label="Enter Sub New Group Number"

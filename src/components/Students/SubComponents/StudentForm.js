@@ -77,27 +77,32 @@ export default function StudentForm( {noBackBtn}) {
     }
 
     const saveStudent = () => {
-        const req = {
-            academicYrSem: academicYrSem,
-            programme: programme,
-            grpNo: grpNo,
-            grpID: academicYrSem+"."+programme+"."+grpNo,
-            subGrpNo: subGrpNo,
-            subGrpID : academicYrSem+"."+programme+"."+grpNo+"."+subGrpNo,
-        };
-        
-        axios.post("http://localhost:5000/api/students/add", req).then((res) => {
-            if (res.data.success) {
-                console.log(res.data);
-                swal("Student Entry Saved Successfully");
-            }else{
-                swal("Student Entry Saving Failed");
-            }
-        });
-        setAcademicYrSem("");
-        setProgramme("");
-        setGrpNo("");
-        setSubGrpNo("");
+        if(academicYrSem === '' || programme === '' || grpNo === '' || subGrpNo === ''){
+            swal("Unsuccessful","Empty Fields", "error");
+        }
+        else{
+            const req = {
+                academicYrSem: academicYrSem,
+                programme: programme,
+                grpNo: grpNo,
+                grpID: academicYrSem+"."+programme+"."+grpNo,
+                subGrpNo: subGrpNo,
+                subGrpID : academicYrSem+"."+programme+"."+grpNo+"."+subGrpNo,
+            };
+
+            axios.post("http://localhost:5000/api/students/add", req).then((res) => {
+                if (res.data.success) {
+                    swal("Successful","Student Entry Saved Successfully","success");
+                }else{
+                    swal("Unsuccessful","Student Entry Saving Failed", "error");
+                }
+            });
+            setAcademicYrSem("");
+            setProgramme("");
+            setGrpNo("");
+            setSubGrpNo("");
+        }
+
     };
 
     const resetStudent = () => {
@@ -169,6 +174,7 @@ export default function StudentForm( {noBackBtn}) {
                         <Grid item xs={12}>
                             <TextField
                                 value={grpNo}
+                                type="number"
                                 onChange={handleGrpNo}
                                 id="standard-full-width"
                                 label="Enter New Group Number"
@@ -185,6 +191,7 @@ export default function StudentForm( {noBackBtn}) {
                         <Grid item xs={12}>
                             <TextField
                                 value={subGrpNo}
+                                type="number"
                                 onChange={handleSubGrpNoChange}
                                 id="standard-full-width"
                                 label="Enter Sub New Group Number"

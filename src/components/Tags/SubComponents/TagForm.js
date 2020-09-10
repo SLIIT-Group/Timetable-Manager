@@ -63,18 +63,23 @@ export default function TagForm( {noBackBtn}) {
 
 
     const saveTag = () => {
-        const req = {
-            tag: tag,
-        };
-        
-        axios.post("http://localhost:5000/api/tags/add", req).then((res) => {
-            if (res.data.success) {
-                swal("Tag Entry Saved Successfully");
-            }else{
-                swal("Tag Entry Saving Failed");
-            }
-        });
-        setTag("");
+        if(tag === ''){
+            swal("Unsuccessful","Empty Fields", "error");
+        }else{
+            const req = {
+                tag: tag,
+            };
+
+            axios.post("http://localhost:5000/api/tags/add", req).then((res) => {
+                if (res.data.success) {
+                    swal("Successful","Tag Entry Saved Successfully","success");
+                }else{
+                    swal("Unsuccessful","Tag Entry Saving Failed", "error");
+                }
+            });
+            setTag("");
+        }
+
     };
 
     const resetTag = () => {
@@ -110,6 +115,7 @@ export default function TagForm( {noBackBtn}) {
                     <React.Fragment>
                         <Grid item xs={12}>
                             <TextField
+                                type="text"
                                 value={tag}
                                 onChange={handleTagChange}
                                 id="standard-full-width"

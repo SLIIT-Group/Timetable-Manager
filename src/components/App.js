@@ -16,6 +16,7 @@ import SubjectExpansionPanel from "./Subjects/SubjectExpansionPanel";
 import StudentForm from "./Students/SubComponents/StudentForm";
 import EditStudentForm from "./Students/SubComponents/EditStudentForm";
 import TagForm from "./Tags/SubComponents/TagForm";
+import EditTagForm from "./Tags/SubComponents/EditTagForm";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './Home/Home';
 
@@ -42,6 +43,7 @@ const App = () => {
             <Route exact path="/addStudent" component={StudentForm}/>
             <Route exact path="/addTag" component={TagForm}/>
             <Route exact path="/student/edit/:id" component={EditStudentForm}/>
+            <Route exact path="/tags/edit/:id" component={EditTagForm}/>
             <Route path='/' component={Home} />
           </Switch>
         </div>

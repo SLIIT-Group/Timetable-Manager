@@ -17,35 +17,8 @@ const useStyles = makeStyles((theme) => ({
 
 function StudentManager() {
 
-
- const classes = useStyles();
- const [yrSem, setYrSem] = React.useState('');
-    console.log(yrSem);
- const handleYrSemChange = (event) => {
- setYrSem(event.target.value);
- };
-
- const [prog, setProg] = React.useState('');
-    console.log(prog);
- const handleProgChange = (event) => {
- setProg(event.target.value);
- };
-
- const [grpNo, setGrpNo] = React.useState('');
- console.log(grpNo);
- const handleGrpNoChange = (event) => {
- setGrpNo(event.target.value);
- };
-
- const [subGrpNo, setSubGrpNo] = React.useState('');
- console.log(setSubGrpNo);
- const handleSubGrpNoChange = (event) => {
- setSubGrpNo(event.target.value);
- };
-
   return (
       <div style={{ textAlign: 'center' }}>
-          Student Manager
           <Container>
               <StudentDetails />
               <NewStudentEntry />

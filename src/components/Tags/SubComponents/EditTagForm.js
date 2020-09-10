@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import Copyright from "../../Commons/Copyright";
 
 
+
 const navStyle = {
     color: '#fff',
     textDecoration: 'none',
@@ -58,76 +59,53 @@ export default function EditTagForm(props) {
 
     const [_id, setID] = useState('');
 
-    const [academicYrSem, setAcademicYrSem] = useState('');
-    function handleAcademicYrSemChange(e) {
-        setAcademicYrSem(e.target.value)
+    const [tag, setTag] = useState('');
+    function handleTagChange(e) {
+        setTag(e.target.value)
     }
 
-    const [programme, setProgramme] = useState('');
-    function handleProgrammeChange(e) {
-        setProgramme(e.target.value)
-    }
 
-    const [grpNo, setGrpNo] = useState('');
-    function handleGrpNo(e) {
-        setGrpNo(e.target.value)
-    }
+    const updateTag = () => {
+        if(tag === ''){
+            swal("Unsuccessful","Empty Fields", "error");
+        }else {
+            const req = {
+                tag: tag,
+                id:_id,
+            };
 
-    const [subGrpNo, setSubGrpNo] = useState('');
-    function handleSubGrpNoChange(e) {
-        setSubGrpNo(e.target.value)
-    }
+            axios.post("http://localhost:5000/api/tags/update", req).then((res) => {
+                if (res.data === "Update complete") {
+                    swal("Successful", "Tag Entry Updated Successfully", "success");
+                } else {
+                    swal("Unsuccessful", "Tag Entry Updating Failed", "error");
+                }
 
-    const updateStudent = () => {
-        const req = {
-            academicYrSem: academicYrSem,
-            programme: programme,
-            grpNo: grpNo,
-            grpID: academicYrSem+"."+programme+"."+grpNo,
-            subGrpNo: subGrpNo,
-            subGrpID : academicYrSem+"."+programme+"."+grpNo+"."+subGrpNo,
-            id: _id,
-        };
+            });
+            setTag("");
+            props.history.push('/tags');
 
-        axios.post("http://localhost:5000/api/students/update", req).then((res) => {
-            if (res.data === "Update complete") {
-                swal("Student Entry Updated Successfully");
-            }else{
-                swal("Student Entry Updating Failed");
-            }
+        }
 
-        });
-        setAcademicYrSem("");
-        setProgramme("");
-        setGrpNo("");
-        setSubGrpNo("");
-        setID("");
     };
 
 
     useEffect(() => {
         axios
 
-            .get("http://localhost:5000/api/students/byID/"+props.match.params.id)
+            .get("http://localhost:5000/api/tags/byID/"+props.match.params.id)
             .then((res) => {
+                setID(props.match.params.id);
+                setTag(res.data.tag);
 
-                setAcademicYrSem(res.data.academicYrSem);
-                setProgramme(res.data.programme);
-                setGrpNo(res.data.grpNo);
-                setSubGrpNo(res.data.subGrpNo);
-                setID(res.data._id)
             });
 
 
     },[])
 
 
-    const resetStudent = () => {
-       setAcademicYrSem("");
-        setProgramme("");
-        setGrpNo("");
-        setSubGrpNo("");
-        setID("");
+    const resetTag = () => {
+        setTag("");
 
 
     };
@@ -137,7 +115,7 @@ export default function EditTagForm(props) {
             {props.noBackBtn === true ?
                null : <>
                     <CssBaseline />
-                    <ReactLink style={navStyle} to='/student'>
+                    <ReactLink style={navStyle} to='/tags'>
                         <div style={{ marginTop: -30, marginLeft: 20 }}>
                             <Button
                                 variant="contained"
@@ -155,18 +133,18 @@ export default function EditTagForm(props) {
             <main className={classes.layout}>
                 <Paper className={classes.paper}>
                     <Typography component='h1' variant='h4' align='center'>
-                        Add Student
+                        Edit Tag
                     </Typography>
 
                     <React.Fragment>
                         <Grid item xs={12}>
                             <TextField
-                                value={academicYrSem}
-                                onChange={handleAcademicYrSemChange}
+                                value={tag}
+                                onChange={handleTagChange}
                                 id="standard-full-width"
-                                label="Enter New Academic Year and Semester"
+                                label="Enter New Tag Name"
                                 style={{ margin: 8 }}
-                                placeholder="Eg: Y1.S1, Y1.S2"
+                                placeholder="Eg: Lecture, Tute, Lab"
                                 fullWidth
                                 margin="normal"
                                 InputLabelProps={{
@@ -175,59 +153,13 @@ export default function EditTagForm(props) {
                             />
                         </Grid>
 
-                        <Grid item xs={12}>
-                            <TextField
-                                value={programme}
-                                onChange={handleProgrammeChange}
-                                id="standard-full-width"
-                                label="Enter New Programme"
-                                style={{ margin: 8 }}
-                                placeholder="Eg: IT/CSSE"
-                                fullWidth
-                                margin="normal"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        </Grid>
 
-                        <Grid item xs={12}>
-                            <TextField
-                                value={grpNo}
-                                onChange={handleGrpNo}
-                                id="standard-full-width"
-                                label="Enter New Group Number"
-                                style={{ margin: 8 }}
-                                placeholder="Eg: 01,02"
-                                fullWidth
-                                margin="normal"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        </Grid>
-
-                        <Grid item xs={12}>
-                            <TextField
-                                value={subGrpNo}
-                                onChange={handleSubGrpNoChange}
-                                id="standard-full-width"
-                                label="Enter Sub New Group Number"
-                                style={{ margin: 8 }}
-                                placeholder="Eg: 1,2"
-                                fullWidth
-                                margin="normal"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        </Grid>
                         <div className={classes.buttons}>
                             <Button
                                 variant="contained"
                                 color="secondary"
                                 className={classes.button}
-                                onClick={resetStudent}
+                                onClick={resetTag}
                             >
                                 Reset
                             </Button>
@@ -236,7 +168,7 @@ export default function EditTagForm(props) {
                                 variant="contained"
                                 color="primary"
                                 className={classes.button}
-                                onClick={updateStudent}
+                                onClick={updateTag}
                             >
                                 Update
                             </Button>

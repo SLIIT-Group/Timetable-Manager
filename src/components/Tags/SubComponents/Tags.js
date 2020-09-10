@@ -52,9 +52,9 @@ function Tags() {
             `http://localhost:5000/api/tags/delete/`+ tag
         )
         .then((res) => {
-          swal("Tag Deleted Successfully");
+          swal("Successful","Tag Deleted Successfully","success");
         })
-        .catch((err) => swal("Tag Deletion Failed"));
+        .catch((err) => swal("Unsuccessful","Tag Deletion Failed", "error"));
 
   }
   useEffect(() => {
