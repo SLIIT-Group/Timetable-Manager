@@ -52,11 +52,13 @@ function TimeSlot() {
                             id='panel1bh-header'
                         >
                             <Typography className={classes.heading}>
-                                Adding Lecturer Details
+                                Add Lecturer Details
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <LecturerTable></LecturerTable>
+                            <div className="p-0 m-0  col-md-12 justify-content-center">
+                                <LecturerTable></LecturerTable>
+                            </div>
                         </AccordionDetails>
                     </Accordion>
                 </Container>

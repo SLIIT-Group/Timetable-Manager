@@ -52,11 +52,13 @@ function TimeSlot() {
                             id='panel1bh-header'
                         >
                             <Typography className={classes.heading}>
-                                Adding Subject Details
+                                Add Subject Details
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <SubjectTable style={{align:"center"}}></SubjectTable>
+                            <div className="p-0 m-0  col-md-12 justify-content-center">
+                                <SubjectTable></SubjectTable>
+                            </div>
                         </AccordionDetails>
                     </Accordion>
                 </Container>
