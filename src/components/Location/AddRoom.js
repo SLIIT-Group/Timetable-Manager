@@ -77,7 +77,7 @@ function AddRoom(props) {
   const [building_room, setBuilding_room] = useState([]);
   const [input, setInput] = useState("");
   const [room, setRoom] = useState("");
-  const [capacity, setCapacity] = useState("");
+  const [capacity, setCapacity] = useState(0);
   const [number, setNumber] = useState("");
   const [building_id, setBuildingId] = useState();
   const [checkArray, setCheckArray] = useState(false);
@@ -242,6 +242,18 @@ function AddRoom(props) {
     );
     setSearchFilter(results);
   }, [search]);
+
+  const check = (e) => {
+    try {
+      setCapacity(parseInt(e.target.value));
+    } catch (error) {
+      NotificationManager.warning(
+        "Warning message",
+        "Capacity should be a number",
+        3000
+      );
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -494,7 +506,9 @@ function AddRoom(props) {
                     </TableContainer>
                   </Grid>
                 ) : (
-                  <h1></h1>
+                  <h1 style={{ fontWeight: "bolder", paddingLeft: 8 }}>
+                    No data
+                  </h1>
                 )}
               </div>
             </div>

@@ -292,7 +292,9 @@ function AddBuilding(props) {
                   </TableContainer>
                 </Grid>
               ) : (
-                <h1></h1>
+                <h1 style={{ fontWeight: "bolder", paddingLeft: 60 }}>
+                  No data
+                </h1>
               )}
             </div>
           </AccordionDetails>
