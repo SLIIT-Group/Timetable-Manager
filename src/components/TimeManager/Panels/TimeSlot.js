@@ -5,7 +5,9 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Container } from '@material-ui/core';
+import { Container, Grid, Paper, Divider } from '@material-ui/core';
+import Allocations from '../Tables/Allocations';
+import AddSlot from '../Forms/AddSlot';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,7 +55,16 @@ function TimeSlot() {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            {/* <TimeSlotAddForm></TimeSlotAddForm> */}
+            <Grid container spacing={3}>
+              <Grid item xs={5}>
+                <Paper className={classes.paper}>
+                  <AddSlot></AddSlot>
+                </Paper>
+              </Grid>
+              <Grid item xs={9}>
+                <Paper className={classes.paper}>{/* Table */}</Paper>
+              </Grid>
+            </Grid>
           </AccordionDetails>
         </Accordion>
       </Container>

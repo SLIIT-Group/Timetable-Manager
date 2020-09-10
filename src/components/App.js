@@ -14,6 +14,7 @@ import EditSubject from './Subjects/EditSubject';
 import LecturerExpansionPanel from './Lecturer/LecturerExpansionPanel';
 import SubjectExpansionPanel from './Subjects/SubjectExpansionPanel';
 import StudentForm from './Students/SubComponents/StudentForm';
+import 'babel-polyfill';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './Home/Home';
