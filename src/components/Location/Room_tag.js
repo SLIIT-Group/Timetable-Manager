@@ -79,6 +79,47 @@ export default function Room_tag() {
     }
   };
 
+  const currencies = [
+    {
+      value: "SPM",
+    },
+    {
+      value: "SEPQM",
+    },
+    {
+      value: "OOC",
+    },
+    {
+      value: "MAD",
+    },
+  ];
+  const rooms = [
+    {
+      value: "406",
+    },
+    {
+      value: "305",
+    },
+    {
+      value: "d-202",
+    },
+    {
+      value: "102",
+    },
+  ];
+
+  const Tag = [
+    {
+      value: "Tutorial",
+    },
+    {
+      value: "Lecture",
+    },
+    {
+      value: "Practical",
+    },
+  ];
+
   return (
     <div className={classes.layout}>
       <Accordion>
@@ -99,11 +140,11 @@ export default function Room_tag() {
                       select
                       label="Subject"
                       variant="outlined"
-                      disabled={!buildings.length}
+                      //disabled={!buildings.length}
                       style={{ width: "130px" }}
                     >
-                      {buildings.map((option) => (
-                        <MenuItem value={option}>{option}</MenuItem>
+                      {currencies.map((option) => (
+                        <MenuItem value={option}>{option.value}</MenuItem>
                       ))}
                     </TextField>
                   </Grid>
@@ -112,11 +153,11 @@ export default function Room_tag() {
                       select
                       label="Room"
                       variant="outlined"
-                      disabled={!buildings.length}
+                      // disabled={!buildings.length}
                       style={{ width: "130px", marginLeft: "10px" }}
                     >
-                      {buildings.map((option) => (
-                        <MenuItem value={option}>{option}</MenuItem>
+                      {rooms.map((option) => (
+                        <MenuItem value={option}>{option.value}</MenuItem>
                       ))}
                     </TextField>
                   </Grid>
@@ -125,17 +166,17 @@ export default function Room_tag() {
                       select
                       label="Tag"
                       variant="outlined"
-                      disabled={!buildings.length}
+                      // disabled={!buildings.length}
                       style={{ width: "130px", marginLeft: "10px" }}
                     >
-                      {buildings.map((option) => (
-                        <MenuItem value={option}>{option}</MenuItem>
+                      {Tag.map((option) => (
+                        <MenuItem value={option}>{option.value}</MenuItem>
                       ))}
                     </TextField>
                   </Grid>
                 </div>
                 <button
-                  disabled={!input}
+                  // disabled={!input}
                   type="submit"
                   className="btn btn-info mb-2"
                   onClick={addBuilding}

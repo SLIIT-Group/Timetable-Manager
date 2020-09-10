@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -30,6 +30,11 @@ const drawerWidth = 240;
 const navStyle = {
   color: '#fff',
   textDecoration: 'none',
+};
+const activeStyle = {
+  color: '#fdff8c',
+  textDecoration: 'none',
+  backgroundColor: 'red',
 };
 
 const iconStyle = {
@@ -66,7 +71,8 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundImage: 'linear-gradient(  #4389A2, #42275a)',
+    // backgroundImage: 'linear-gradient(  #4389A2, #42275a)',
+    backgroundImage: 'linear-gradient(  #42275a, #4389A2)',
   },
   drawerHeader: {
     display: 'flex',
@@ -117,7 +123,7 @@ export default function PersistentDrawerLeft() {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar style={{ backgroundColor: '#65499c' }}>
+        <Toolbar style={{ backgroundColor: '#42275a' }}>
           <IconButton
             color='inherit'
             aria-label='open drawer'
@@ -152,70 +158,70 @@ export default function PersistentDrawerLeft() {
         </div>
         <Divider />
         <List>
-          <Link style={navStyle} to='/time'>
+          <NavLink activeStyle={activeStyle} style={navStyle} to='/time'>
             <ListItem button>
               <ListItemText>
                 <ScheduleIcon style={iconStyle} /> Time Manager
               </ListItemText>
             </ListItem>
-          </Link>
-          <Link style={navStyle} to='/lecturers'>
+          </NavLink>
+          <NavLink activeStyle={activeStyle} style={navStyle} to='/lecturers'>
             <ListItem button>
               <ListItemText>
                 <SupervisorAccountIcon style={iconStyle} /> Lecturers
               </ListItemText>
             </ListItem>
-          </Link>
-          <Link style={navStyle} to='/location'>
+          </NavLink>
+          <NavLink activeStyle={activeStyle} style={navStyle} to='/location'>
             <ListItem button>
               <ListItemText>
                 <ExploreIcon style={iconStyle} /> Location
               </ListItemText>
             </ListItem>
-          </Link>
-          <Link style={navStyle} to='/session'>
+          </NavLink>
+          <NavLink activeStyle={activeStyle} style={navStyle} to='/session'>
             <ListItem button>
               <ListItemText>
                 <CalendarViewDayIcon style={iconStyle} /> Session
               </ListItemText>
             </ListItem>
-          </Link>
-          <Link style={navStyle} to='/student'>
+          </NavLink>
+          <NavLink activeStyle={activeStyle} style={navStyle} to='/student'>
             <ListItem button>
               <ListItemText>
                 <AccountBoxIcon style={iconStyle} /> Student
               </ListItemText>
             </ListItem>
-          </Link>
-          <Link style={navStyle} to='/subject'>
+          </NavLink>
+          <NavLink activeStyle={activeStyle} style={navStyle} to='/subject'>
             <ListItem button>
               <ListItemText>
                 <MenuBookIcon style={iconStyle} /> Subject
               </ListItemText>
             </ListItem>
-          </Link>
-          <Link style={navStyle} to='/tags'>
+          </NavLink>
+          <NavLink activeStyle={activeStyle} style={navStyle} to='/tags'>
             <ListItem button>
               <ListItemText>
                 <LocalOfferIcon style={iconStyle} /> Tags
               </ListItemText>
             </ListItem>
-          </Link>
-          <Link style={navStyle} to='/stats'>
+          </NavLink>
+          <NavLink activeStyle={activeStyle} style={navStyle} to='/stats'>
             <ListItem button>
               <ListItemText>
                 <EqualizerIcon style={iconStyle} /> Statistics
               </ListItemText>
             </ListItem>
-          </Link>
-          <Link style={navStyle} to='/rooms'>
+          </NavLink>
+          <NavLink exact activeStyle={activeStyle} style={navStyle} to='/rooms'>
             <ListItem button>
               <ListItemText>
                 <ApartmentIcon style={iconStyle} />
                 Rooms
               </ListItemText>
             </ListItem>
-          </Link>
+          </NavLink>
         </List>
       </Drawer>
       <main

@@ -1,163 +1,156 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Grid from "@material-ui/core/Grid";
+import { Container } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
-import "./LocationManager.css";
-import axios from "axios";
+
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import { Grid, Button } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import "react-notifications/lib/notifications.css";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
+import axios from "axios";
+import MenuItem from "@material-ui/core/MenuItem";
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputBase from "@material-ui/core/InputBase";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "98%",
+    width: "100%",
     margin: "10px",
-    marginRight: "10px",
-  },
-  layout: {
-    width: "auto",
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
-      marginLeft: "auto",
-      marginRight: "auto",
-    },
+    marginLeft: 0,
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
+    flexBasis: "33.33%",
+    flexShrink: 0,
   },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
   },
-  iconButton: {
-    padding: 10,
-  },
-  divider: {
-    height: 28,
-    margin: 4,
+  table: {
+    minWidth: 200,
+    padding: 0,
   },
 }));
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: "#3f51b5",
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
-export default function AddRoom() {
-  const currencies = [
-    {
-      value: "USD",
-      label: "$",
-    },
-    {
-      value: "EUR",
-      label: "€",
-    },
-    {
-      value: "BTC",
-      label: "฿",
-    },
-    {
-      value: "JPY",
-      label: "¥",
-    },
-  ];
+function AddRoom(props) {
   const classes = useStyles();
+  const [expanded, setExpanded] = useState(false);
+  const [table, setTable] = useState(false);
+  const [search, setSearch] = useState("");
+  const [searchFilter, setSearchFilter] = useState([]);
   const [buildings, setBuilding] = useState([]);
+  const [building_room, setBuilding_room] = useState([]);
   const [input, setInput] = useState("");
-  const [block, setBlock] = useState("");
-  const [number, setNumber] = useState("");
   const [room, setRoom] = useState("");
   const [capacity, setCapacity] = useState("");
-  const [buildings_room, setBuilding_room] = useState([]);
-  const [data, setData] = useState({});
-  const [search, setsearch] = useState("");
-  const [filter, setFilter] = useState([]);
+  const [number, setNumber] = useState("");
+  const [building_id, setBuildingId] = useState();
+  const [checkArray, setCheckArray] = useState(false);
   const [toggle, setToggle] = React.useState({
     value: "Add",
     isEdit: true,
   });
-  const onClick = (e) => {
-    // console.log(e.target.value);
-    // axios
 
-    // axios
-    //   .get(`http://localhost:5000/api/room/${e.target.value}`) //get data from userID
-    //   .then((res) => {
-    //     setData(res.data); //save retrieved data to the hook
-    //     console.log(data);
-    //     setBlock(data[0].Building),
-    //       setRoom(data[0].Room),
-    //       setCapacity(data[0].Capacity);
-    //   });
-    fetch(`http://localhost:5000/api/room/${e.target.value}`)
+  const [block, setBlock] = useState("");
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/building/`)
       .then((res) => res.json())
       .then(
         (result) => {
-          setBlock(result.Building),
-            setRoom(result.Room),
-            setCapacity(result.Capacity);
+          setBuilding(result);
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           setError(error);
         }
       );
+    axios
 
-    setInput("");
-    console.log(e.target.value);
+      .get(`http://localhost:5000/api/room/`) //get data from userID
+      .then((res) => {
+        setBuilding_room(res.data);
+
+        setSearchFilter(res.data); //save retrieved data to the hook
+      });
+  }, [expanded, table]);
+
+  const onClick = (id) => {
+    setNumber(id);
+    building_room.map((item) => {
+      if (item._id == id) {
+        return (
+          setRoom(item.Room),
+          setCapacity(item.Capacity),
+          setBlock(item.Building)
+        );
+      }
+    });
+
     if (toggle.value === "Add") {
       setToggle({
         value: "Save",
         isEdit: false,
       });
-      setNumber(e.target.value);
     } else {
       setToggle({
         value: "Add",
         isEdit: true,
       });
-      setNumber(e.target.value);
     }
   };
 
-  useEffect(() => {
+  const deleteRoom = (id) => {
+    setTable(false);
     axios
-
-      .get(`http://localhost:5000/api/building/`) //get data from userID
-      .then((res) => {
-        setBuilding(res.data); //save retrieved data to the hook
-      });
-
-    axios
-
-      .get(`http://localhost:5000/api/room/`) //get data from userID
-      .then((res) => {
-        setBuilding_room(res.data); //save retrieved data to the hook
-      });
-  });
-
-  const deleteRoom = (e) => {
-    axios
-      .delete(`http://localhost:5000/api/room/remove/${e.target.value}`)
+      .delete(`http://localhost:5000/api/room/remove/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
-
-        console.log(res.data);
+        setTable(true);
       })
       .catch((err) => console.log("Error"));
   };
 
   const addRoom = (e) => {
+    setTable(false);
     e.preventDefault();
     setRoom("");
     setCapacity("");
@@ -166,244 +159,351 @@ export default function AddRoom() {
         value: "Add",
         isEdit: false,
       });
+      buildings.map((item) => {
+        if (item.building == block) {
+          return setBuildingId(item._id);
+        }
+      });
       const updateBuilding = {
         Building: block,
         Room: room,
         Capacity: capacity,
+        Building_id: building_id,
       };
       axios
 
         .post(`http://localhost:5000/api/room/update/${number}`, updateBuilding) //get data from userID
         .then((res) => {
           NotificationManager.info("Item is Successfully updated", "", 3000); //save retrieved data to the hook
+          setTable(true);
+          setBlock("");
         });
       setInput("");
     } else {
-      //setBuilding([...buildings, input]);
       setInput("");
+
       const room_name = {
         Building: block,
         Room: room,
         Capacity: capacity,
+        Building_id: building_id,
       };
 
-      axios
-        .post("http://localhost:5000/api/room/add", room_name)
-        .then((res) => {
-          if (res.data.success == true) {
-            NotificationManager.success("Success message", "Building Added");
-            console.log(res.data);
-          } else {
-            NotificationManager.warning(
-              "Warning message",
-              "Buiding is already there",
-              3000
-            );
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      if (checkArray) {
+        NotificationManager.warning(
+          "Warning message",
+          "Room is already allocated for building",
+          3000
+        );
+      } else {
+        axios
+          .post("http://localhost:5000/api/room/add", room_name)
+          .then((res) => {
+            if (res.data.success == true) {
+              NotificationManager.success("Success message", "Room Added");
+              setBlock("");
+              setTable(true);
+            } else {
+              NotificationManager.warning(
+                "Warning message",
+                "Room is already there",
+                3000
+              );
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/room/search/${search}`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          const filteredArray = buildings_room.filter((item) => {
-            console.log(result);
-            return item.Building === result.Building;
-          });
+    building_room.map((item) => {
+      if (item.Building == block && item.Room == room) {
+        return setCheckArray(true);
+      } else {
+        return setCheckArray(false);
+      }
+    });
+  }, [block, room]);
 
-          setFilter(filteredArray);
-          console.log(filteredArray);
-        },
-        (error) => {
-          //setError(error);
-        }
-      );
+  useEffect(() => {
+    buildings.map((item) => {
+      if (item.building == block) {
+        return setBuildingId(item._id);
+      }
+    });
+  }, [block]);
+
+  useEffect(() => {
+    const results = building_room.filter((roomName) =>
+      roomName.Room.toLowerCase().includes(search)
+    );
+    setSearchFilter(results);
   }, [search]);
 
   return (
-    <div className={classes.layout}>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
+    <div className={classes.root}>
+      <Container>
+        <Accordion
+          style={
+            expanded
+              ? { backgroundColor: "#f5f5f5" }
+              : { backgroundColor: "#3f51b5", color: "#fff" }
+          }
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
         >
-          <Typography className={classes.heading}>Allocate Rooms</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            <div style={{ display: "inline-flex", marginLeft: "50px" }}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  id="filled-select-currency"
-                  select
-                  label="Buildings"
-                  variant="outlined"
-                  disabled={!buildings.length}
-                  style={{ width: "160px" }}
-                  onChange={(event) => setBlock(event.target.value)}
-                >
-                  {buildings.map((option) => (
-                    <MenuItem key={option._id} value={option.building}>
-                      {option.building}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <div style={{ flexDirection: "column", marginLeft: "30px" }}>
-                <p>Room</p>
-                <p>Capacity</p>
-              </div>
-              <div style={{ marginLeft: "10px" }}>
-                <input
-                  type="text"
-                  style={{ width: "70px", borderRadius: "10px" }}
-                  value={room}
-                  onChange={(event) => setRoom(event.target.value)}
-                />
-                <br />
-
-                <input
-                  type="text"
-                  style={{
-                    marginTop: "8px",
-                    width: "70px",
-                    borderRadius: "10px",
-                  }}
-                  value={capacity}
-                  onChange={(event) => setCapacity(event.target.value)}
-                />
-              </div>
-            </div>
-            <button
-              type="button"
-              class="btn btn-info"
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon style={{ color: "#fff" }} />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+          >
+            <Typography className={classes.heading}>Add Room</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div
               style={{
-                width: "100px",
-                height: "35px",
-                textAlign: "center",
-                marginLeft: "30px",
-                borderRadius: "15px",
-                marginTop: "40px",
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
               }}
-              disabled={!room || !capacity || buildings.length === 0}
-              onClick={addRoom}
             >
-              {toggle.value}
-            </button>
-            <div style={{ padding: "50px" }}>
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="input"
-                  style={{ width: "100%" }}
-                  onChange={(e) => setsearch(e.target.value)}
-                  value={search}
+              <form
+                className={classes.root}
+                noValidate
+                autoComplete="off"
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderBottom: "5px solid #676664",
+                  borderRadius: 30,
+                  paddingLeft: 30,
+                  paddingBottom: 10,
+                  minWidth: 250,
+                  width: "100%",
+                  flex: 1,
+                }}
+              >
+                <FormControl
+                  className={classes.formControl}
+                  style={{ marginLeft: 5, marginTop: 20 }}
+                >
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    style={{ marginLeft: 7 }}
+                  >
+                    Building
+                  </InputLabel>
+                  <Select
+                    variant="filled"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={block}
+                    style={{ width: "150px" }}
+                    disabled={!buildings.length}
+                    onChange={(event) => setBlock(event.target.value)}
+                  >
+                    {buildings.map((option) => (
+                      <MenuItem key={option._id} value={option.building}>
+                        {option.building}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <TextField
+                  id="standard-secondary"
+                  label="Add a Room"
+                  value={room}
+                  onChange={(e) => {
+                    setRoom(e.target.value);
+                  }}
                 />
+                <TextField
+                  id="standard-secondary"
+                  label="Capacity"
+                  value={capacity}
+                  onChange={(e) => {
+                    setCapacity(e.target.value);
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ marginTop: 10, marginLeft: 50 }}
+                  disabled={buildings.length == 0 || !room || !capacity}
+                  onClick={addRoom}
+                >
+                  {toggle.value}
+                </Button>
+              </form>
+              <div
+                style={{
+                  flex: 5,
+                  minWidth: 300,
+                  paddingLeft: 50,
+                }}
+              >
+                {building_room.length !== 0 ? (
+                  <Paper
+                    component="form"
+                    className={classes.root}
+                    style={{
+                      justifyContent: "center",
+                      borderRadius: 20,
+                      textAlign: "center",
+                      borderBottom: "2px solid #EC4C90",
+                      maxWidth: 500,
+                      display: "flex",
+                      flexDirection: "row",
+                      align: "space-between",
+                      paddingLeft: 25,
+                    }}
+                  >
+                    <InputBase
+                      className={classes.input}
+                      placeholder="Search Rooms"
+                      value={search}
+                      onChange={(e) => {
+                        setSearch(e.target.value);
+                      }}
+                      style={{ flex: 1 }}
+                    />
+                    <IconButton
+                      className={classes.iconButton}
+                      aria-label="search"
+                    >
+                      <SearchIcon disabled style={{ flex: 1 }} />
+                    </IconButton>
+                  </Paper>
+                ) : (
+                  <h1></h1>
+                )}
+
+                {building_room.length !== 0 ? (
+                  <Grid
+                    style={{
+                      flex: 5,
+                      maxWidth: 500,
+                    }}
+                  >
+                    <TableContainer component={Paper}>
+                      <Table
+                        className={classes.table}
+                        aria-label="simple table"
+                        style={{
+                          borderRadius: 20,
+                          borderBottom: "3px solid #3f51b5",
+                        }}
+                      >
+                        <TableHead
+                          style={{
+                            backgroundColor: "theme.palette.common.black",
+                            color: "theme.palette.common.white",
+                          }}
+                        >
+                          <TableRow align="center">
+                            <StyledTableCell align="center">
+                              Building
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Room
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Capacity
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Delete
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Edit
+                            </StyledTableCell>
+                          </TableRow>
+                        </TableHead>
+                        {!search ? (
+                          <TableBody>
+                            {building_room.map((item) => (
+                              <TableRow hover key={item._id}>
+                                <TableCell align="center">
+                                  {item.Building}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.Room}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.Capacity}
+                                </TableCell>
+                                <TableCell align="center">
+                                  <DeleteIcon
+                                    onClick={() => {
+                                      deleteRoom(item._id);
+                                    }}
+                                  >
+                                    {" "}
+                                  </DeleteIcon>
+                                </TableCell>
+                                <TableCell align="center">
+                                  {" "}
+                                  <EditIcon
+                                    onClick={() => {
+                                      onClick(item._id);
+                                    }}
+                                  ></EditIcon>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        ) : (
+                          <TableBody>
+                            {searchFilter.map((item) => (
+                              <TableRow hover key={item._id}>
+                                <TableCell align="center">
+                                  {item.Building}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.Room}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.Capacity}
+                                </TableCell>
+                                <TableCell align="center">
+                                  <DeleteIcon
+                                    onClick={() => {
+                                      deleteRoom(item._id);
+                                    }}
+                                  >
+                                    {" "}
+                                  </DeleteIcon>
+                                </TableCell>
+                                <TableCell align="center">
+                                  {" "}
+                                  <EditIcon
+                                    onClick={() => {
+                                      onClick(item._id);
+                                    }}
+                                  ></EditIcon>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        )}
+                      </Table>
+                    </TableContainer>
+                  </Grid>
+                ) : (
+                  <h1></h1>
+                )}
               </div>
-              <br />
-              {!search ? (
-                <table
-                  className="table table-striped table-info"
-                  style={{ textAlign: "center" }}
-                >
-                  <thead>
-                    <tr>
-                      <th scope="col">Buildings</th>
-                      <th scope="col">Rooms</th>
-                      <th scope="col">Room Capacity</th>
-                      <th scope="col" colSpan="2">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  {buildings_room.map((item) => (
-                    <tbody>
-                      <tr>
-                        <th scope="row">{item.Building}</th>
-                        <td>{item.Room}</td>
-                        <td>{item.Capacity}</td>
-                        <td>
-                          <button
-                            type="button"
-                            class="btn btn-warning"
-                            value={item._id}
-                            onClick={onClick}
-                          >
-                            Edit
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            type="button"
-                            class="btn btn-danger"
-                            value={item._id}
-                            onClick={deleteRoom}
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  ))}
-                </table>
-              ) : (
-                <table
-                  className="table table-striped table-info"
-                  style={{ textAlign: "center" }}
-                >
-                  <thead>
-                    <tr>
-                      <th scope="col">Buildings</th>
-                      <th scope="col">Rooms</th>
-                      <th scope="col">Room Capacity</th>
-                      <th scope="col" colSpan="2">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  {filter.map((item) => (
-                    <tbody>
-                      <tr>
-                        <th scope="row">{item.Building}</th>
-                        <td>{item.Room}</td>
-                        <td>{item.Capacity}</td>
-                        <td>
-                          <button
-                            type="button"
-                            class="btn btn-warning"
-                            value={item._id}
-                            onClick={onClick}
-                          >
-                            Edit
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            type="button"
-                            class="btn btn-danger"
-                            value={item._id}
-                            onClick={deleteRoom}
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  ))}
-                </table>
-              )}
             </div>
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+          </AccordionDetails>
+        </Accordion>
+      </Container>
       <NotificationContainer />
     </div>
   );
 }
+
+export default AddRoom;

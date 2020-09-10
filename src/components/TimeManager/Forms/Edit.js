@@ -140,47 +140,46 @@ function Edit({
         />
       </Grid>
 
-      {/* <Grid item sm={12}>
-        <TextField id='standard-size-small' defaultValue='Small' size='small' />
-      </Grid> */}
-      <Grid container>
-        <Grid item sm={6}>
-          <Button
-            style={buttonStyle}
-            size='small'
-            value='Add'
-            variant='contained'
-            color='primary'
-            width='block'
-            onClick={editAllocation}
-          >
-            Edit
-          </Button>
-        </Grid>
-        <Grid item sm={6}>
-          <Button
-            size='small'
-            style={buttonStyle}
-            value='Cancel'
-            variant='contained'
-            color='default'
-            width='block'
-            onClick={() => {
-              setIsEditing(false);
-            }}
-          >
-            Cancel
-          </Button>
-        </Grid>
-      </Grid>
+      {/* <Grid container> */}
+      {/* <Grid item xs={12} sm={6}> */}
+      <Button
+        style={buttonStyle}
+        size='small'
+        value='Add'
+        variant='contained'
+        color='primary'
+        width='block'
+        onClick={editAllocation}
+      >
+        Edit
+      </Button>
+
+      <Button
+        size='small'
+        style={buttonStyle}
+        value='Cancel'
+        variant='contained'
+        color='default'
+        width='block'
+        onClick={() => {
+          setIsEditing(false);
+        }}
+      >
+        Cancel
+      </Button>
+      {/* </Grid> */}
+      {/* </Grid> */}
     </form>
   );
 }
 
 const buttonStyle = {
-  margin: '20px',
+  marginRight: '5px',
   alignContent: 'flex-end',
-  marginLeft: '20px',
+  marginLeft: '10px',
+  marginBottom: '5px',
+  padding: '2px',
+  fontSize: '10px',
 };
 
 export default Edit;
