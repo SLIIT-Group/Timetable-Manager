@@ -210,7 +210,7 @@ function AddBuilding(props) {
                   justifyContent: "center",
                   // flexDirection: "column",
                   alignItems: "center",
-                  borderBottom: "5px solid #676664",
+                  borderBottom: "5px solid #DADADA",
                   borderRadius: 30,
                   padding: 20,
                   width: 250,
@@ -292,7 +292,9 @@ function AddBuilding(props) {
                   </TableContainer>
                 </Grid>
               ) : (
-                <h1></h1>
+                <h1 style={{ fontWeight: "bolder", paddingLeft: 60 }}>
+                  No data
+                </h1>
               )}
             </div>
           </AccordionDetails>
