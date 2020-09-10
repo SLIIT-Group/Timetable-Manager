@@ -82,7 +82,6 @@ function Subject(props) {
                             <EditSubjectForm subjectID={props.match.params.id}/>
                         </React.Fragment>
                     </Paper>
-                    <Copyright />
                 </main>
             </React.Fragment>
         </div>
