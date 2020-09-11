@@ -22,6 +22,18 @@ const departments = [
     {
         value: 'Department of Computer Systems Engineering',
         label: 'Department of Computer Systems Engineering',
+    },
+    {
+        value: 'Department of Civil Engineering',
+        label: 'Department of Civil Engineering',
+    },
+    {
+        value: 'Department of Mechanical Engineering',
+        label: 'Department of Mechanical Engineering',
+    },
+    {
+        value: 'Department of Electronics and Telecommunication Engineering',
+        label: 'Department of Electronics and Telecommunication Engineering',
     }
 ];
 
@@ -183,9 +195,6 @@ export default function LecturerForm() {
     const handleLevel1Change = (event) => {
         setLevel1(event.target.value);
     };
-    // const handleRankChange = (event) => {
-    //     setRank(event.target.value);
-    // };
 
     const saveLecturer = () => {
         const req = {

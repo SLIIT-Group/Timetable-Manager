@@ -39,30 +39,33 @@ const useStyles = makeStyles({
   },
 });
 
-function Students() {
+function Tags() {
   const classes = useStyles();
 
-  const [studentList, setStudentList] = useState([]);
 
-  const deleteStudent = (id) => {
-    axios.get('http://localhost:5000/api/students/delete/' + id)
+  const [tagList, setTagList] = useState([]);
+
+
+  const deleteTag = (tag) => {
+    axios
+        .get(
+            `http://localhost:5000/api/tags/delete/`+ tag
+        )
         .then((res) => {
-          if (res.data == 'Successfully removed') {
-            swal("Successful", "Student details removed", "success");
-          } else {
-            swal("Unsuccessful", "Error while deleting details", "error");
-          }
-        });
+          swal("Successful","Tag Deleted Successfully","success");
+        })
+        .catch((err) => swal("Unsuccessful","Tag Deletion Failed", "error"));
+
   }
   useEffect(() => {
     axios
 
-        .get("http://localhost:5000/api/students/all")
+        .get("http://localhost:5000/api/tags/all")
         .then((res) => {
-          setStudentList(res.data);
+          setTagList(res.data);
         });
 
-  });
+  },);
 
 
   return (
@@ -76,28 +79,18 @@ function Students() {
             }}
           >
             <TableRow align='center'>
-              <StyledTableCell align='center'>Academic Yr and Sem</StyledTableCell>
-              <StyledTableCell align='center'>Programme</StyledTableCell>
-              <StyledTableCell align='center'>Group Number</StyledTableCell>
-              <StyledTableCell align='center'>Group ID</StyledTableCell>
-              <StyledTableCell align='center'>Sub Group Number</StyledTableCell>
-              <StyledTableCell align='center'>Sub Group ID</StyledTableCell>
+              <StyledTableCell align='center'>Tag Name</StyledTableCell>
               <StyledTableCell align='center'>Update</StyledTableCell>
               <StyledTableCell align='center'>Delete</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {studentList.map((item, key) => (
+            {tagList.map((item, key) => (
               <TableRow hover key={key}>
-                <TableCell align='center'>{item.academicYrSem}</TableCell>
-                <TableCell align='center'>{item.programme}</TableCell>
-                <TableCell align='center'>{item.grpNo}</TableCell>
-                <TableCell align='center'>{item.grpID}</TableCell>
-                <TableCell align='center'>{item.subGrpNo}</TableCell>
-                <TableCell align='center'>{item.subGrpID}</TableCell>
+                <TableCell align='center'>{item.tag}</TableCell>
                 <TableCell align='center'>
                   {' '}
-                  <ReactLink to={"/student/edit/" +item._id}>
+                  <ReactLink to={"/tags/edit/" +item._id}>
                   <EditIcon
                   >
                     Edit
@@ -105,7 +98,7 @@ function Students() {
                   </ReactLink>
                 </TableCell>
                 <TableCell align='center'>
-                  <DeleteIcon onClick={() => deleteStudent(item._id)}
+                  <DeleteIcon onClick={() => deleteTag(item.tag)}
                   >
                     {' '}
                   </DeleteIcon>
@@ -120,4 +113,4 @@ function Students() {
   );
 }
 
-export default Students;
+export default Tags;

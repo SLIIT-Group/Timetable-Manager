@@ -81,7 +81,7 @@ export default function AcademicYrSem() {
 
               <div className="row col-md-12">
                 <Col sm="6 pb-0">
-                  <label className="mt-3 h5 font-weight-bold">Select Academic Year and Semester :</label>
+                  <label className="mt-3 h5 font-weight-bold">Academic Year and Semester :</label>
                 </Col>
                 <div className="input-field col s6 d-flex flex-column">
                   <FormControl variant="outlined" className={classes.formControl}>

@@ -82,7 +82,6 @@ function Lecturer() {
                             <SubjectForm/>
                         </React.Fragment>
                     </Paper>
-                    <Copyright />
                 </main>
             </React.Fragment>
         </div>
