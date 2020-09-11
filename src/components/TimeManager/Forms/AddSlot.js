@@ -5,7 +5,8 @@ import { Grid, Button } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useState } from 'react';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +23,7 @@ function Add({ counter, setCounter }) {
   const classes = useStyles();
   const initialState = { start: '', end: '', duration: '' };
   const [slot, setSlot] = useState(initialState);
+  const [selectedDate, handleDateChange] = useState(new Date());
 
   //Slot types
   const types = ['1-Hour Slot', '1/2-Hour Slot'];
@@ -30,41 +32,27 @@ function Add({ counter, setCounter }) {
     setSlot({ ...slot, [e.target.name]: e.target.value });
   };
 
-  const calcEndTime = (duration, start) => {
+    const calcEndTime = (duration) => {
     switch (duration) {
       case '1-Hour Slot':
-        let hourTime = start.split('.');
-        let endHour = parseInt(hourTime[0]) + 1;
-        let endMins = '';
-        hourTime.length >= 2 ? (endMins = hourTime[1]) : (endMins = '00');
-        return endHour + ':' + endMins;
-
+        let endTimeObj1 = new Date(selectedDate.getTime() + 60 * 60000);
+        let endTimeString1 = endTimeObj1.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+        return endTimeString1;
         break;
 
       default:
-        let time = start.split('.');
-        if (time.length >= 2) {
-          let startHour = time[0];
-          let startMins = time[1];
-          let endMins = parseInt(startMins) + 30;
-
-          if (endMins >= 60) {
-            let endHour = parseInt(startHour) + 1;
-            endMins -= 60;
-            endMins === 0 ? (endMins = '00') : endMins;
-            return endHour + ':' + endMins;
-          } else {
-            let endHour = startHour;
-            let endMins = parseInt(startMins) + 30;
-            return endHour + ':' + endMins;
-          }
-        } else {
-          let startHour = time[0];
-          return startHour + ':' + '30';
-        }
+        let endTimeObj2 = new Date(selectedDate.getTime() + 30 * 60000);
+        let endTimeString2 = endTimeObj2.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+        return endTimeString2;
     }
   };
-
+  // POST
   const post = (s) => {
     axios
       .post('http://localhost:5000/api/slot', s)
@@ -75,10 +63,20 @@ function Add({ counter, setCounter }) {
       .catch((err) => console.log(s));
   };
 
+  // Handle Add button
   const Add = () => {
-    console.log(calcEndTime(slot.duration, slot.start));
-    let end = calcEndTime(slot.duration, slot.start);
-    const s = { start: slot.start, end: end, duration: slot.duration };
+    let startTimeString = selectedDate.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    let endTimeString = calcEndTime(slot.duration);
+    const s = {
+      start: startTimeString,
+      end: endTimeString,
+      duration: slot.duration,
+    };
+
     post(s);
   };
 
@@ -101,16 +99,16 @@ function Add({ counter, setCounter }) {
         ))}
       </TextField>
       <Grid item xs={12}>
-        <TextField
-          required
-          id='start'
-          size='small'
-          name='start'
-          label='Start Time'
-          value={slot.start}
-          onChange={handleChange}
-          type='number'
-        />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <TimePicker
+            clearable
+            ampm={false}
+            label='Start time'
+            value={selectedDate}
+            onChange={handleDateChange}
+            autoOk
+          />
+        </MuiPickersUtilsProvider>
       </Grid>
 
       <Button
@@ -123,7 +121,6 @@ function Add({ counter, setCounter }) {
       >
         Add
       </Button>
-      {/* </Grid> */}
     </form>
   );
 }
