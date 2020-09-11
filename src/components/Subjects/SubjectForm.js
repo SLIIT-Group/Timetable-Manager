@@ -99,35 +99,59 @@ export default function AddressForm() {
     };
 
     const saveSubject = () => {
-        const req = {
-            subName: subName,
-            subCode: subCode,
-            offeredYear: offeredYear,
-            offeredSemester: offeredSemester,
-            lecHo: lecHo,
-            tuteHo: tuteHo,
-            labHo: labHo,
-            evaHo: evaHo
-        };
+        const isValidated = validateForm();
 
-        axios.post("http://localhost:5000/api/subjects/add", req).then((res) => {
-            if (res.data.success) {
-                //console.log(res.data);
-                swal("Successful", "Subject details added", "success");
-            }else{
-                swal("Unsuccessful", "Error while adding details", "error");
-            }
-        });
+        if(isValidated){
+            const req = {
+                subName: subName,
+                subCode: subCode,
+                offeredYear: offeredYear,
+                offeredSemester: offeredSemester,
+                lecHo: lecHo,
+                tuteHo: tuteHo,
+                labHo: labHo,
+                evaHo: evaHo
+            };
 
-        setSubName("");
-        setSubCode("");
-        setOfferedYear("");
-        setOfferedSemester("");
-        setLecHo("");
-        setTuteHo("");
-        setLabHo("");
-        setEvaHo("");
+            axios.post("http://localhost:5000/api/subjects/add", req).then((res) => {
+                if (res.data.success) {
+                    //console.log(res.data);
+                    swal("Successful", "Subject details added", "success");
+                }else{
+                    swal("Unsuccessful", "Error while adding details", "error");
+                }
+            });
+
+            setSubName("");
+            setSubCode("");
+            setOfferedYear("");
+            setOfferedSemester("");
+            setLecHo("");
+            setTuteHo("");
+            setLabHo("");
+            setEvaHo("");
+        }
     };
+
+    function validateForm() {
+        let subName = document.getElementById("subNameId").value;
+        let subCode = document.getElementById("subCodeId").value;
+        let offeredYear = document.getElementById("offYearId").value;
+
+        if(subName == ""){
+            swal("Unsuccessful", "Subject name must be filled out", "error");
+            return false;
+        }
+        if(subCode == ""){
+            swal("Unsuccessful", "Suject code must be filled out", "error");
+            return false;
+        }
+        if(offeredYear == ""){
+            swal("Unsuccessful", "Offered year must be filled out", "error");
+            return false;
+        }
+        return true;
+    }
 
     return (
         <React.Fragment>
@@ -135,7 +159,7 @@ export default function AddressForm() {
                 <Grid item xs={12}>
                     <TextField
                         required
-                        id="employeeID"
+                        id="subNameId"
                         name="employeeID"
                         label= "Subject Name"
                         value={subName}
@@ -148,7 +172,7 @@ export default function AddressForm() {
                 <Grid item xs={12}>
                     <TextField
                         required
-                        id="employeeID"
+                        id="subCodeId"
                         name="employeeID"
                         label= "Subject Code"
                         value={subCode}
@@ -161,7 +185,7 @@ export default function AddressForm() {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
-                        id="firstName"
+                        id="offYearId"
                         name="firstName"
                         label= "Offered Year"
                         value={offeredYear}

@@ -134,6 +134,7 @@ function Stats() {
         }
       });
 
+      console.log(dept2);
       setAmount([
         dept1.length,
         dept2.length,
