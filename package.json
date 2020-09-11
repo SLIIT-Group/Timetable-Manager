@@ -28,6 +28,7 @@
     "bootstrap": "^4.5.2",
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
+    "cross-spawn": "^7.0.3",
     "electron-reload": "^1.5.0",
     "material-table": "^1.68.0",
     "material-ui-search-bar": "^1.0.0",

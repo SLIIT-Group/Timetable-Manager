@@ -204,36 +204,40 @@ export default function LecturerForm(props) {
     }, []);
 
     const updateLecturer = () => {
-        const req = {
-            fname: fname,
-            lname: lname,
-            empid: empid,
-            faculty: faculty,
-            department: department,
-            center: center,
-            building1: building1,
-            level1: level1,
-            rank: level1+ "." +empid
-        };
+        const isValidated = validateForm();
 
-        axios.post('http://localhost:5000/api/lecturers/update/' +props.lecturerID, req)
-            .then((res) => {
-                if(res.data == 'Update complete'){
-                    swal("Successful", "Lecturer details updated", "success");
-                }else{
-                    swal("Unsuccessful", "Error while updating details", "error");
-                }
-            });
+        if(isValidated){
+            const req = {
+                fname: fname,
+                lname: lname,
+                empid: empid,
+                faculty: faculty,
+                department: department,
+                center: center,
+                building1: building1,
+                level1: level1,
+                rank: level1+ "." +empid
+            };
 
-        setFname("");
-        setLname("");
-        setEmpid("");
-        setFaculty("");
-        setDepartment("");
-        setCenter("");
-        setBuilding1("");
-        setLevel1("");
-        setRank("");
+            axios.post('http://localhost:5000/api/lecturers/update/' +props.lecturerID, req)
+                .then((res) => {
+                    if(res.data == 'Update complete'){
+                        swal("Successful", "Lecturer details updated", "success");
+                    }else{
+                        swal("Unsuccessful", "Error while updating details", "error");
+                    }
+                });
+
+            setFname("");
+            setLname("");
+            setEmpid("");
+            setFaculty("");
+            setDepartment("");
+            setCenter("");
+            setBuilding1("");
+            setLevel1("");
+            setRank("");
+        }
     };
 
     const deleteLecturer = () => {
@@ -257,13 +261,67 @@ export default function LecturerForm(props) {
         setRank("");
     }
 
+    function validateForm() {
+        let firstName = document.getElementById("firstNameId").value;
+        let lastName = document.getElementById("lastNameId").value;
+        let empId = document.getElementById("employeeID").value;
+        let faculty = document.getElementById("facultyId").value;
+        let department = document.getElementById("departmentId").value;
+        let center = document.getElementById("centreId").value;
+        let building = document.getElementById("buildingId").value;
+        let level = document.getElementById("levelId").value;
+
+        if(firstName == ""){
+            //console.log('empty name');
+            swal("Unsuccessful", "First name must be filled out", "error");
+            return false;
+        }
+        if(lastName == ""){
+            swal("Unsuccessful", "Last name must be filled out", "error");
+            return false;
+        }
+        if(empId == ""){
+            swal("Unsuccessful", "Employee ID must be filled out", "error");
+            return false;
+        }
+        if(isNaN(empId)){
+            swal("Unsuccessful", "Employee ID should be a number", "error");
+            return false;
+        }
+        if(empId.length != 6){
+            swal("Unsuccessful", "Employee ID should be a 6 digit number", "error");
+            return false;
+        }
+        // if(faculty == null){
+        //     swal("Unsuccessful", "Faculty must be filled out", "error");
+        //     return false;
+        // }
+        // if(department == null){
+        //     swal("Unsuccessful", "Department must be filled out", "error");
+        //     return false;
+        // }
+        // if(center == null){
+        //     swal("Unsuccessful", "Center must be filled out", "error");
+        //     return false;
+        // }
+        // if(building == null){
+        //     swal("Unsuccessful", "Building must be filled out", "error");
+        //     return false;
+        // }
+        // if(level == null){
+        //     swal("Unsuccessful", "Level must be filled out", "error");
+        //     return false;
+        // }
+        return true;
+    }
+
     return (
         <React.Fragment>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
-                        id="firstName"
+                        id="firstNameId"
                         name="firstName"
                         label="First name"
                         value={fname}
@@ -275,7 +333,7 @@ export default function LecturerForm(props) {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
-                        id="lastName"
+                        id="lastNameId"
                         name="lastName"
                         label="Last name"
                         value={lname}
@@ -299,7 +357,7 @@ export default function LecturerForm(props) {
 
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        id="filled-select-currency"
+                        id="facultyId"
                         select
                         label="Faculty"
                         value={faculty}
@@ -317,7 +375,7 @@ export default function LecturerForm(props) {
 
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        id="filled-select-currency"
+                        id="departmentId"
                         select
                         label="Department"
                         value={department}
@@ -335,7 +393,7 @@ export default function LecturerForm(props) {
 
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        id="filled-select-currency"
+                        id="centreId"
                         select
                         label="Centre"
                         value={center}
@@ -353,7 +411,7 @@ export default function LecturerForm(props) {
 
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        id="filled-select-currency"
+                        id="buildingId"
                         select
                         label="Building"
                         value={building1}
@@ -371,7 +429,7 @@ export default function LecturerForm(props) {
 
                 <Grid item xs={12}>
                     <TextField
-                        id="filled-select-currency"
+                        id="levelId"
                         select
                         label="Level"
                         value={level1}

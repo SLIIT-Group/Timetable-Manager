@@ -117,34 +117,38 @@ export default function AddressForm(props) {
     }, []);
 
     const updateSubject = () => {
-        const req = {
-            subName: subName,
-            subCode: subCode,
-            offeredYear: offeredYear,
-            offeredSemester: offeredSemester,
-            lecHo: lecHo,
-            tuteHo: tuteHo,
-            labHo: labHo,
-            evaHo: evaHo
-        };
+        const isValidated = validateForm();
 
-        axios.post('http://localhost:5000/api/subjects/update/' +props.subjectID, req)
-            .then((res) => {
-                if(res.data == 'Update complete'){
-                    swal("Successful", "Subject details updated", "success");
-                }else{
-                    swal("Unsuccessful", "Error while updating details", "error");
-                }
-            });
+        if(isValidated){
+            const req = {
+                subName: subName,
+                subCode: subCode,
+                offeredYear: offeredYear,
+                offeredSemester: offeredSemester,
+                lecHo: lecHo,
+                tuteHo: tuteHo,
+                labHo: labHo,
+                evaHo: evaHo
+            };
 
-        setSubName("");
-        setSubCode("");
-        setOfferedYear("");
-        setOfferedSemester("");
-        setLecHo("");
-        setTuteHo("");
-        setLabHo("");
-        setEvaHo("");
+            axios.post('http://localhost:5000/api/subjects/update/' +props.subjectID, req)
+                .then((res) => {
+                    if(res.data == 'Update complete'){
+                        swal("Successful", "Subject details updated", "success");
+                    }else{
+                        swal("Unsuccessful", "Error while updating details", "error");
+                    }
+                });
+
+            setSubName("");
+            setSubCode("");
+            setOfferedYear("");
+            setOfferedSemester("");
+            setLecHo("");
+            setTuteHo("");
+            setLabHo("");
+            setEvaHo("");
+        }
     };
 
     const deleteSubject = () => {
@@ -167,13 +171,33 @@ export default function AddressForm(props) {
         setEvaHo("");
     }
 
+    function validateForm() {
+        let subName = document.getElementById("subNameId").value;
+        let subCode = document.getElementById("subCodeId").value;
+        let offeredYear = document.getElementById("offYearId").value;
+
+        if(subName == ""){
+            swal("Unsuccessful", "Subject name must be filled out", "error");
+            return false;
+        }
+        if(subCode == ""){
+            swal("Unsuccessful", "Suject code must be filled out", "error");
+            return false;
+        }
+        if(offeredYear == ""){
+            swal("Unsuccessful", "Offered year must be filled out", "error");
+            return false;
+        }
+        return true;
+    }
+
     return (
         <React.Fragment>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <TextField
                         required
-                        id="employeeID"
+                        id="subNameId"
                         name="employeeID"
                         label= "Subject Name"
                         value={subName}
@@ -186,7 +210,7 @@ export default function AddressForm(props) {
                 <Grid item xs={12}>
                     <TextField
                         required
-                        id="employeeID"
+                        id="subCodeId"
                         name="employeeID"
                         label= "Subject Code"
                         value={subCode}
@@ -199,7 +223,7 @@ export default function AddressForm(props) {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
-                        id="firstName"
+                        id="offYearId"
                         name="firstName"
                         label= "Offered Year"
                         value={offeredYear}
