@@ -38,7 +38,7 @@ export default function StudentDetails() {
   };
 
 
-  const [studentList, setStudentList] = useState([]);
+
 
 
 
