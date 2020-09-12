@@ -31,8 +31,13 @@ export default function AcademicYrSem() {
   const classes = useStyles();
 
   const [yrSem, setYrSem] = React.useState('');
+  const [newYrSem, setNewYrSem] = React.useState('');
   const handleYrSemChange = (event) => {
     setYrSem(event.target.value);
+    setNewYrSem(event.target.value);
+  };
+  const handleNewYrSemChange = (event) => {
+    setNewYrSem(event.target.value);
   };
 
   const [studentList, setStudentList] = useState([]);
@@ -61,10 +66,11 @@ export default function AcademicYrSem() {
 
   const updateStudent = () => {
     const req = {
-      academicYrSem: yrSem,
+
+      academicYrSem: newYrSem,
     };
 
-    axios.post(`http://localhost:5000/api/students/update/5f3e97b50387580c0c7cb426`, req).then((res) => {
+    axios.post(`http://localhost:5000/api/students/update/academicYrSem`, req).then((res) => {
       if (res.data.success) {
         alert("Student Entry Updating Failed");
       }else{
@@ -109,7 +115,7 @@ export default function AcademicYrSem() {
 
                 <div className="input-field col s6">
                   <div className="form-group">
-                    <input type="text" className="form-control" value={yrSem} onChange={handleYrSemChange}/>
+                    <input type="text" className="form-control" value={newYrSem} onChange={handleNewYrSemChange}/>
                   </div>
                 </div>
                 <Col sm="6 pb-0">
