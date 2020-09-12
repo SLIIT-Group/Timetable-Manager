@@ -24,12 +24,43 @@ function Add({ allocations, counter, setCounter }) {
   const initialState = { day: '', hours: '' };
   const [allocation, setAllocation] = useState(initialState);
   const [filteredDays, setFilteredDays] = useState([]);
+  const [dayError, setDayError] = useState('');
+  const [hourError, setHourError] = useState('');
+
+  const checkErrors = () => {
+    let errorCount = 0;
+
+    if (allocation.day === '' || allocation.day === null) {
+      setDayError('Please select a valid day');
+      errorCount += 1;
+    } else {
+      setDayError('');
+    }
+    if (
+      allocation.hours === '' ||
+      allocation.hours === null ||
+      allocation.hours <= 0
+    ) {
+      setHourError('Please select a valid time');
+      errorCount += 1;
+    } else {
+      setHourError('');
+    }
+    return errorCount;
+  };
 
   const addAllocation = () => {
-    axios
-      .post('http://localhost:5000/api/day', allocation)
-      .then(() => setCounter(counter + 1))
-      .catch((err) => console.log(err));
+    checkErrors();
+    if (checkErrors() === 0) {
+      console.log(allocation);
+      console.log('Posted');
+      axios
+        .post('http://localhost:5000/api/day', allocation)
+        .then(() => setCounter(counter + 1))
+        .catch((err) => console.log(err));
+      setAllocation(initialState);
+    } else {
+    }
   };
 
   const handleChange = (e) => {
@@ -50,7 +81,7 @@ function Add({ allocations, counter, setCounter }) {
   useEffect(() => {
     createDaysArray();
     setFilteredDays(days.filter((day) => !addedDays.includes(day.value)));
-  }, [allocations]);
+  }, [hourError, dayError, allocations]);
   //Days
   const days = [
     {
@@ -108,6 +139,7 @@ function Add({ allocations, counter, setCounter }) {
           </MenuItem>
         ))}
       </TextField>
+      {dayError && <p style={errorStyle}>{dayError}</p>}
       <Grid item xs={12}>
         <TextField
           required
@@ -119,12 +151,9 @@ function Add({ allocations, counter, setCounter }) {
           onChange={handleChange}
           type='number'
         />
+        {hourError && <p style={errorStyle}>{hourError}</p>}
       </Grid>
 
-      {/* <Grid item sm={12}>
-        <TextField id='standard-size-small' defaultValue='Small' size='small' />
-      </Grid> */}
-      {/* <Grid item sm={12}> */}
       <Button
         style={buttonStyle}
         value='Add'
@@ -135,16 +164,20 @@ function Add({ allocations, counter, setCounter }) {
       >
         Add
       </Button>
-      {/* </Grid> */}
     </form>
   );
 }
 
 const buttonStyle = {
   margin: '20px',
-
-  // marginLeft: '30px',
   width: '70%',
+};
+
+const errorStyle = {
+  color: '#db7f79',
+  marginLeft: '40px',
+  marginTop: 0,
+  fontSize: '12px',
 };
 
 export default Add;

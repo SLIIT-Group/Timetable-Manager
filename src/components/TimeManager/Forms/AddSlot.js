@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Grid, Button } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
@@ -23,7 +23,13 @@ function Add({ counter, setCounter }) {
   const classes = useStyles();
   const initialState = { start: '', end: '', duration: '' };
   const [slot, setSlot] = useState(initialState);
-  const [selectedDate, handleDateChange] = useState(new Date());
+  const [selectedDate, handleDateChange] = useState();
+  const [slotTypeError, setSlotTypeError] = useState('');
+  const [timeError, setTimeError] = useState('');
+
+  useEffect(() => {
+    console.log('fired');
+  }, [timeError]);
 
   //Slot types
   const types = ['1-Hour Slot', '1/2-Hour Slot'];
@@ -32,7 +38,27 @@ function Add({ counter, setCounter }) {
     setSlot({ ...slot, [e.target.name]: e.target.value });
   };
 
-    const calcEndTime = (duration) => {
+  const checkErrors = () => {
+    let errorCount = 0;
+
+    console.log(selectedDate);
+
+    if (slot.duration === '' || slot.duration === null) {
+      setSlotTypeError('Please select a valid type');
+      errorCount += 1;
+    } else {
+      setSlotTypeError('');
+    }
+    if (selectedDate === null) {
+      setTimeError('Please select a valid time');
+      errorCount += 1;
+    } else {
+      setTimeError('');
+    }
+    return errorCount;
+  };
+
+  const calcEndTime = (duration) => {
     switch (duration) {
       case '1-Hour Slot':
         let endTimeObj1 = new Date(selectedDate.getTime() + 60 * 60000);
@@ -65,19 +91,25 @@ function Add({ counter, setCounter }) {
 
   // Handle Add button
   const Add = () => {
-    let startTimeString = selectedDate.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    let errCount = checkErrors();
 
-    let endTimeString = calcEndTime(slot.duration);
-    const s = {
-      start: startTimeString,
-      end: endTimeString,
-      duration: slot.duration,
-    };
+    if (errCount === 0) {
+      let startTimeString = selectedDate.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
 
-    post(s);
+      let endTimeString = calcEndTime(slot.duration);
+      const s = {
+        start: startTimeString,
+        end: endTimeString,
+        duration: slot.duration,
+      };
+
+      post(s);
+    } else {
+      console.log(errCount);
+    }
   };
 
   return (
@@ -98,17 +130,19 @@ function Add({ counter, setCounter }) {
           </MenuItem>
         ))}
       </TextField>
+      {slotTypeError !== '' && <p style={errorStyle}>{slotTypeError}</p>}
       <Grid item xs={12}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <TimePicker
             clearable
-            ampm={false}
+            // ampm={false}
             label='Start time'
             value={selectedDate}
             onChange={handleDateChange}
             autoOk
           />
         </MuiPickersUtilsProvider>
+        {timeError && <p style={errorStyle}>{timeError}</p>}
       </Grid>
 
       <Button
@@ -127,9 +161,14 @@ function Add({ counter, setCounter }) {
 
 const buttonStyle = {
   margin: '20px',
-
-  // marginLeft: '30px',
   width: '70%',
+};
+
+const errorStyle = {
+  color: '#db7f79',
+  marginLeft: '40px',
+  marginTop: 0,
+  fontSize: '12px',
 };
 
 export default Add;
