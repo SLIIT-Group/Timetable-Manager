@@ -231,54 +231,54 @@ function Stats() {
       ]);
       setName("Number of subjects offered in year");
 
-      const y8 = subject.filter((item) => {
+      const y1 = subject.filter((item) => {
         if (item.offeredYear == "2012") {
           return item.subCode;
         }
       });
 
-      const y9 = subject.filter((item) => {
+      const y2 = subject.filter((item) => {
         if (item.offeredYear == "2013") {
           return item.subCode;
         }
       });
 
-      const y1 = subject.filter((item) => {
+      const y3 = subject.filter((item) => {
         if (item.offeredYear == "2014") {
           return item.subCode;
         }
       });
 
-      const y2 = subject.filter((item) => {
+      const y4 = subject.filter((item) => {
         if (item.offeredYear == "2015") {
           return item.subCode;
         }
       });
 
-      const y3 = subject.filter((item) => {
+      const y5 = subject.filter((item) => {
         if (item.offeredYear == "2016") {
           return item.subCode;
         }
       });
 
-      const y4 = subject.filter((item) => {
+      const y6 = subject.filter((item) => {
         if (item.offeredYear == "2017") {
           return item.subCode;
         }
       });
 
-      const y5 = subject.filter((item) => {
+      const y7 = subject.filter((item) => {
         if (item.offeredYear == "2018") {
           return item.subCode;
         }
       });
 
-      const y6 = subject.filter((item) => {
+      const y8 = subject.filter((item) => {
         if (item.offeredYear == "2019") {
           return item.subCode;
         }
       });
-      const y7 = subject.filter((item) => {
+      const y9 = subject.filter((item) => {
         if (item.offeredYear == "2020") {
           return item.subCode;
         }

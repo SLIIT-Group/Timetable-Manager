@@ -338,6 +338,7 @@ function AddRoom(props) {
                   id="standard-secondary"
                   label="Capacity"
                   value={capacity}
+                  type="number"
                   onChange={(e) => {
                     setCapacity(e.target.value);
                   }}
