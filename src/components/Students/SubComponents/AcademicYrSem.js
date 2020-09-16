@@ -103,7 +103,7 @@ export default function AcademicYrSem() {
                         <em>None</em>
                       </MenuItem>
                       {studentList.map((item) => (
-                      <MenuItem value={item.academicYrSem}>{item.academicYrSem}</MenuItem>
+                      <MenuItem value={item._id}>{item.academicYrSem}</MenuItem>
                           ))}
                     </Select>
                   </FormControl>
