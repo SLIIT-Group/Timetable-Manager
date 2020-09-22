@@ -10,38 +10,6 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import swal from "sweetalert";
 
-
-const level = [
-    {
-        value: 1,
-        label: 'Professor',
-    },
-    {
-        value: 2,
-        label: 'Assistant Professor',
-    },
-    {
-        value: 3,
-        label: 'Senior Lecturer(HG)',
-    },
-    {
-        value: 4,
-        label: 'Senior Lecturer',
-    },
-    {
-        value: 5,
-        label: 'Lecturer',
-    },
-    {
-        value: 6,
-        label: 'Assistant Lecturer',
-    },
-    {
-        value: 7,
-        label: 'Instructors',
-    }
-];
-
 const useStyles = makeStyles((theme) => ({
     root: {
         '& .MuiTextField-root': {
@@ -65,6 +33,7 @@ export default function SessionForm() {
     const [lecturers, setLecturers] = useState([]);
     const [subjects, setSubjects] = useState([]);
     const [tags, setTags] = useState([]);
+    const [groups, setGroups] = useState([]);
 
     const [lecturerName, setLecturerName] = useState('');
     const [lecturerName2, setLecturerName2] = useState('');
@@ -163,6 +132,12 @@ export default function SessionForm() {
         axios.get("http://localhost:5000/api/tags/all")
             .then((res) => {
                 setTags(res.data);
+            });
+
+        axios
+            .get("http://localhost:5000/api/students/all")
+            .then((res) => {
+                setGroups(res.data);
             });
     }, []);
 
@@ -281,9 +256,9 @@ export default function SessionForm() {
                         variant="filled"
                         fullWidth
                     >
-                        {level.map((option) => (
-                            <MenuItem key={option.label} value={option.value}>
-                                {option.label}
+                        {groups.map((item) => (
+                            <MenuItem key={item._id} value={item.academicYrSem+"."+item.programme+"."+item.grpNo}>
+                                {item.academicYrSem+"."+item.programme+"."+item.grpNo}
                             </MenuItem>
                         ))}
                     </TextField>
