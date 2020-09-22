@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Col} from "reactstrap";
 import Row from "react-bootstrap/Row";
@@ -8,6 +8,8 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import axios from "axios";
+import swal from "sweetalert";
 
 let cx = classNames;
 const useStyles = makeStyles((theme) => ({
@@ -31,27 +33,127 @@ export default function SubGrpNum() {
   const classes = useStyles();
 
   const [yrSem, setYrSem] = React.useState('');
-  console.log(yrSem);
   const handleYrSemChange = (event) => {
     setYrSem(event.target.value);
   };
 
+
   const [prog, setProg] = React.useState('');
-  console.log(prog);
   const handleProgChange = (event) => {
     setProg(event.target.value);
   };
 
   const [grpNo, setGrpNo] = React.useState('');
-  console.log(grpNo);
   const handleGrpNoChange = (event) => {
     setGrpNo(event.target.value);
   };
 
   const [subGrpNo, setSubGrpNo] = React.useState('');
-  console.log(setSubGrpNo);
+  const [newSubGrpNo, setNewSubGrpNo] = React.useState('');
   const handleSubGrpNoChange = (event) => {
     setSubGrpNo(event.target.value);
+    setNewSubGrpNo(event.target.value);
+  };
+  const handleNewSubGrpNoChange = (event) => {
+    setNewSubGrpNo(event.target.value);
+  };
+
+
+  const [yrList, setYrList] = useState([]);
+  const [progList, setProgList] = useState([]);
+  const [grpList, setGrpList] = useState([]);
+  const [subGrpList, setSubGrpList] = useState([]);
+
+  useEffect(() => {
+    axios
+        .post("http://localhost:5000/api/students/view/academicYrSem")
+        .then((res) => {
+          setYrList(res.data);
+        });
+
+  },[]);
+  useEffect(() => {
+    const req = {
+      academicYrSem: yrSem,
+    };
+    axios
+        .post("http://localhost:5000/api/students/view/programme",req)
+        .then((res) => {
+          setProgList(res.data);
+        });
+
+  },[yrSem]);
+  useEffect(() => {
+    const req = {
+      academicYrSem: yrSem,
+      programme: prog,
+    };
+    axios
+        .post("http://localhost:5000/api/students/view/grpNo",req)
+        .then((res) => {
+          setGrpList(res.data);
+        });
+
+  },[prog]);
+  useEffect(() => {
+    const req = {
+      academicYrSem: yrSem,
+      programme: prog,
+      grpNo : grpNo,
+    };
+    axios
+        .post("http://localhost:5000/api/students/view/subGrpNo",req)
+        .then((res) => {
+          setSubGrpList(res.data);
+        });
+
+  },[grpNo,subGrpNo,newSubGrpNo]);
+
+  const deleteStudent = () => {
+    const req = {
+      prevAcademicYrSem: yrSem,
+      prevProgramme: prog,
+      prevGrpNo: grpNo,
+      prevSubGrpNo : subGrpNo,
+    };
+
+    axios.post(`http://localhost:5000/api/students/delete/subGrpNo`, req).then((res) => {
+      if (res.data.success) {
+        swal("Unsuccessful", "Student Entry Updating Failed", "error");
+      }else{
+        swal("Successful", "Student Entry Update Successful", "success");
+      }
+    });
+    setYrSem("");
+    setProg("");
+    setGrpNo("")
+    setSubGrpNo("");
+
+
+  };
+
+  const updateStudent = () => {
+    const req = {
+      prevAcademicYrSem: yrSem,
+      prevProgramme: prog,
+      prevGrpNo : grpNo,
+      prevSubGrpNo: subGrpNo,
+      subGrpNo: newSubGrpNo,
+    };
+
+    axios.post(`http://localhost:5000/api/students/update/subGrpNo`, req).then((res) => {
+      if (res.data.success) {
+        swal("Unsuccessful", "Student Entry Updating Failed", "error");
+      }else{
+        swal("Successful", "Student Entry Update Successful", "success");
+      }
+    });
+    setYrSem("");
+    setProg("");
+    setGrpNo("");
+    setSubGrpNo("");
+    setNewSubGrpNo("");
+
   };
 
   return (
@@ -76,9 +178,9 @@ export default function SubGrpNum() {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      {yrList.map((item) => (
+                          <MenuItem value={item}>{item}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </div>
@@ -101,9 +203,9 @@ export default function SubGrpNum() {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      {progList.map((item) => (
+                          <MenuItem value={item}>{item}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </div>
@@ -127,9 +229,9 @@ export default function SubGrpNum() {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      {grpList.map((item) => (
+                          <MenuItem value={item}>{item}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </div>
@@ -138,7 +240,7 @@ export default function SubGrpNum() {
 
               <div className="row col-md-12 mt-3">
                 <Col sm="6 pb-0">
-                  <label className="mt-3 h5 font-weight-bold">Sub Group ID :</label>
+                  <label className="mt-3 h5 font-weight-bold">Sub Group Number :</label>
                 </Col>
                 <div className="input-field col s6 d-flex flex-column">
                   <FormControl variant="outlined" className={classes.formControl}>
@@ -153,9 +255,9 @@ export default function SubGrpNum() {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      {subGrpList.map((item) => (
+                          <MenuItem value={item}>{item}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </div>
@@ -167,18 +269,18 @@ export default function SubGrpNum() {
 
                 <div className="input-field col s6">
                   <div className="form-group">
-                    <input type="text" className="form-control" value={subGrpNo} onChange=""/>
+                    <input type="text" className="form-control" value={newSubGrpNo} onChange={handleNewSubGrpNoChange}/>
                   </div>
                 </div>
                 <Col sm="6 pb-0">
                   <Row>
                     <Col>
-                      <Button variant="contained" color="primary" className="btn-block pr-1">
+                      <Button variant="contained" color="primary" className="btn-block pr-1" onClick={updateStudent}>
                         Update
                       </Button>
                     </Col>
                     <Col>
-                      <Button variant="contained" color="secondary" className="btn-block pl-1">
+                      <Button variant="contained" color="secondary" className="btn-block pl-1" onClick={deleteStudent}>
                         Delete
                       </Button>
                     </Col>

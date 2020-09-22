@@ -86,9 +86,7 @@ export default function EditStudentForm(props) {
                 academicYrSem: academicYrSem,
                 programme: programme,
                 grpNo: grpNo,
-                grpID: academicYrSem + "." + programme + "." + grpNo,
                 subGrpNo: subGrpNo,
-                subGrpID: academicYrSem + "." + programme + "." + grpNo + "." + subGrpNo,
                 id: _id,
             };
 

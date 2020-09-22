@@ -85,9 +85,7 @@ export default function StudentForm( {noBackBtn}) {
                 academicYrSem: academicYrSem,
                 programme: programme,
                 grpNo: grpNo,
-                grpID: academicYrSem+"."+programme+"."+grpNo,
                 subGrpNo: subGrpNo,
-                subGrpID : academicYrSem+"."+programme+"."+grpNo+"."+subGrpNo,
             };
 
             axios.post("http://localhost:5000/api/students/add", req).then((res) => {

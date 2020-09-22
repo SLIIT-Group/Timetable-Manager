@@ -92,9 +92,9 @@ function Students() {
                 <TableCell align='center'>{item.academicYrSem}</TableCell>
                 <TableCell align='center'>{item.programme}</TableCell>
                 <TableCell align='center'>{item.grpNo}</TableCell>
-                <TableCell align='center'>{item.grpID}</TableCell>
+                <TableCell align='center'>{item.academicYrSem+"."+item.programme+"."+item.grpNo}</TableCell>
                 <TableCell align='center'>{item.subGrpNo}</TableCell>
-                <TableCell align='center'>{item.subGrpID}</TableCell>
+                <TableCell align='center'>{item.academicYrSem+"."+item.programme+"."+item.grpNo+"."+item.subGrpNo}</TableCell>
                 <TableCell align='center'>
                   {' '}
                   <ReactLink to={"/student/edit/" +item._id}>
