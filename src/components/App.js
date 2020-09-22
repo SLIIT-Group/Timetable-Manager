@@ -2,7 +2,6 @@ import React from 'react';
 import SideNav from './Navigation/SideNav';
 import TimeManager from './TimeManager/TimeManager';
 import LocationManager from './Location/LocationManager';
-import SessionManager from './Sessions/SessionManager';
 import StudentManager from './Students/StudentManager';
 import LecturerForm from './Lecturer/Lecturer';
 import TagManager from './Tags/TagManager';
@@ -19,6 +18,9 @@ import TagForm from './Tags/SubComponents/TagForm';
 import EditTagForm from './Tags/SubComponents/EditTagForm';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './Home/Home';
+import SessionExpansionPanel from './Sessions/SessionExpansionPanel';
+import SessionForm from './Sessions/Session';
+import EditSession from './Sessions/EditSession';
 
 const App = () => {
   return (
@@ -30,7 +32,7 @@ const App = () => {
             <Route exact path='/time' component={TimeManager} />
             <Route exact path='/lecturers' component={LecturerExpansionPanel} />
             <Route exact path='/location' component={LocationManager} />
-            <Route exact path='/session' component={SessionManager} />
+            <Route exact path='/session' component={SessionExpansionPanel} />
             <Route exact path='/student' component={StudentManager} />
             <Route exact path='/subject' component={SubjectExpansionPanel} />
             <Route exact path='/tags' component={TagManager} />
@@ -44,6 +46,8 @@ const App = () => {
             <Route exact path='/addTag' component={TagForm} />
             <Route exact path='/student/edit/:id' component={EditStudentForm} />
             <Route exact path='/tags/edit/:id' component={EditTagForm} />
+            <Route exact path='/addSession' component={SessionForm} />
+            <Route exact path='/session/edit/:id' component={EditSession} />
             <Route path='/' component={Home} />
           </Switch>
         </div>
