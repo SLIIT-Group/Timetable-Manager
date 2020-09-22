@@ -222,6 +222,19 @@ export default function PersistentDrawerLeft() {
               </ListItemText>
             </ListItem>
           </NavLink>
+          <NavLink
+            exact
+            activeStyle={activeStyle}
+            style={navStyle}
+            to='/timetables'
+          >
+            <ListItem button>
+              <ListItemText>
+                <ApartmentIcon style={iconStyle} />
+                Timetables
+              </ListItemText>
+            </ListItem>
+          </NavLink>
         </List>
       </Drawer>
       <main

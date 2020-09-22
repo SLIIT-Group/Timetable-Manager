@@ -19,6 +19,7 @@ import TagForm from './Tags/SubComponents/TagForm';
 import EditTagForm from './Tags/SubComponents/EditTagForm';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './Home/Home';
+import TimeTables from './Timetables/TimeTables';
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
             <Route exact path='/addTag' component={TagForm} />
             <Route exact path='/student/edit/:id' component={EditStudentForm} />
             <Route exact path='/tags/edit/:id' component={EditTagForm} />
+            <Route exact path='/timetables' component={TimeTables} />
             <Route path='/' component={Home} />
           </Switch>
         </div>
