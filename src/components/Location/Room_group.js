@@ -1,58 +1,132 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useState, useEffect } from "react";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Grid from "@material-ui/core/Grid";
+import { Container } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import { Grid, Button } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import "react-notifications/lib/notifications.css";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import axios from "axios";
 import MenuItem from "@material-ui/core/MenuItem";
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputBase from "@material-ui/core/InputBase";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "98%",
+    width: "100%",
     margin: "10px",
-    marginRight: "100px",
-  },
-  layout: {
-    width: "auto",
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
-      marginLeft: "auto",
-      marginRight: "auto",
-    },
+    marginLeft: 0,
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
+    flexBasis: "33.33%",
+    flexShrink: 0,
   },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
   },
-  iconButton: {
-    padding: 10,
-  },
-  divider: {
-    height: 28,
-    margin: 4,
+  table: {
+    minWidth: 200,
+    padding: 0,
   },
 }));
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: "#3f51b5",
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
-export default function Room_group() {
+function Room_group(props) {
   const classes = useStyles();
-  const [buildings, setBuilding] = useState([]);
-  const [input, setInput] = useState("");
-  const [search, setsearch] = useState("");
+  const [expanded, setExpanded] = useState(false);
+  const [table, setTable] = useState(false);
+  const [search, setSearch] = useState("");
+  const [searchFilter, setSearchFilter] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [building_room, setBuilding_room] = useState([]);
+  const [room, setRoom] = useState("");
+  const [number, setNumber] = useState("");
+  const [checkArray, setCheckArray] = useState(false);
   const [toggle, setToggle] = React.useState({
     value: "Add",
     isEdit: true,
   });
-  const onClick = (e) => {
+  const [tagRoom, setTagRoom] = useState([]);
+  const [block, setBlock] = useState("");
+  const [room_group, setRoomGroup] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [group, setGroup] = useState("");
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/students/all`)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setGroups(result);
+        },
+        (error) => {
+          setError(error);
+        }
+      );
+    axios
+
+      .get(`http://localhost:5000/api/room/`) //get data from userID
+      .then((res) => {
+        setBuilding_room(res.data);
+      });
+
+    axios
+
+      .get(`http://localhost:5000/api/room_group/`) //get data from userID
+      .then((res) => {
+        setRoomGroup(res.data);
+        setSearchFilter(res.data); //save retrieved data to the hook
+      });
+  }, [expanded, table]);
+
+  const onClick = (id) => {
+    setNumber(id);
+
+    room_group.map((item) => {
+      if (item._id == id) {
+        return setGroup(item.group), setRoom(item.room);
+      }
+    });
+
     if (toggle.value === "Add") {
       setToggle({
         value: "Save",
@@ -66,133 +140,406 @@ export default function Room_group() {
     }
   };
 
-  const addBuilding = (e) => {
+  const deleteRoom = (id) => {
+    setTable(false);
+    axios
+      .delete(`http://localhost:5000/api/room_group/remove/${id}`)
+      .then((res) => {
+        NotificationManager.info("Item is Successfully deleted", "", 3000);
+        setTable(true);
+      })
+      .catch((err) => console.log("Error"));
+  };
+
+  const addRoom = (e) => {
+    setTable(false);
     e.preventDefault();
+
     if (toggle.value === "Save") {
       setToggle({
         value: "Add",
         isEdit: false,
       });
+
+      const update_tagRoom = {
+        group: group,
+        room: room,
+      };
+      if (!checkArray) {
+        axios
+          .post(
+            `http://localhost:5000/api/room_group/update/${number}`,
+            update_tagRoom
+          )
+          .then((res) => {
+            NotificationManager.info("Item is Successfully updated", "", 3000); //save retrieved data to the hook
+            setTable(true);
+            setGroup("");
+            setRoom("");
+          });
+      } else {
+        NotificationManager.warning("Item is Already There", "", 3000);
+        setGroup("");
+        setRoom("");
+      }
     } else {
-      setBuilding([...buildings, input]);
-      setInput("");
+      const data = {
+        group: group,
+        room: room,
+      };
+
+      if (checkArray) {
+        NotificationManager.warning(
+          "Warning message",
+          "Room is already allocated",
+          3000
+        );
+        setGroup("");
+        setRoom("");
+      } else {
+        axios
+          .post("http://localhost:5000/api/room_group/add", data)
+          .then((res) => {
+            if (res.data.success == true) {
+              NotificationManager.success("Success message", "Room Added");
+              setGroup("");
+              setRoom("");
+              setTable(true);
+            } else {
+              NotificationManager.warning(
+                "Warning message",
+                "Room is already there",
+                3000
+              );
+              setGroup("");
+              setRoom("");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
   };
 
+  useEffect(() => {
+    room_group.map((item) => {
+      if (item.room == room && item.group == group) {
+        return setCheckArray(true);
+      } else {
+        return setCheckArray(false);
+      }
+    });
+  }, [block, room]);
+
+  // useEffect(() => {
+  //   buildings.map((item) => {
+  //     if (item.building == block) {
+  //       return setBuildingId(item._id);
+  //     }
+  //   });
+  // }, [block]);
+
+  useEffect(() => {
+    const results = room_group.filter((data) =>
+      data.group.toLowerCase().includes(search)
+    );
+    setSearchFilter(results);
+  }, [search]);
+
+  // const check = (e) => {
+  //   try {
+  //     setCapacity(parseInt(e.target.value));
+  //   } catch (error) {
+  //     NotificationManager.warning(
+  //       "Warning message",
+  //       "Capacity should be a number",
+  //       3000
+  //     );
+  //   }
+  // };
+
   return (
-    <div className={classes.layout}>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
+    <div className={classes.root}>
+      <Container>
+        <Accordion
+          style={
+            expanded
+              ? { backgroundColor: "#f5f5f5" }
+              : { backgroundColor: "#3f51b5", color: "#fff" }
+          }
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
         >
-          <Typography className={classes.heading}>
-            Add Room for groups
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            <div style={{ marginLeft: "80px" }}>
-              <form className="form-inline">
-                <div className="form-group mx-sm-3 mb-2">
-                  <Grid>
-                    <TextField
-                      select
-                      label="Room"
-                      variant="outlined"
-                      disabled={!buildings.length}
-                      style={{ width: "130px" }}
-                    >
-                      {buildings.map((option) => (
-                        <MenuItem value={option}>{option}</MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid>
-                    <TextField
-                      select
-                      label="Group"
-                      variant="outlined"
-                      disabled={!buildings.length}
-                      style={{ width: "130px", marginLeft: "10px" }}
-                    >
-                      {buildings.map((option) => (
-                        <MenuItem value={option}>{option}</MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
-                </div>
-                <button
-                  disabled={!input}
-                  type="submit"
-                  className="btn btn-info mb-2"
-                  onClick={addBuilding}
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon style={{ color: "#fff" }} />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+          >
+            <Typography className={classes.heading}>
+              Add Rooms for Groups
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <form
+                className={classes.root}
+                noValidate
+                autoComplete="off"
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderBottom: "5px solid #DADADA",
+                  borderRadius: 30,
+                  paddingLeft: 30,
+                  paddingBottom: 10,
+                  minWidth: 250,
+                  width: "100%",
+                  flex: 1,
+                }}
+              >
+                <FormControl
+                  className={classes.formControl}
+                  style={{ marginLeft: 5, marginTop: 20 }}
+                >
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    style={{ marginLeft: 7 }}
+                  >
+                    Group
+                  </InputLabel>
+                  <Select
+                    variant="filled"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={group}
+                    style={{ width: "150px" }}
+                    disabled={!groups.length}
+                    onChange={(event) => setGroup(event.target.value)}
+                  >
+                    {groups.map((option) => (
+                      <MenuItem
+                        key={option._id}
+                        value={
+                          option.academicYrSem +
+                          "." +
+                          option.grpNo +
+                          "." +
+                          option.subGrpNo
+                        }
+                      >
+                        {option.academicYrSem +
+                          "." +
+                          option.grpNo +
+                          "." +
+                          option.subGrpNo}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl
+                  className={classes.formControl}
+                  style={{ marginLeft: 5, marginTop: 20 }}
+                >
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    style={{ marginLeft: 7 }}
+                  >
+                    Room
+                  </InputLabel>
+                  <Select
+                    variant="filled"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={room}
+                    style={{ width: "150px" }}
+                    disabled={!building_room.length}
+                    onChange={(event) => setRoom(event.target.value)}
+                  >
+                    {building_room.map((option) => (
+                      <MenuItem key={option._id} value={option.Room}>
+                        {option.Room}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ marginTop: 10, marginLeft: 50 }}
+                  disabled={!room || !group}
+                  onClick={addRoom}
                 >
                   {toggle.value}
-                </button>
+                </Button>
               </form>
               <div
                 style={{
-                  border: "3px solid #dff2ed",
-                  padding: "25px",
-                  borderRadius: "10px",
-                  width: "100%",
+                  flex: 5,
+                  minWidth: 300,
+                  paddingLeft: 50,
                 }}
               >
-                <div className={classes.root}>
-                  <div className="main">
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="input"
-                        style={{ width: "100%" }}
-                      />
-                    </div>
-                  </div>
-                  <br />
-                  <table
-                    className="table table-striped table-info"
-                    style={{ textAlign: "center" }}
+                {room_group.length !== 0 ? (
+                  <Paper
+                    component="form"
+                    className={classes.root}
+                    style={{
+                      justifyContent: "center",
+                      borderRadius: 20,
+                      textAlign: "center",
+                      borderBottom: "2px solid #EC4C90",
+                      maxWidth: 500,
+                      display: "flex",
+                      flexDirection: "row",
+                      align: "space-between",
+                      paddingLeft: 25,
+                    }}
                   >
-                    <thead>
-                      <tr>
-                        <th scope="col">Room</th>
-                        <th scope="col">Group</th>
-                        <th scope="col" colSpan="2">
-                          Action
-                        </th>
-                      </tr>
-                    </thead>
-                    {buildings.map((item) => (
-                      <tbody>
-                        <tr>
-                          <th scope="row">{item}</th>
-                          <td>Test</td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-warning"
-                              onClick={onClick}
-                            >
-                              Edit
-                            </button>
-                          </td>
-                          <td>
-                            <button type="button" class="btn btn-danger">
+                    <InputBase
+                      className={classes.input}
+                      placeholder="Search Rooms"
+                      value={search}
+                      onChange={(e) => {
+                        setSearch(e.target.value);
+                      }}
+                      style={{ flex: 1 }}
+                    />
+                    <IconButton
+                      className={classes.iconButton}
+                      aria-label="search"
+                    >
+                      <SearchIcon disabled style={{ flex: 1 }} />
+                    </IconButton>
+                  </Paper>
+                ) : (
+                  <h1></h1>
+                )}
+
+                {room_group.length !== 0 ? (
+                  <Grid
+                    style={{
+                      flex: 5,
+                      maxWidth: 500,
+                    }}
+                  >
+                    <TableContainer component={Paper}>
+                      <Table
+                        className={classes.table}
+                        aria-label="simple table"
+                        style={{
+                          borderRadius: 20,
+                          borderBottom: "3px solid #3f51b5",
+                        }}
+                      >
+                        <TableHead
+                          style={{
+                            backgroundColor: "theme.palette.common.black",
+                            color: "theme.palette.common.white",
+                          }}
+                        >
+                          <TableRow align="center">
+                            <StyledTableCell align="center">
+                              Group
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Room
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
                               Delete
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    ))}
-                  </table>
-                </div>
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Edit
+                            </StyledTableCell>
+                          </TableRow>
+                        </TableHead>
+                        {!search ? (
+                          <TableBody>
+                            {room_group.map((item) => (
+                              <TableRow hover key={item._id}>
+                                <TableCell align="center">
+                                  {item.group}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.room}
+                                </TableCell>
+                                <TableCell align="center">
+                                  <DeleteIcon
+                                    onClick={() => {
+                                      deleteRoom(item._id);
+                                    }}
+                                  >
+                                    {" "}
+                                  </DeleteIcon>
+                                </TableCell>
+                                <TableCell align="center">
+                                  {" "}
+                                  <EditIcon
+                                    onClick={() => {
+                                      onClick(item._id);
+                                    }}
+                                  ></EditIcon>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        ) : (
+                          <TableBody>
+                            {searchFilter.map((item) => (
+                              <TableRow hover key={item._id}>
+                                <TableCell align="center">
+                                  {item.group}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.room}
+                                </TableCell>
+                                <TableCell align="center">
+                                  <DeleteIcon
+                                    onClick={() => {
+                                      deleteRoom(item._id);
+                                    }}
+                                  >
+                                    {" "}
+                                  </DeleteIcon>
+                                </TableCell>
+                                <TableCell align="center">
+                                  {" "}
+                                  <EditIcon
+                                    onClick={() => {
+                                      onClick(item._id);
+                                    }}
+                                  ></EditIcon>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        )}
+                      </Table>
+                    </TableContainer>
+                  </Grid>
+                ) : (
+                  <h1 style={{ fontWeight: "bolder", paddingLeft: 8 }}>
+                    No data
+                  </h1>
+                )}
               </div>
             </div>
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+          </AccordionDetails>
+        </Accordion>
+      </Container>
+      <NotificationContainer />
     </div>
   );
 }
+
+export default Room_group;
