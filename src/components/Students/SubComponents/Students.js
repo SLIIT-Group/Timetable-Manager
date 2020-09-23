@@ -56,12 +56,10 @@ function Students() {
   }
   useEffect(() => {
     axios
-
         .get("http://localhost:5000/api/students/all")
         .then((res) => {
           setStudentList(res.data);
         });
-
   });
 
 
