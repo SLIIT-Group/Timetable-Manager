@@ -16,6 +16,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import swal from "sweetalert";
 import axios from "axios";
+import Students from "../SubComponents/Students";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -263,7 +264,10 @@ export default function NotAvailable() {
                 </div>
 
               </Row>
+              <br/><br/>
+              <Students />
             </div>
+
           </AccordionDetails>
         </Accordion>
       </div>

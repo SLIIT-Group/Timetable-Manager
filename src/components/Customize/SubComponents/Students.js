@@ -9,9 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Grid, Button } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 import axios from 'axios';
-import {Link as ReactLink} from "react-router-dom";
 import swal from "sweetalert";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -42,13 +40,13 @@ const useStyles = makeStyles({
 function Students() {
   const classes = useStyles();
 
-  const [studentList, setStudentList] = useState([]);
+  const [dataList, setDataList] = useState([]);
 
-  const deleteStudent = (id) => {
-    axios.get('http://localhost:5000/api/students/delete/' + id)
+  const deleteData = (id) => {
+    axios.get('http://localhost:5000/api/notAvailable/delete/' + id)
         .then((res) => {
           if (res.data == 'Successfully removed') {
-            swal("Successful", "Student details removed", "success");
+            swal("Successful", "Details removed", "success");
           } else {
             swal("Unsuccessful", "Error while deleting details", "error");
           }
@@ -57,9 +55,9 @@ function Students() {
   useEffect(() => {
     axios
 
-        .get("http://localhost:5000/api/students/all")
+        .get("http://localhost:5000/api/notAvailable/all")
         .then((res) => {
-          setStudentList(res.data);
+          setDataList(res.data);
         });
 
   });
@@ -76,36 +74,24 @@ function Students() {
             }}
           >
             <TableRow align='center'>
-              <StyledTableCell align='center'>Academic Yr and Sem</StyledTableCell>
-              <StyledTableCell align='center'>Programme</StyledTableCell>
-              <StyledTableCell align='center'>Group Number</StyledTableCell>
-              <StyledTableCell align='center'>Group ID</StyledTableCell>
-              <StyledTableCell align='center'>Sub Group Number</StyledTableCell>
-              <StyledTableCell align='center'>Sub Group ID</StyledTableCell>
-              <StyledTableCell align='center'>Update</StyledTableCell>
+              <StyledTableCell align='center'>Type</StyledTableCell>
+              <StyledTableCell align='center'>Key</StyledTableCell>
+              <StyledTableCell align='center'>Day</StyledTableCell>
+              <StyledTableCell align='center'>Start Time</StyledTableCell>
+              <StyledTableCell align='center'>End Time</StyledTableCell>
               <StyledTableCell align='center'>Delete</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {studentList.map((item, key) => (
+            {dataList.map((item, key) => (
               <TableRow hover key={key}>
-                <TableCell align='center'>{item.academicYrSem}</TableCell>
-                <TableCell align='center'>{item.programme}</TableCell>
-                <TableCell align='center'>{item.grpNo}</TableCell>
-                <TableCell align='center'>{item.academicYrSem+"."+item.programme+"."+item.grpNo}</TableCell>
-                <TableCell align='center'>{item.subGrpNo}</TableCell>
-                <TableCell align='center'>{item.academicYrSem+"."+item.programme+"."+item.grpNo+"."+item.subGrpNo}</TableCell>
+                <TableCell align='center'>{item.type}</TableCell>
+                <TableCell align='center'>{item.key}</TableCell>
+                <TableCell align='center'>{item.day}</TableCell>
+                <TableCell align='center'>{item.startTime}</TableCell>
+                <TableCell align='center'>{item.endTime}</TableCell>
                 <TableCell align='center'>
-                  {' '}
-                  <ReactLink to={"/student/edit/" +item._id}>
-                  <EditIcon
-                  >
-                    Edit
-                  </EditIcon>
-                  </ReactLink>
-                </TableCell>
-                <TableCell align='center'>
-                  <DeleteIcon onClick={() => deleteStudent(item._id)}
+                  <DeleteIcon onClick={() => deleteData(item._id)}
                   >
                     {' '}
                   </DeleteIcon>
