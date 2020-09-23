@@ -10,10 +10,12 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Room_tag from "./Room_tag";
-import Room_lecturer from "./Room_lecturer";
 import Room_group from "./Room_group";
 import Room_session from "./Room_session";
 import Time_restriction from "./Time_restriction";
+import Room_subject_tag from "./Room_Subject_Tag";
+import Room_lecturer from "./Room_lecturer";
+import Consecutive_sessions from "./consecutive_sessions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,15 +87,13 @@ export default function Rooms() {
   };
 
   return (
-    <div className={classes.layout}>
+    <div>
       <Room_tag />
-      <br />
+      <Room_subject_tag />
       <Room_lecturer />
-      <br />
       <Room_group />
-      <br />
       <Room_session />
-      <br />
+      <Consecutive_sessions />
       <Time_restriction />
     </div>
   );
