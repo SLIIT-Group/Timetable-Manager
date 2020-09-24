@@ -35,6 +35,8 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
+import { TimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,22 +88,16 @@ function Time_restriction(props) {
   const [room_group, setRoomGroup] = useState([]);
   const [sessions, setSessions] = useState([]);
   const [session, setSession] = useState("");
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
+  const [timeRestriction, setTimeRestriction] = useState([]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+    setRoom("");
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/students/all`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setSessions(result);
-        },
-        (error) => {
-          setError(error);
-        }
-      );
     axios
 
       .get(`http://localhost:5000/api/room/`) //get data from userID
@@ -111,9 +107,9 @@ function Time_restriction(props) {
 
     axios
 
-      .get(`http://localhost:5000/api/room_group/`) //get data from userID
+      .get(`http://localhost:5000/api/time_restriction_room/`) //get data from userID
       .then((res) => {
-        setRoomGroup(res.data);
+        setTimeRestriction(res.data);
         setSearchFilter(res.data); //save retrieved data to the hook
       });
   }, [expanded, table]);
@@ -143,7 +139,7 @@ function Time_restriction(props) {
   const deleteRoom = (id) => {
     setTable(false);
     axios
-      .delete(`http://localhost:5000/api/room_group/remove/${id}`)
+      .delete(`http://localhost:5000/api/time_restriction_room/remove/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
@@ -168,7 +164,7 @@ function Time_restriction(props) {
       if (!checkArray) {
         axios
           .post(
-            `http://localhost:5000/api/room_group/update/${number}`,
+            `http://localhost:5000/api/time_restriction_room/update/${number}`,
             update_tagRoom
           )
           .then((res) => {
@@ -183,54 +179,77 @@ function Time_restriction(props) {
         setRoom("");
       }
     } else {
-      const data = {
-        group: session,
-        room: room,
-      };
+      try {
+        const data = {
+          room: room,
+          start_time: startTime.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          end_time: endTime.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        };
 
-      if (checkArray) {
-        NotificationManager.warning(
-          "Warning message",
-          "Room is already allocated",
-          3000
-        );
-        setSession("");
-        setRoom("");
-      } else {
-        axios
-          .post("http://localhost:5000/api/room_group/add", data)
-          .then((res) => {
-            if (res.data.success == true) {
-              NotificationManager.success("Success message", "Room Added");
-              setSession("");
-              setRoom("");
-              setTable(true);
-            } else {
-              NotificationManager.warning(
-                "Warning message",
-                "Room is already there",
-                3000
-              );
-              setSession("");
-              setRoom("");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
+        if (checkArray) {
+          NotificationManager.warning(
+            "Warning message",
+            "Room is already allocated",
+            3000
+          );
+          setSession("");
+          setRoom("");
+        } else {
+          axios
+            .post("http://localhost:5000/api/time_restriction_room/add", data)
+            .then((res) => {
+              if (res.data.success == true) {
+                NotificationManager.success("Success message", "Room Added");
+                setStartTime();
+                setRoom("");
+                setTable(true);
+              } else {
+                NotificationManager.warning(
+                  "Warning message",
+                  "Room is already there",
+                  3000
+                );
+                setSession("");
+                setRoom("");
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      } catch (error) {}
     }
   };
 
   useEffect(() => {
-    room_group.map((item) => {
-      if (item.room == room && item.group == session) {
-        return setCheckArray(true);
-      } else {
-        return setCheckArray(false);
-      }
+    timeRestriction.map((item) => {
+      try {
+        if (
+          item.room == room &&
+          item.start_time ==
+            startTime.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }) &&
+          item.end_time ==
+            endTime.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })
+        ) {
+          return setCheckArray(true);
+        } else {
+          return setCheckArray(false);
+        }
+      } catch (error) {}
     });
-  }, [block, room]);
+  }, [startTime, endTime]);
 
   // useEffect(() => {
   //   buildings.map((item) => {
@@ -241,8 +260,8 @@ function Time_restriction(props) {
   // }, [block]);
 
   useEffect(() => {
-    const results = room_group.filter((data) =>
-      data.group.toLowerCase().includes(search)
+    const results = timeRestriction.filter((data) =>
+      data.room.toLowerCase().includes(search)
     );
     setSearchFilter(results);
   }, [search]);
@@ -314,46 +333,6 @@ function Time_restriction(props) {
                     id="demo-simple-select-label"
                     style={{ marginLeft: 7 }}
                   >
-                    Group
-                  </InputLabel>
-                  <Select
-                    variant="filled"
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={session}
-                    style={{ width: "150px" }}
-                    disabled={!sessions.length}
-                    onChange={(event) => setSession(event.target.value)}
-                  >
-                    {sessions.map((option) => (
-                      <MenuItem
-                        key={option._id}
-                        value={
-                          option.academicYrSem +
-                          "." +
-                          option.grpNo +
-                          "." +
-                          option.subGrpNo
-                        }
-                      >
-                        {option.academicYrSem +
-                          "." +
-                          option.grpNo +
-                          "." +
-                          option.subGrpNo}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-                <FormControl
-                  className={classes.formControl}
-                  style={{ marginLeft: 5, marginTop: 20 }}
-                >
-                  <InputLabel
-                    id="demo-simple-select-label"
-                    style={{ marginLeft: 7 }}
-                  >
                     Room
                   </InputLabel>
                   <Select
@@ -372,12 +351,41 @@ function Time_restriction(props) {
                     ))}
                   </Select>
                 </FormControl>
+                <br />
+                <br />
+                <Grid item xs={12}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <TimePicker
+                      clearable
+                      // ampm={false}
+                      label="Start time"
+                      value={startTime}
+                      onChange={setStartTime}
+                      autoOk
+                    />
+                  </MuiPickersUtilsProvider>
+                  {/* {timeError && <p style={errorStyle}>{timeError}</p>} */}
+                </Grid>
+                <br />
+                <Grid item xs={12}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <TimePicker
+                      clearable
+                      // ampm={false}
+                      label="End time"
+                      value={endTime}
+                      onChange={setEndTime}
+                      autoOk
+                    />
+                  </MuiPickersUtilsProvider>
+                  {/* {timeError && <p style={errorStyle}>{timeError}</p>} */}
+                </Grid>
 
                 <Button
                   variant="contained"
                   color="primary"
                   style={{ marginTop: 10, marginLeft: 50 }}
-                  disabled={!room || !session}
+                  disabled={!room}
                   onClick={addRoom}
                 >
                   {toggle.value}
@@ -390,7 +398,7 @@ function Time_restriction(props) {
                   paddingLeft: 50,
                 }}
               >
-                {room_group.length !== 0 ? (
+                {timeRestriction.length !== 0 ? (
                   <Paper
                     component="form"
                     className={classes.root}
@@ -426,7 +434,7 @@ function Time_restriction(props) {
                   <h1></h1>
                 )}
 
-                {room_group.length !== 0 ? (
+                {timeRestriction.length !== 0 ? (
                   <Grid
                     style={{
                       flex: 5,
@@ -450,28 +458,34 @@ function Time_restriction(props) {
                         >
                           <TableRow align="center">
                             <StyledTableCell align="center">
-                              Group
+                              Room
                             </StyledTableCell>
                             <StyledTableCell align="center">
-                              Room
+                              Start Time
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              End Time
                             </StyledTableCell>
                             <StyledTableCell align="center">
                               Delete
                             </StyledTableCell>
-                            <StyledTableCell align="center">
+                            {/* <StyledTableCell align="center">
                               Edit
-                            </StyledTableCell>
+                            </StyledTableCell> */}
                           </TableRow>
                         </TableHead>
                         {!search ? (
                           <TableBody>
-                            {room_group.map((item) => (
+                            {timeRestriction.map((item) => (
                               <TableRow hover key={item._id}>
                                 <TableCell align="center">
-                                  {item.group}
+                                  {item.room}
                                 </TableCell>
                                 <TableCell align="center">
-                                  {item.room}
+                                  {item.start_time}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.end_time}
                                 </TableCell>
                                 <TableCell align="center">
                                   <DeleteIcon
@@ -482,14 +496,14 @@ function Time_restriction(props) {
                                     {" "}
                                   </DeleteIcon>
                                 </TableCell>
-                                <TableCell align="center">
+                                {/* <TableCell align="center">
                                   {" "}
                                   <EditIcon
                                     onClick={() => {
                                       onClick(item._id);
                                     }}
                                   ></EditIcon>
-                                </TableCell>
+                                </TableCell> */}
                               </TableRow>
                             ))}
                           </TableBody>
@@ -498,10 +512,13 @@ function Time_restriction(props) {
                             {searchFilter.map((item) => (
                               <TableRow hover key={item._id}>
                                 <TableCell align="center">
-                                  {item.group}
+                                  {item.room}
                                 </TableCell>
                                 <TableCell align="center">
-                                  {item.room}
+                                  {item.start_time}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.end_time}
                                 </TableCell>
                                 <TableCell align="center">
                                   <DeleteIcon
@@ -512,14 +529,14 @@ function Time_restriction(props) {
                                     {" "}
                                   </DeleteIcon>
                                 </TableCell>
-                                <TableCell align="center">
+                                {/* <TableCell align="center">
                                   {" "}
                                   <EditIcon
                                     onClick={() => {
                                       onClick(item._id);
                                     }}
                                   ></EditIcon>
-                                </TableCell>
+                                </TableCell> */}
                               </TableRow>
                             ))}
                           </TableBody>
