@@ -67,7 +67,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-function Room_tag(props) {
+function Room_subject_tag(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [table, setTable] = useState(false);
@@ -84,6 +84,9 @@ function Room_tag(props) {
   });
   const [tagRoom, setTagRoom] = useState([]);
   const [block, setBlock] = useState("");
+  const [subjects, setSubjects] = useState([]);
+  const [subject, setSubject] = useState("");
+  const [room_subject_tag, SetRoomSubjectTag] = useState([]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -109,9 +112,15 @@ function Room_tag(props) {
 
     axios
 
-      .get(`http://localhost:5000/api/tag_room/`) //get data from userID
+      .get(`http://localhost:5000/api/subjects/`) //get data from userID
       .then((res) => {
-        setTagRoom(res.data);
+        setSubjects(res.data);
+      });
+
+    axios
+      .get(`http://localhost:5000/api/room_subject_tag/`) //get data from userID
+      .then((res) => {
+        SetRoomSubjectTag(res.data);
         setSearchFilter(res.data); //save retrieved data to the hook
       });
   }, [expanded, table]);
@@ -119,9 +128,9 @@ function Room_tag(props) {
   const onClick = (id) => {
     setNumber(id);
 
-    tagRoom.map((item) => {
+    room_subject_tag.map((item) => {
       if (item._id == id) {
-        return setBlock(item.tag), setRoom(item.room);
+        return setBlock(item.tag), setRoom(item.room), setSubject(item.subject);
       }
     });
 
@@ -141,7 +150,7 @@ function Room_tag(props) {
   const deleteRoom = (id) => {
     setTable(false);
     axios
-      .delete(`http://localhost:5000/api/tag_room/remove/${id}`)
+      .delete(`http://localhost:5000/api/room_subject_tag/remove/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
@@ -149,7 +158,7 @@ function Room_tag(props) {
       .catch((err) => console.log("Error"));
   };
 
-  const addRoomTag = (e) => {
+  const addRoom = (e) => {
     setTable(false);
     e.preventDefault();
 
@@ -159,29 +168,33 @@ function Room_tag(props) {
         isEdit: false,
       });
 
-      const update_tagRoom = {
+      const data = {
         tag: block,
         room: room,
+        subject: subject,
       };
       if (!checkArray) {
         axios
           .post(
-            `http://localhost:5000/api/tag_room/update/${number}`,
-            update_tagRoom
+            `http://localhost:5000/api/room_subject_tag/update/${number}`,
+            data
           )
           .then((res) => {
             NotificationManager.info("Item is Successfully updated", "", 3000); //save retrieved data to the hook
             setTable(true);
             setBlock("");
             setRoom("");
+            setSubject("");
           });
       } else {
         NotificationManager.warning("Item is Already There", "", 3000);
         setBlock("");
         setRoom("");
+        setSubject("");
       }
     } else {
-      const tag_room = {
+      const data = {
+        subject: subject,
         tag: block,
         room: room,
       };
@@ -189,17 +202,21 @@ function Room_tag(props) {
       if (checkArray) {
         NotificationManager.warning(
           "Warning message",
-          "Room is already allocated for tag",
+          "Room is already allocated",
           3000
         );
+        setSubject("");
+        setRoom("");
+        setBlock("");
       } else {
         axios
-          .post("http://localhost:5000/api/tag_room/add", tag_room)
+          .post("http://localhost:5000/api/room_subject_tag/add", data)
           .then((res) => {
             if (res.data.success == true) {
               NotificationManager.success("Success message", "Room Added");
-              setBlock("");
+              setSubject("");
               setRoom("");
+              setBlock("");
               setTable(true);
             } else {
               NotificationManager.warning(
@@ -207,8 +224,9 @@ function Room_tag(props) {
                 "Room is already there",
                 3000
               );
-              setBlock("");
+              setSubject("");
               setRoom("");
+              setBlock("");
             }
           })
           .catch((error) => {
@@ -219,8 +237,8 @@ function Room_tag(props) {
   };
 
   useEffect(() => {
-    tagRoom.map((item) => {
-      if (item.tag == block && item.room == room) {
+    room_subject_tag.map((item) => {
+      if (item.tag == block && item.room == room && item.subject == subject) {
         return setCheckArray(true);
       } else {
         return setCheckArray(false);
@@ -237,8 +255,8 @@ function Room_tag(props) {
   // }, [block]);
 
   useEffect(() => {
-    const results = tagRoom.filter((tag) =>
-      tag.tag.toLowerCase().includes(search)
+    const results = room_subject_tag.filter((data) =>
+      data.subject.toLowerCase().includes(search)
     );
     setSearchFilter(results);
   }, [search]);
@@ -273,7 +291,7 @@ function Room_tag(props) {
             id="panel1bh-header"
           >
             <Typography className={classes.heading}>
-              Add Rooms for tags
+              Add Preferred Room for a Subject
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -302,6 +320,32 @@ function Room_tag(props) {
                   flex: 1,
                 }}
               >
+                <FormControl
+                  className={classes.formControl}
+                  style={{ marginLeft: 5, marginTop: 20 }}
+                >
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    style={{ marginLeft: 7 }}
+                  >
+                    Subject
+                  </InputLabel>
+                  <Select
+                    variant="filled"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={subject}
+                    style={{ width: "150px" }}
+                    disabled={!subjects.length}
+                    onChange={(event) => setSubject(event.target.value)}
+                  >
+                    {subjects.map((option) => (
+                      <MenuItem key={option._id} value={option.subName}>
+                        {option.subName}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                 <FormControl
                   className={classes.formControl}
                   style={{ marginLeft: 5, marginTop: 20 }}
@@ -361,7 +405,7 @@ function Room_tag(props) {
                   color="primary"
                   style={{ marginTop: 10, marginLeft: 50 }}
                   disabled={!block || !tagRoom}
-                  onClick={addRoomTag}
+                  onClick={addRoom}
                 >
                   {toggle.value}
                 </Button>
@@ -373,7 +417,7 @@ function Room_tag(props) {
                   paddingLeft: 50,
                 }}
               >
-                {tagRoom.length !== 0 ? (
+                {room_subject_tag.length !== 0 ? (
                   <Paper
                     component="form"
                     className={classes.root}
@@ -409,7 +453,7 @@ function Room_tag(props) {
                   <h1></h1>
                 )}
 
-                {tagRoom.length !== 0 ? (
+                {room_subject_tag.length !== 0 ? (
                   <Grid
                     style={{
                       flex: 5,
@@ -433,6 +477,9 @@ function Room_tag(props) {
                         >
                           <TableRow align="center">
                             <StyledTableCell align="center">
+                              Subject
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
                               Tag
                             </StyledTableCell>
                             <StyledTableCell align="center">
@@ -448,8 +495,11 @@ function Room_tag(props) {
                         </TableHead>
                         {!search ? (
                           <TableBody>
-                            {tagRoom.map((item) => (
+                            {room_subject_tag.map((item) => (
                               <TableRow hover key={item._id}>
+                                <TableCell align="center">
+                                  {item.subject}
+                                </TableCell>
                                 <TableCell align="center">{item.tag}</TableCell>
                                 <TableCell align="center">
                                   {item.room}
@@ -478,6 +528,9 @@ function Room_tag(props) {
                           <TableBody>
                             {searchFilter.map((item) => (
                               <TableRow hover key={item._id}>
+                                <TableCell align="center">
+                                  {item.subject}
+                                </TableCell>
                                 <TableCell align="center">{item.tag}</TableCell>
                                 <TableCell align="center">
                                   {item.room}
@@ -521,4 +574,4 @@ function Room_tag(props) {
   );
 }
 
-export default Room_tag;
+export default Room_subject_tag;

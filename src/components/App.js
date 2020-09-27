@@ -21,6 +21,7 @@ import Home from './Home/Home';
 import SessionExpansionPanel from './Sessions/SessionExpansionPanel';
 import SessionForm from './Sessions/Session';
 import EditSession from './Sessions/EditSession';
+import Customize from "./Customize/Customize";
 
 const App = () => {
   return (
@@ -48,6 +49,7 @@ const App = () => {
             <Route exact path='/tags/edit/:id' component={EditTagForm} />
             <Route exact path='/addSession' component={SessionForm} />
             <Route exact path='/session/edit/:id' component={EditSession} />
+            <Route exact path='/section3' component={Customize} />
             <Route path='/' component={Home} />
           </Switch>
         </div>

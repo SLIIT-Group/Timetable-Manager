@@ -7,7 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Container } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
-
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -67,7 +66,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-function Room_tag(props) {
+function Consecutive_sessions(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [table, setTable] = useState(false);
@@ -84,17 +83,20 @@ function Room_tag(props) {
   });
   const [tagRoom, setTagRoom] = useState([]);
   const [block, setBlock] = useState("");
+  const [room_group, setRoomGroup] = useState([]);
+  const [sessions, setSessions] = useState([]);
+  const [session, setSession] = useState("");
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/tags/all`)
+    fetch(`http://localhost:5000/api/students/all`)
       .then((res) => res.json())
       .then(
         (result) => {
-          setTags(result);
+          setSessions(result);
         },
         (error) => {
           setError(error);
@@ -109,9 +111,9 @@ function Room_tag(props) {
 
     axios
 
-      .get(`http://localhost:5000/api/tag_room/`) //get data from userID
+      .get(`http://localhost:5000/api/room_group/`) //get data from userID
       .then((res) => {
-        setTagRoom(res.data);
+        setRoomGroup(res.data);
         setSearchFilter(res.data); //save retrieved data to the hook
       });
   }, [expanded, table]);
@@ -119,9 +121,9 @@ function Room_tag(props) {
   const onClick = (id) => {
     setNumber(id);
 
-    tagRoom.map((item) => {
+    room_group.map((item) => {
       if (item._id == id) {
-        return setBlock(item.tag), setRoom(item.room);
+        return setSession(item.group), setRoom(item.room);
       }
     });
 
@@ -141,7 +143,7 @@ function Room_tag(props) {
   const deleteRoom = (id) => {
     setTable(false);
     axios
-      .delete(`http://localhost:5000/api/tag_room/remove/${id}`)
+      .delete(`http://localhost:5000/api/room_group/remove/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
@@ -149,7 +151,7 @@ function Room_tag(props) {
       .catch((err) => console.log("Error"));
   };
 
-  const addRoomTag = (e) => {
+  const addRoom = (e) => {
     setTable(false);
     e.preventDefault();
 
@@ -160,45 +162,47 @@ function Room_tag(props) {
       });
 
       const update_tagRoom = {
-        tag: block,
+        group: session,
         room: room,
       };
       if (!checkArray) {
         axios
           .post(
-            `http://localhost:5000/api/tag_room/update/${number}`,
+            `http://localhost:5000/api/room_group/update/${number}`,
             update_tagRoom
           )
           .then((res) => {
             NotificationManager.info("Item is Successfully updated", "", 3000); //save retrieved data to the hook
             setTable(true);
-            setBlock("");
+            setSession("");
             setRoom("");
           });
       } else {
         NotificationManager.warning("Item is Already There", "", 3000);
-        setBlock("");
+        setSession("");
         setRoom("");
       }
     } else {
-      const tag_room = {
-        tag: block,
+      const data = {
+        group: session,
         room: room,
       };
 
       if (checkArray) {
         NotificationManager.warning(
           "Warning message",
-          "Room is already allocated for tag",
+          "Room is already allocated",
           3000
         );
+        setSession("");
+        setRoom("");
       } else {
         axios
-          .post("http://localhost:5000/api/tag_room/add", tag_room)
+          .post("http://localhost:5000/api/room_group/add", data)
           .then((res) => {
             if (res.data.success == true) {
               NotificationManager.success("Success message", "Room Added");
-              setBlock("");
+              setSession("");
               setRoom("");
               setTable(true);
             } else {
@@ -207,7 +211,7 @@ function Room_tag(props) {
                 "Room is already there",
                 3000
               );
-              setBlock("");
+              setSession("");
               setRoom("");
             }
           })
@@ -219,8 +223,8 @@ function Room_tag(props) {
   };
 
   useEffect(() => {
-    tagRoom.map((item) => {
-      if (item.tag == block && item.room == room) {
+    room_group.map((item) => {
+      if (item.room == room && item.group == session) {
         return setCheckArray(true);
       } else {
         return setCheckArray(false);
@@ -237,8 +241,8 @@ function Room_tag(props) {
   // }, [block]);
 
   useEffect(() => {
-    const results = tagRoom.filter((tag) =>
-      tag.tag.toLowerCase().includes(search)
+    const results = room_group.filter((data) =>
+      data.group.toLowerCase().includes(search)
     );
     setSearchFilter(results);
   }, [search]);
@@ -273,7 +277,7 @@ function Room_tag(props) {
             id="panel1bh-header"
           >
             <Typography className={classes.heading}>
-              Add Rooms for tags
+              Add Consecutive Sessions for a Room
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -310,20 +314,33 @@ function Room_tag(props) {
                     id="demo-simple-select-label"
                     style={{ marginLeft: 7 }}
                   >
-                    Tag
+                    Group
                   </InputLabel>
                   <Select
                     variant="filled"
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={block}
+                    value={session}
                     style={{ width: "150px" }}
-                    disabled={!tags.length}
-                    onChange={(event) => setBlock(event.target.value)}
+                    disabled={!sessions.length}
+                    onChange={(event) => setSession(event.target.value)}
                   >
-                    {tags.map((option) => (
-                      <MenuItem key={option._id} value={option.tag}>
-                        {option.tag}
+                    {sessions.map((option) => (
+                      <MenuItem
+                        key={option._id}
+                        value={
+                          option.academicYrSem +
+                          "." +
+                          option.grpNo +
+                          "." +
+                          option.subGrpNo
+                        }
+                      >
+                        {option.academicYrSem +
+                          "." +
+                          option.grpNo +
+                          "." +
+                          option.subGrpNo}
                       </MenuItem>
                     ))}
                   </Select>
@@ -360,8 +377,8 @@ function Room_tag(props) {
                   variant="contained"
                   color="primary"
                   style={{ marginTop: 10, marginLeft: 50 }}
-                  disabled={!block || !tagRoom}
-                  onClick={addRoomTag}
+                  disabled={!room || !session}
+                  onClick={addRoom}
                 >
                   {toggle.value}
                 </Button>
@@ -373,7 +390,7 @@ function Room_tag(props) {
                   paddingLeft: 50,
                 }}
               >
-                {tagRoom.length !== 0 ? (
+                {room_group.length !== 0 ? (
                   <Paper
                     component="form"
                     className={classes.root}
@@ -409,7 +426,7 @@ function Room_tag(props) {
                   <h1></h1>
                 )}
 
-                {tagRoom.length !== 0 ? (
+                {room_group.length !== 0 ? (
                   <Grid
                     style={{
                       flex: 5,
@@ -433,7 +450,7 @@ function Room_tag(props) {
                         >
                           <TableRow align="center">
                             <StyledTableCell align="center">
-                              Tag
+                              Group
                             </StyledTableCell>
                             <StyledTableCell align="center">
                               Room
@@ -448,9 +465,11 @@ function Room_tag(props) {
                         </TableHead>
                         {!search ? (
                           <TableBody>
-                            {tagRoom.map((item) => (
+                            {room_group.map((item) => (
                               <TableRow hover key={item._id}>
-                                <TableCell align="center">{item.tag}</TableCell>
+                                <TableCell align="center">
+                                  {item.group}
+                                </TableCell>
                                 <TableCell align="center">
                                   {item.room}
                                 </TableCell>
@@ -478,7 +497,9 @@ function Room_tag(props) {
                           <TableBody>
                             {searchFilter.map((item) => (
                               <TableRow hover key={item._id}>
-                                <TableCell align="center">{item.tag}</TableCell>
+                                <TableCell align="center">
+                                  {item.group}
+                                </TableCell>
                                 <TableCell align="center">
                                   {item.room}
                                 </TableCell>
@@ -521,4 +542,4 @@ function Room_tag(props) {
   );
 }
 
-export default Room_tag;
+export default Consecutive_sessions;
