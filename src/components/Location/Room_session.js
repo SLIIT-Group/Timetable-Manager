@@ -36,6 +36,13 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -83,16 +90,30 @@ function Room_session(props) {
   });
   const [tagRoom, setTagRoom] = useState([]);
   const [block, setBlock] = useState("");
-  const [room_group, setRoomGroup] = useState([]);
+  const [session_preferredRoom, setSessionPreferredRoom] = useState([]);
   const [sessions, setSessions] = useState([]);
   const [session, setSession] = useState("");
+  const [sessionFilter, setSessionFilter] = useState([]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
+  const [open, setOpen] = React.useState(false);
+
+  // const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const handleClickOpen = () => {
+    setSessionFilter(sessions.filter((items) => items._id == session));
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   useEffect(() => {
-    fetch(`http://localhost:5000/api/students/all`)
+    fetch(`http://localhost:5000/api/sessions/`)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -111,9 +132,9 @@ function Room_session(props) {
 
     axios
 
-      .get(`http://localhost:5000/api/room_group/`) //get data from userID
+      .get(`http://localhost:5000/api/session_preferredRoom/`) //get data from userID
       .then((res) => {
-        setRoomGroup(res.data);
+        setSessionPreferredRoom(res.data);
         setSearchFilter(res.data); //save retrieved data to the hook
       });
   }, [expanded, table]);
@@ -121,9 +142,9 @@ function Room_session(props) {
   const onClick = (id) => {
     setNumber(id);
 
-    room_group.map((item) => {
+    session_preferredRoom.map((item) => {
       if (item._id == id) {
-        return setSession(item.group), setRoom(item.room);
+        return setSession(item.subjectCode), setRoom(item.room);
       }
     });
 
@@ -143,7 +164,7 @@ function Room_session(props) {
   const deleteRoom = (id) => {
     setTable(false);
     axios
-      .delete(`http://localhost:5000/api/room_group/remove/${id}`)
+      .delete(`http://localhost:5000/api/session_preferredRoom/remove/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
@@ -151,7 +172,7 @@ function Room_session(props) {
       .catch((err) => console.log("Error"));
   };
 
-  const addRoom = (e) => {
+  const addSessionRoom = (e) => {
     setTable(false);
     e.preventDefault();
 
@@ -161,14 +182,25 @@ function Room_session(props) {
         isEdit: false,
       });
 
+      var arr = session_preferredRoom.filter((items) => items._id == number);
+
       const update_tagRoom = {
-        group: session,
+        lecturer1: arr[0].lecturer1,
+        lecturer2: arr[0].lecturer2,
+        lecturer3: arr[0].lecturer3,
+        subject: arr[0].subject,
+        subjectCode: arr[0].subjectCode,
+        tag: arr[0].tag,
+        groupId: arr[0].groupId,
+        studentCount: arr[0].studentCount,
+        noOfHours: arr[0].noOfHours,
         room: room,
+        id: session,
       };
       if (!checkArray) {
         axios
           .post(
-            `http://localhost:5000/api/room_group/update/${number}`,
+            `http://localhost:5000/api/session_preferredRoom/update/${number}`,
             update_tagRoom
           )
           .then((res) => {
@@ -183,32 +215,42 @@ function Room_session(props) {
         setRoom("");
       }
     } else {
+      var arr = sessions.filter((items) => items._id == session);
       const data = {
-        group: session,
+        lecturer1: arr[0].lecturers[0],
+        lecturer2: arr[0].lecturers[1],
+        lecturer3: arr[0].lecturers[2],
+        subject: arr[0].subject,
+        subjectCode: arr[0].subjectCode,
+        tag: arr[0].tag,
+        groupId: arr[0].groupId,
+        studentCount: arr[0].studentCount,
+        noOfHours: arr[0].noOfHours,
         room: room,
+        id: session,
       };
 
       if (checkArray) {
         NotificationManager.warning(
           "Warning message",
-          "Room is already allocated",
+          "Session is already allocated",
           3000
         );
         setSession("");
         setRoom("");
       } else {
         axios
-          .post("http://localhost:5000/api/room_group/add", data)
+          .post("http://localhost:5000/api/session_preferredRoom/add", data)
           .then((res) => {
             if (res.data.success == true) {
-              NotificationManager.success("Success message", "Room Added");
+              NotificationManager.success("Success message", "Room Added for session");
               setSession("");
               setRoom("");
               setTable(true);
             } else {
               NotificationManager.warning(
                 "Warning message",
-                "Room is already there",
+                "Session is already there",
                 3000
               );
               setSession("");
@@ -223,8 +265,8 @@ function Room_session(props) {
   };
 
   useEffect(() => {
-    room_group.map((item) => {
-      if (item.room == room && item.group == session) {
+    session_preferredRoom.map((item) => {
+      if (item.id == session) {
         return setCheckArray(true);
       } else {
         return setCheckArray(false);
@@ -241,8 +283,8 @@ function Room_session(props) {
   // }, [block]);
 
   useEffect(() => {
-    const results = room_group.filter((data) =>
-      data.group.toLowerCase().includes(search)
+    const results = session_preferredRoom.filter((data) =>
+      data.subjectCode.toLowerCase().includes(search)
     );
     setSearchFilter(results);
   }, [search]);
@@ -258,6 +300,10 @@ function Room_session(props) {
   //     );
   //   }
   // };
+
+  const viewDetails = () => {
+    console.log("Hello");
+  };
 
   return (
     <div className={classes.root}>
@@ -314,7 +360,7 @@ function Room_session(props) {
                     id="demo-simple-select-label"
                     style={{ marginLeft: 7 }}
                   >
-                    Group
+                    Session
                   </InputLabel>
                   <Select
                     variant="filled"
@@ -326,21 +372,8 @@ function Room_session(props) {
                     onChange={(event) => setSession(event.target.value)}
                   >
                     {sessions.map((option) => (
-                      <MenuItem
-                        key={option._id}
-                        value={
-                          option.academicYrSem +
-                          "." +
-                          option.grpNo +
-                          "." +
-                          option.subGrpNo
-                        }
-                      >
-                        {option.academicYrSem +
-                          "." +
-                          option.grpNo +
-                          "." +
-                          option.subGrpNo}
+                      <MenuItem key={option._id} value={option._id}>
+                        {option.subjectCode + "/" + option.tag}
                       </MenuItem>
                     ))}
                   </Select>
@@ -378,10 +411,47 @@ function Room_session(props) {
                   color="primary"
                   style={{ marginTop: 10, marginLeft: 50 }}
                   disabled={!room || !session}
-                  onClick={addRoom}
+                  onClick={addSessionRoom}
                 >
                   {toggle.value}
                 </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ marginTop: 10, marginLeft: 15 }}
+                  disabled={!session}
+                  onClick={handleClickOpen}
+                >
+                  View Details
+                </Button>
+                <Dialog
+                  // fullScreen={fullScreen}
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="responsive-dialog-title"
+                >
+                  <DialogTitle>{"Session Details"}</DialogTitle>
+                  <DialogContent>
+                    {sessionFilter.map((item) => (
+                      <DialogContentText key={item._id}>
+                        {item.lecturers[0]} <br />
+                        {item.lecturers[1]} <br />
+                        {item.lecturers[2]} <br />
+                        {item.subject} <br />
+                        {item.subjectCode} <br />
+                        {item.tag} <br />
+                        {item.groupId} <br />
+                        {item.studentCount} <br />
+                        {item.noOfHours}
+                      </DialogContentText>
+                    ))}
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose} color="primary" autoFocus>
+                      Close
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </form>
               <div
                 style={{
@@ -390,7 +460,7 @@ function Room_session(props) {
                   paddingLeft: 50,
                 }}
               >
-                {room_group.length !== 0 ? (
+                {session_preferredRoom.length !== 0 ? (
                   <Paper
                     component="form"
                     className={classes.root}
@@ -426,7 +496,7 @@ function Room_session(props) {
                   <h1></h1>
                 )}
 
-                {room_group.length !== 0 ? (
+                {session_preferredRoom.length !== 0 ? (
                   <Grid
                     style={{
                       flex: 5,
@@ -450,7 +520,31 @@ function Room_session(props) {
                         >
                           <TableRow align="center">
                             <StyledTableCell align="center">
-                              Group
+                              lecturer1
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              lecturer2
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              lecturer3
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Subject
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Subject Code
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Tag
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Group Id
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Student Count
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              No of Hours
                             </StyledTableCell>
                             <StyledTableCell align="center">
                               Room
@@ -465,10 +559,32 @@ function Room_session(props) {
                         </TableHead>
                         {!search ? (
                           <TableBody>
-                            {room_group.map((item) => (
+                            {session_preferredRoom.map((item) => (
                               <TableRow hover key={item._id}>
                                 <TableCell align="center">
-                                  {item.group}
+                                  {item.lecturer1}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.lecturer2}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.lecturer3}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.subject}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.subjectCode}
+                                </TableCell>
+                                <TableCell align="center">{item.tag}</TableCell>
+                                <TableCell align="center">
+                                  {item.groupId}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.studentCount}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.noOfHours}
                                 </TableCell>
                                 <TableCell align="center">
                                   {item.room}
@@ -498,7 +614,29 @@ function Room_session(props) {
                             {searchFilter.map((item) => (
                               <TableRow hover key={item._id}>
                                 <TableCell align="center">
-                                  {item.group}
+                                  {item.lecturer1}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.lecturer2}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.lecturer3}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.subject}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.subjectCode}
+                                </TableCell>
+                                <TableCell align="center">{item.tag}</TableCell>
+                                <TableCell align="center">
+                                  {item.groupId}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.studentCount}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {item.noOfHours}
                                 </TableCell>
                                 <TableCell align="center">
                                   {item.room}

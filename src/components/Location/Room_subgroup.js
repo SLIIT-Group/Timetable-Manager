@@ -66,7 +66,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-function Room_group(props) {
+function Room_subgroup(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [table, setTable] = useState(false);
@@ -111,7 +111,7 @@ function Room_group(props) {
 
     axios
 
-      .get(`http://localhost:5000/api/room_group/`) //get data from userID
+      .get(`http://localhost:5000/api/room_subgroup/`) //get data from userID
       .then((res) => {
         setRoomGroup(res.data);
         setSearchFilter(res.data); //save retrieved data to the hook
@@ -123,7 +123,7 @@ function Room_group(props) {
 
     room_group.map((item) => {
       if (item._id == id) {
-        return setGroup(item.group), setRoom(item.room);
+        return setGroup(item.subgroup), setRoom(item.room);
       }
     });
 
@@ -143,7 +143,7 @@ function Room_group(props) {
   const deleteRoom = (id) => {
     setTable(false);
     axios
-      .delete(`http://localhost:5000/api/room_group/remove/${id}`)
+      .delete(`http://localhost:5000/api/room_subgroup/remove/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
@@ -162,13 +162,13 @@ function Room_group(props) {
       });
 
       const update_tagRoom = {
-        group: group,
+        subgroup: group,
         room: room,
       };
       if (!checkArray) {
         axios
           .post(
-            `http://localhost:5000/api/room_group/update/${number}`,
+            `http://localhost:5000/api/room_subgroup/update/${number}`,
             update_tagRoom
           )
           .then((res) => {
@@ -184,7 +184,7 @@ function Room_group(props) {
       }
     } else {
       const data = {
-        group: group,
+        subgroup: group,
         room: room,
       };
 
@@ -198,7 +198,7 @@ function Room_group(props) {
         setRoom("");
       } else {
         axios
-          .post("http://localhost:5000/api/room_group/add", data)
+          .post("http://localhost:5000/api/room_subgroup/add", data)
           .then((res) => {
             if (res.data.success == true) {
               NotificationManager.success("Success message", "Room Added");
@@ -224,7 +224,7 @@ function Room_group(props) {
 
   useEffect(() => {
     room_group.map((item) => {
-      if (item.group == group) {
+      if (item.subgroup == group) {
         return setCheckArray(true);
       } else {
         return setCheckArray(false);
@@ -277,7 +277,7 @@ function Room_group(props) {
             id="panel1bh-header"
           >
             <Typography className={classes.heading}>
-              Add Rooms for Groups
+              Add Rooms for sub Groups
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -314,7 +314,7 @@ function Room_group(props) {
                     id="demo-simple-select-label"
                     style={{ marginLeft: 7 }}
                   >
-                    Group
+                    Sub Group
                   </InputLabel>
                   <Select
                     variant="filled"
@@ -328,9 +328,19 @@ function Room_group(props) {
                     {groups.map((option) => (
                       <MenuItem
                         key={option._id}
-                        value={option.academicYrSem + "." + option.grpNo}
+                        value={
+                          option.academicYrSem +
+                          "." +
+                          option.grpNo +
+                          "." +
+                          option.subGrpNo
+                        }
                       >
-                        {option.academicYrSem + "." + option.grpNo}
+                        {option.academicYrSem +
+                          "." +
+                          option.grpNo +
+                          "." +
+                          option.subGrpNo}
                       </MenuItem>
                     ))}
                   </Select>
@@ -440,7 +450,7 @@ function Room_group(props) {
                         >
                           <TableRow align="center">
                             <StyledTableCell align="center">
-                              Group
+                             Sub Group
                             </StyledTableCell>
                             <StyledTableCell align="center">
                               Room
@@ -458,7 +468,7 @@ function Room_group(props) {
                             {room_group.map((item) => (
                               <TableRow hover key={item._id}>
                                 <TableCell align="center">
-                                  {item.group}
+                                  {item.subgroup}
                                 </TableCell>
                                 <TableCell align="center">
                                   {item.room}
@@ -488,7 +498,7 @@ function Room_group(props) {
                             {searchFilter.map((item) => (
                               <TableRow hover key={item._id}>
                                 <TableCell align="center">
-                                  {item.group}
+                                  {item.subgroup}
                                 </TableCell>
                                 <TableCell align="center">
                                   {item.room}
@@ -532,4 +542,4 @@ function Room_group(props) {
   );
 }
 
-export default Room_group;
+export default Room_subgroup;
