@@ -256,11 +256,18 @@ export default function SessionForm() {
                         variant="filled"
                         fullWidth
                     >
-                        {groups.map((item) => (
+                        {tagName == "Lecture" || tagName == "Tutorial" ?
+                            (groups.map((item) => (
                             <MenuItem key={item._id} value={item.academicYrSem+"."+item.programme+"."+item.grpNo}>
                                 {item.academicYrSem+"."+item.programme+"."+item.grpNo}
                             </MenuItem>
-                        ))}
+                        ))) :
+                            (groups.map((item) => (
+                                <MenuItem key={item._id} value={item.academicYrSem+"."+item.programme+"."+item.grpNo+"."+item.subGrpNo}>
+                                    {item.academicYrSem+"."+item.programme+"."+item.grpNo+"."+item.subGrpNo}
+                                </MenuItem>
+                            )))
+                        }
                     </TextField>
                 </Grid>
 

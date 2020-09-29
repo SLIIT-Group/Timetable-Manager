@@ -16,6 +16,7 @@ import Time_restriction from "./Time_restriction";
 import Room_subject_tag from "./Room_Subject_Tag";
 import Room_lecturer from "./Room_lecturer";
 import Consecutive_sessions from "./consecutive_sessions";
+import Room_subgroup from "./Room_subgroup";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,6 +93,7 @@ export default function Rooms() {
       <Room_subject_tag />
       <Room_lecturer />
       <Room_group />
+      <Room_subgroup />
       <Room_session />
       <Consecutive_sessions />
       <Time_restriction />
