@@ -47,7 +47,8 @@ export default function GrpIDs({key, setKey}) {
   const handleGrpNoChange = (event) => {
     setGrpNo(event.target.value);
     setNewGrpNo(event.target.value);
-    setKey((event.target.value))
+    setKey(event.target.value)
+
   };
   const handleNewGrpNoChange = (event) => {
     setNewGrpNo(event.target.value);

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles, emphasize } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -16,7 +16,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import swal from "sweetalert";
 import axios from "axios";
-import Students from "../SubComponents/Students";
+import NotAvailableTable from "../SubComponents/NotAvailableTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,14 +42,13 @@ export default function NotAvailable() {
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
-    console.log(key);
+
   };
 
 
-  const [key, setKey] = useState("");
-  const [day, setDay] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
+  const [keys, setKey] = useState("");
+  const [slot, setSlot] =  useState("");
+
 
   const [select, setSelect] = useState("lecturer");
   let element1 = "warning", element2 = "warning", element3 = "warning", element4 = "warning";
@@ -65,39 +64,60 @@ export default function NotAvailable() {
 
   let selectedComponent = null;
   if(select === "lecturer"){
-    selectedComponent = <Lecturer key={key} setKey={setKey}/>;
+    selectedComponent = <Lecturer keys={keys} setKey={setKey} />;
   }else if (select === "session") {
-    selectedComponent = <Session key={key} setKey={setKey}/>;
+    selectedComponent = <Session keys={keys} setKey={setKey} />;
   }else if (select === "group") {
-    selectedComponent = <GrpIDs key={key} setKey={setKey}/>;
+    selectedComponent = <GrpIDs keys={keys} setKey={setKey} />;
   }else {
-    selectedComponent = <SubGrpIDs key={key} setKey={setKey}/>;
+    selectedComponent = <SubGrpIDs keys={keys} setKey={setKey} />;
   }
 
   const notAvailable = () => {
 
       const req = {
         type: select,
-        key: key,
-        day: day,
-        startTime: startTime,
-        endTime: endTime,
+        key: keys,
+        slot: slot,
       };
 
-      axios.post("http://localhost:5000/api/notAvailable/add", req).then((res) => {
-        if (res.data.success) {
-          swal("Successful","Entry Saved Successfully","success");
-        }else{
-          swal("Unsuccessful","Entry Saving Failed", "error");
-        }
-      });
+      if(keys === "" || slot === ""){
+        swal("Unsuccessful","Fill All Fields", "error");
+      }
+      else {
+        axios.post("http://localhost:5000/api/notAvailable/add", req).then((res) => {
+          if (res.data.success) {
+            swal("Successful", "Entry Saved Successfully", "success");
+          } else {
+            swal("Unsuccessful", "Entry Saving Failed", "error");
+          }
+        });
+      }
 
       setKey("");
-      setDay("");
-      setStartTime("");
-      setEndTime("");
+      setSlot("");
 
 
+  };
+  const [dayList, setDayList] = useState([]);
+  const [slotList, setSlotList] = useState([]);
+
+  useEffect(() => {
+    axios
+
+        .get("http://localhost:5000/api/day")
+        .then((res) => {
+          setDayList(res.data);
+        });
+
+  },[]);
+
+  const setSlots = (e) => {
+  setSlotList(e.target.value);
+  };
+
+  const setFinalSlot = (e) => {
+    setSlot(e.target.value);
   };
 
   return (
@@ -152,29 +172,32 @@ export default function NotAvailable() {
                         <Select
                             labelId="demo-simple-select-outlined-label"
                             id="demo-simple-select-outlined"
-                            value={day}
-                            onChange={(event) => setDay(event.target.value)}
+                            value={slotList}
+                            onChange={setSlots}
                             label="lKey"
                         >
                           <MenuItem value="">
                             <em>None</em>
                           </MenuItem>
-                          <MenuItem value={"monday"}>{"Monday"}</MenuItem>
-                          <MenuItem value={"tuesday"}>{"Tuesday"}</MenuItem>
-                          <MenuItem value={"wednesday"}>{"Wednesday"}</MenuItem>
-                          <MenuItem value={"thursday"}>{"Thursday"}</MenuItem>
-                          <MenuItem value={"friday"}>{"Friday"}</MenuItem>
-                          <MenuItem value={"saturday"}>{"Saturday"}</MenuItem>
-                          <MenuItem value={"sunday"}>{"Sunday"}</MenuItem>
+                          {dayList && dayList.map((item, key) => (
+                                  <MenuItem value={item.slots} key={key}>{item.day}</MenuItem>
+
+                          ))}
+
+
 
                         </Select>
                       </FormControl>
                     </div>
                   </div>
 
+
+
+
+
                   <div className="row col-md-12 mt-3">
                     <Col sm="6 pb-0">
-                      <label className="mt-3 h5 font-weight-bold">Start Time :</label>
+                      <label className="mt-3 h5 font-weight-bold">Slot :</label>
                     </Col>
                     <div className="input-field col s6 d-flex flex-column">
                       <FormControl variant="outlined" className={classes.formControl}>
@@ -182,66 +205,29 @@ export default function NotAvailable() {
                         <Select
                             labelId="demo-simple-select-outlined-label"
                             id="demo-simple-select-outlined"
-                            value={startTime}
-                            onChange={(event) => setStartTime(event.target.value)}
+                            value={slot}
+                            onChange={setFinalSlot}
                             label="lKey"
                         >
                           <MenuItem value="">
                             <em>None</em>
                           </MenuItem>
-                          <MenuItem value={"8.30"}>{"8.30"}</MenuItem>
-                          <MenuItem value={"9.30"}>{"9.30"}</MenuItem>
-                          <MenuItem value={"10.30"}>{"10.30"}</MenuItem>
-                          <MenuItem value={"11.30"}>{"11.30"}</MenuItem>
-                          <MenuItem value={"12.30"}>{"12.30"}</MenuItem>
-                          <MenuItem value={"1.30"}>{"1.30"}</MenuItem>
-                          <MenuItem value={"2.30"}>{"2.30"}</MenuItem>
-                          <MenuItem value={"3.30"}>{"3.30"}</MenuItem>
-                          <MenuItem value={"4.30"}>{"4.30"}</MenuItem>
-                          <MenuItem value={"5.30"}>{"5.30"}</MenuItem>
-                          <MenuItem value={"6.00"}>{"6.00"}</MenuItem>
-                          <MenuItem value={"7.00"}>{"7.00"}</MenuItem>
+                          {slotList && slotList.map((item, key) => (
+                              <MenuItem value={item} key={key}>{item.start} - {item.end}</MenuItem>
+                          ))}
 
                         </Select>
                       </FormControl>
                     </div>
                   </div>
 
-                  <div className="row col-md-12 mt-3">
-                    <Col sm="6 pb-0">
-                      <label className="mt-3 h5 font-weight-bold">End Time :</label>
-                    </Col>
-                    <div className="input-field col s6 d-flex flex-column">
-                      <FormControl variant="outlined" className={classes.formControl}>
-                        <InputLabel id="demo-simple-select-outlined-label px-4">Select</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-outlined-label"
-                            id="demo-simple-select-outlined"
-                            value={endTime}
-                            onChange={(event) => setEndTime(event.target.value)}
-                            label="lKey"
-                        >
-                          <MenuItem value="">
-                            <em>None</em>
-                          </MenuItem>
 
-                          <MenuItem value={"9.30"}>{"9.30"}</MenuItem>
-                          <MenuItem value={"10.30"}>{"10.30"}</MenuItem>
-                          <MenuItem value={"11.30"}>{"11.30"}</MenuItem>
-                          <MenuItem value={"12.30"}>{"12.30"}</MenuItem>
-                          <MenuItem value={"1.30"}>{"1.30"}</MenuItem>
-                          <MenuItem value={"2.30"}>{"2.30"}</MenuItem>
-                          <MenuItem value={"3.30"}>{"3.30"}</MenuItem>
-                          <MenuItem value={"4.30"}>{"4.30"}</MenuItem>
-                          <MenuItem value={"5.30"}>{"5.30"}</MenuItem>
-                          <MenuItem value={"6.00"}>{"6.00"}</MenuItem>
-                          <MenuItem value={"7.00"}>{"7.00"}</MenuItem>
-                          <MenuItem value={"8.00"}>{"8.00"}</MenuItem>
 
-                        </Select>
-                      </FormControl>
-                    </div>
-                  </div>
+
+
+
+
+
                   <div className="row col-md-12 mt-3">
 
                     <div className="input-field col s6">
@@ -265,7 +251,7 @@ export default function NotAvailable() {
 
               </Row>
               <br/><br/>
-              <Students />
+              <NotAvailableTable />
             </div>
 
           </AccordionDetails>

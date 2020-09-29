@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   },
 });
 
-function Students() {
+function NotAvailableTable() {
   const classes = useStyles();
 
   const [dataList, setDataList] = useState([]);
@@ -60,7 +60,7 @@ function Students() {
           setDataList(res.data);
         });
 
-  });
+  },[]);
 
 
   return (
@@ -76,9 +76,7 @@ function Students() {
             <TableRow align='center'>
               <StyledTableCell align='center'>Type</StyledTableCell>
               <StyledTableCell align='center'>Key</StyledTableCell>
-              <StyledTableCell align='center'>Day</StyledTableCell>
-              <StyledTableCell align='center'>Start Time</StyledTableCell>
-              <StyledTableCell align='center'>End Time</StyledTableCell>
+              <StyledTableCell align='center'>Slot</StyledTableCell>
               <StyledTableCell align='center'>Delete</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -87,9 +85,7 @@ function Students() {
               <TableRow hover key={key}>
                 <TableCell align='center'>{item.type}</TableCell>
                 <TableCell align='center'>{item.key}</TableCell>
-                <TableCell align='center'>{item.day}</TableCell>
-                <TableCell align='center'>{item.startTime}</TableCell>
-                <TableCell align='center'>{item.endTime}</TableCell>
+                <TableCell align='center'>{item.slot && item.slot.day} {item.slot && item.slot.start} - {item.slot && item.slot.end}</TableCell>
                 <TableCell align='center'>
                   <DeleteIcon onClick={() => deleteData(item._id)}
                   >
@@ -106,4 +102,4 @@ function Students() {
   );
 }
 
-export default Students;
+export default NotAvailableTable;

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Session({key, setKey}) {
+export default function Session({keys, setKey}) {
   const classes = useStyles();
 
   const [lecList, setLecList] = useState([]);
@@ -55,7 +55,7 @@ export default function Session({key, setKey}) {
                 <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
-                    value={key}
+                    value={keys}
                     onChange={(event) => setKey(event.target.value)}
                     label="lKey"
                 >
@@ -63,7 +63,8 @@ export default function Session({key, setKey}) {
                     <em>None</em>
                   </MenuItem>
                   {lecList.map((item) => (
-                      <MenuItem value={item._id}>{item.subject+" "+item.tag
+                      <MenuItem value={item._id+"-"+item.subject+" "+item.tag
+                        +" | Sub/Group:"+item.groupId}>{item.subject+" "+item.tag
                       +" | Sub/Group:"+item.groupId}</MenuItem>
                   ))}
                 </Select>
