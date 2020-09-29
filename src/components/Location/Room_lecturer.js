@@ -191,7 +191,7 @@ function Room_lecturer(props) {
       if (checkArray) {
         NotificationManager.warning(
           "Warning message",
-          "Room is already allocated for tag",
+          "Room is already there",
           3000
         );
         setLecturer("");
@@ -223,14 +223,14 @@ function Room_lecturer(props) {
   };
 
   useEffect(() => {
-    tagRoom.map((item) => {
-      if (item.room == room && item.lecturer == lecturer) {
+    room_lecturer.map((item) => {
+      if (item.lecturer == lecturer) {
         return setCheckArray(true);
       } else {
         return setCheckArray(false);
       }
     });
-  }, [block, room]);
+  }, [lecturer, room]);
 
   // useEffect(() => {
   //   buildings.map((item) => {

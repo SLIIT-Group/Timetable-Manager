@@ -224,13 +224,13 @@ function Room_group(props) {
 
   useEffect(() => {
     room_group.map((item) => {
-      if (item.room == room && item.group == group) {
+      if (item.group == group) {
         return setCheckArray(true);
       } else {
         return setCheckArray(false);
       }
     });
-  }, [block, room]);
+  }, [group, room]);
 
   // useEffect(() => {
   //   buildings.map((item) => {
@@ -328,19 +328,9 @@ function Room_group(props) {
                     {groups.map((option) => (
                       <MenuItem
                         key={option._id}
-                        value={
-                          option.academicYrSem +
-                          "." +
-                          option.grpNo +
-                          "." +
-                          option.subGrpNo
-                        }
+                        value={option.academicYrSem + "." + option.grpNo}
                       >
-                        {option.academicYrSem +
-                          "." +
-                          option.grpNo +
-                          "." +
-                          option.subGrpNo}
+                        {option.academicYrSem + "." + option.grpNo}
                       </MenuItem>
                     ))}
                   </Select>
