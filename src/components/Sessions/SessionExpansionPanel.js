@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Container } from '@material-ui/core';
 import SessionTable from "./SessionTable";
+import SessionRoom from "./SessionRoom";
 
 import  Copyright  from '../Commons/Copyright';
 
@@ -30,9 +31,13 @@ const useStyles = makeStyles((theme) => ({
 function Session() {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
+    const [expanded2, setExpanded2] = React.useState(false);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
+    };
+    const handleChange2 = (panel) => (event, isExpanded) => {
+        setExpanded2(isExpanded ? panel : false);
     };
     return (
         <div>
@@ -59,6 +64,35 @@ function Session() {
                         <AccordionDetails>
                             <div className="p-0 m-0  col-md-12 justify-content-center">
                                 <SessionTable></SessionTable>
+                            </div>
+                        </AccordionDetails>
+                    </Accordion>
+                </Container>
+            </div>
+
+            <div className={classes.root}>
+                <Container>
+                    <Accordion
+                        style={
+                            expanded2
+                                ? { backgroundColor: '#f5f5f5' }
+                                : { backgroundColor: '#3f51b5', color: '#fff' }
+                        }
+                        expanded2={expanded2 === 'panel2'}
+                        onChange={handleChange2('panel2')}
+                    >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon style={{ color: '#fff' }} />}
+                            aria-controls='panel1bh-content'
+                            id='panel1bh-header'
+                        >
+                            <Typography className={classes.heading}>
+                                Allocate Room for Session
+                            </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <div className="p-0 m-0  col-md-12 justify-content-center">
+                                <SessionRoom></SessionRoom>
                             </div>
                         </AccordionDetails>
                     </Accordion>

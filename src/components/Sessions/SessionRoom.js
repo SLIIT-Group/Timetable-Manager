@@ -11,6 +11,7 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import swal from "sweetalert";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -36,12 +37,19 @@ const useStyles = makeStyles({
     },
 });
 
-export default function CustomizedTables() {
+export default function SessionRoom() {
     const classes = useStyles();
     const [sessions, setSessions] = useState([]);
 
+    const [sessionRooms, setSessionRooms] = useState([]);
+    const [groupRooms, setGroupRooms] = useState([]);
+    const [lecturerRooms, setLecturerRooms] = useState([]);
+    const [subjectTagRooms, setSubjectTagRooms] = useState([]);
+    const [tagRooms, setTagRooms] = useState([]);
+
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
+
     const handleChange = e => {
         setSearchTerm(e.target.value);
     };
@@ -64,22 +72,77 @@ export default function CustomizedTables() {
         setSearchResults(results);
     }, [searchTerm]);
 
+    function allocateRooms(){
+        sessions.map((session1) => {
+            let sessionId = session1._id;
+            let groupId = session1.groupId;
+            let lecturerName = session1.lecturers[0];
+            let subjectName = session1.subject;
+            let tagName = session1.tag;
+
+            // console.log(sessionId)
+            // console.log(groupId)
+            // console.log(lecturerName)
+            // console.log(subjectName)
+            // console.log(tagName)
+
+            sessionRooms.map((sessionRoom1) => {
+
+            })
+
+            groupRooms.map((groupRoom1) => {
+
+            })
+
+            lecturerRooms.map((lecturerRoom1) => {
+
+            })
+
+            subjectTagRooms.map((subjectTagRoom1) => {
+
+            })
+
+            tagRooms.map((tagRoom1) => {
+
+            })
+
+            const req = {
+                lecturers: session1.lecturers,
+                subject: session1.subject,
+                subjectCode: session1.subjectCode,
+                tag: session1.tag,
+                groupId: session1.groupId,
+                studentCount: session1.studentCount,
+                noOfHours: session1.noOfHours
+            };
+
+            console.log(req.lecturers);
+
+            // axios.post("http://localhost:5000/api/sessions/add", req).then((res) => {
+            //     if (res.data.success) {
+            //         console.log(res.data);
+            //     }else{
+            //         console.log('error in adding session location')
+            //     }
+            // });
+        })
+    };
+
     return (
         <div>
             <h3 align="center"> Sessions List </h3>
 
             <div className="form-group">
-                <Link to={"/addSession"}>
-                    <input type="submit" value="Add Session" className= "btn btn-primary"
-                           style={{marginLeft: 10}}/>
-                </Link>
-                <div style={{width:"25px", display:"inline-block"}} />
-                <input
-                    type="text"
-                    placeholder="Search"
-                    value={searchTerm}
-                    onChange={handleChange}
-                />
+                <input type="submit" value="Automatically Assign Rooms for Sessions" className= "btn btn-primary"
+                       style={{marginLeft: 10}} onClick={allocateRooms}/>
+
+                {/*<div style={{width:"25px", display:"inline-block"}} />*/}
+                {/*<input*/}
+                {/*    type="text"*/}
+                {/*    placeholder="Search"*/}
+                {/*    value={searchTerm}*/}
+                {/*    onChange={handleChange}*/}
+                {/*/>*/}
             </div>
 
             <TableContainer component={Paper}>
