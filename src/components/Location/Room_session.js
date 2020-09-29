@@ -36,6 +36,13 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -86,9 +93,23 @@ function Room_session(props) {
   const [session_preferredRoom, setSessionPreferredRoom] = useState([]);
   const [sessions, setSessions] = useState([]);
   const [session, setSession] = useState("");
+  const [sessionFilter, setSessionFilter] = useState([]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  // const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const handleClickOpen = () => {
+    setSessionFilter(sessions.filter((items) => items._id == session));
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -123,9 +144,7 @@ function Room_session(props) {
 
     session_preferredRoom.map((item) => {
       if (item._id == id) {
-        return (
-          setSession(item.subjectCode), setRoom(item.room)
-        );
+        return setSession(item.subjectCode), setRoom(item.room);
       }
     });
 
@@ -214,7 +233,7 @@ function Room_session(props) {
       if (checkArray) {
         NotificationManager.warning(
           "Warning message",
-          "Room is already allocated",
+          "Session is already allocated",
           3000
         );
         setSession("");
@@ -224,14 +243,14 @@ function Room_session(props) {
           .post("http://localhost:5000/api/session_preferredRoom/add", data)
           .then((res) => {
             if (res.data.success == true) {
-              NotificationManager.success("Success message", "Room Added");
+              NotificationManager.success("Success message", "Room Added for session");
               setSession("");
               setRoom("");
               setTable(true);
             } else {
               NotificationManager.warning(
                 "Warning message",
-                "Room is already there",
+                "Session is already there",
                 3000
               );
               setSession("");
@@ -247,7 +266,7 @@ function Room_session(props) {
 
   useEffect(() => {
     session_preferredRoom.map((item) => {
-      if (item.room == room && item.group == session) {
+      if (item.id == session) {
         return setCheckArray(true);
       } else {
         return setCheckArray(false);
@@ -281,6 +300,10 @@ function Room_session(props) {
   //     );
   //   }
   // };
+
+  const viewDetails = () => {
+    console.log("Hello");
+  };
 
   return (
     <div className={classes.root}>
@@ -392,6 +415,43 @@ function Room_session(props) {
                 >
                   {toggle.value}
                 </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ marginTop: 10, marginLeft: 15 }}
+                  disabled={!session}
+                  onClick={handleClickOpen}
+                >
+                  View Details
+                </Button>
+                <Dialog
+                  // fullScreen={fullScreen}
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="responsive-dialog-title"
+                >
+                  <DialogTitle>{"Session Details"}</DialogTitle>
+                  <DialogContent>
+                    {sessionFilter.map((item) => (
+                      <DialogContentText key={item._id}>
+                        {item.lecturers[0]} <br />
+                        {item.lecturers[1]} <br />
+                        {item.lecturers[2]} <br />
+                        {item.subject} <br />
+                        {item.subjectCode} <br />
+                        {item.tag} <br />
+                        {item.groupId} <br />
+                        {item.studentCount} <br />
+                        {item.noOfHours}
+                      </DialogContentText>
+                    ))}
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose} color="primary" autoFocus>
+                      Close
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </form>
               <div
                 style={{
