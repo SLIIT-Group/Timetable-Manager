@@ -223,13 +223,23 @@ function Room_group(props) {
   };
 
   useEffect(() => {
-    room_group.map((item) => {
-      if (item.group == group) {
-        return setCheckArray(true);
-      } else {
-        return setCheckArray(false);
-      }
-    });
+    if (toggle.value === "Add") {
+      room_group.map((item) => {
+        if (item.group == group) {
+          return setCheckArray(true);
+        } else {
+          return setCheckArray(false);
+        }
+      });
+    } else {
+      room_group.map((item) => {
+        if (item.group == group && item.room == room) {
+          return setCheckArray(true);
+        } else {
+          return setCheckArray(false);
+        }
+      });
+    }
   }, [group, room]);
 
   // useEffect(() => {
@@ -328,9 +338,19 @@ function Room_group(props) {
                     {groups.map((option) => (
                       <MenuItem
                         key={option._id}
-                        value={option.academicYrSem + "." + option.grpNo}
+                        value={
+                          option.academicYrSem +
+                          "." +
+                          option.programme +
+                          "." +
+                          option.grpNo
+                        }
                       >
-                        {option.academicYrSem + "." + option.grpNo}
+                        {option.academicYrSem +
+                          "." +
+                          option.programme +
+                          "." +
+                          option.grpNo}
                       </MenuItem>
                     ))}
                   </Select>
