@@ -285,14 +285,6 @@ function Room_session(props) {
     });
   }, [block, room]);
 
-  // useEffect(() => {
-  //   buildings.map((item) => {
-  //     if (item.building == block) {
-  //       return setBuildingId(item._id);
-  //     }
-  //   });
-  // }, [block]);
-
   useEffect(() => {
     const results = session_preferredRoom.filter((data) =>
       data.subjectCode.toLowerCase().includes(search)
