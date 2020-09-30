@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Lecturer({key, setKey}) {
+export default function Lecturer({keys, setKey}) {
   const classes = useStyles();
 
   const [lecList, setLecList] = useState([]);
@@ -55,7 +55,7 @@ export default function Lecturer({key, setKey}) {
                     <Select
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
-                        value={key}
+                        value={keys}
                         onChange={(event) => setKey(event.target.value)}
                         label="lKey"
                     >
@@ -63,7 +63,7 @@ export default function Lecturer({key, setKey}) {
                         <em>None</em>
                       </MenuItem>
                       {lecList.map((item) => (
-                      <MenuItem value={item.empid}>{item.fname+" "+item.lname+" "+"Emp ID:"+item.empid}</MenuItem>
+                      <MenuItem value={item.empid+"-"+item.fname+" "+item.lname}>{item.fname+" "+item.lname+" "+"Emp ID:"+item.empid}</MenuItem>
                           ))}
                     </Select>
                   </FormControl>

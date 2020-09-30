@@ -53,7 +53,8 @@ export default function SubGrpIDs({key, setKey}) {
   const handleSubGrpNoChange = (event) => {
     setSubGrpNo(event.target.value);
     setNewSubGrpNo(event.target.value);
-    setKey((event.target.value));
+    setKey(event.target.value);
+
   };
   const handleNewSubGrpNoChange = (event) => {
     setNewSubGrpNo(event.target.value);
