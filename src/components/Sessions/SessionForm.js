@@ -38,6 +38,7 @@ export default function SessionForm() {
     const [lecturerName, setLecturerName] = useState('');
     const [lecturerName2, setLecturerName2] = useState('');
     const [lecturerName3, setLecturerName3] = useState('');
+    const [lecturersToDB, setLecturersToDB] = useState([]);
     const [subjectName, setSubjectName] = useState();
     const [subjectCode, setSubjectCode] = useState('');
     const [tagName, setTagName] = useState('');
@@ -47,15 +48,23 @@ export default function SessionForm() {
 
     const handleLecturerName = (event) => {
         setLecturerName(event.target.value);
+        lecturersToDB[0] = event.target.value;
     }
 
     const handleLecturerName2 = (event) => {
         setLecturerName2(event.target.value);
+        lecturersToDB[1] = event.target.value;
     }
 
     const handleLecturerName3 = (event) => {
         setLecturerName3(event.target.value);
+        lecturersToDB[2] = event.target.value;
     }
+
+    // const handleLecturersToDB = (event) => {
+    //     setLecturersToDB(...lecturersToDB, event.target.value);
+    //     lecturersToDB[0] = event.target.value;
+    // }
 
     const handleSubjectName = (event) => {
         setSubjectName((event.target.value).substr(7));
@@ -80,9 +89,10 @@ export default function SessionForm() {
 
     const saveSession = () => {
         const req = {
-            lecturer1: lecturerName,
-            lecturer2: lecturerName2,
-            lecturer3: lecturerName3,
+            // lecturer1: lecturerName,
+            // lecturer2: lecturerName2,
+            // lecturer3: lecturerName3,
+            lecturers: lecturersToDB,
             subject: subjectName,
             subjectCode: subjectCode,
             tag: tagName,
@@ -103,6 +113,7 @@ export default function SessionForm() {
         setLecturerName('');
         setLecturerName2('');
         setLecturerName3('');
+        setLecturersToDB([]);
         setSubjectName();
         setSubjectCode('');
         setTagName('');

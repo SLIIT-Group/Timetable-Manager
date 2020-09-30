@@ -65,10 +65,14 @@ export default function LecturerForm(props) {
     const [lecturers, setLecturers] = useState([]);
     const [subjects, setSubjects] = useState([]);
     const [tags, setTags] = useState([]);
+    const [groups, setGroups] = useState([]);
 
     const [lecturerName, setLecturerName] = useState('');
     const [lecturerName2, setLecturerName2] = useState('');
     const [lecturerName3, setLecturerName3] = useState('');
+
+    const [lecturersToDB, setLecturersToDB] = useState([]);
+
     const [subjectName, setSubjectName] = useState();
     const [subjectCode, setSubjectCode] = useState('');
     const [tagName, setTagName] = useState('');
@@ -78,14 +82,17 @@ export default function LecturerForm(props) {
 
     const handleLecturerName = (event) => {
         setLecturerName(event.target.value);
+        lecturersToDB[0] = event.target.value;
     }
 
     const handleLecturerName2 = (event) => {
         setLecturerName2(event.target.value);
+        lecturersToDB[1] = event.target.value;
     }
 
     const handleLecturerName3 = (event) => {
         setLecturerName3(event.target.value);
+        lecturersToDB[2] = event.target.value;
     }
 
     const handleSubjectName = (event) => {
@@ -135,17 +142,31 @@ export default function LecturerForm(props) {
                 setTags(res.data);
             });
 
+        axios
+            .get("http://localhost:5000/api/students/all")
+            .then((res) => {
+                setGroups(res.data);
+            });
+
         axios.get('http://localhost:5000/api/sessions/edit/' +props.sessionId)
             .then(response => {
-                setLecturerName(response.data.lecturer1);
-                setLecturerName2(response.data.lecturer2);
-                setLecturerName3(response.data.lecturer3);
+                setLecturerName(response.data.lecturers[0]);
+                setLecturerName2(response.data.lecturers[1]);
+                setLecturerName3(response.data.lecturers[2]);
+
+                //setLecturersToDB([response.data.lecturers.slice()]);
+
+                lecturersToDB[0] = response.data.lecturers[0];
+                lecturersToDB[1] = response.data.lecturers[1];
+                lecturersToDB[2] = response.data.lecturers[2];
+
                 setSubjectName(response.data.subject);
                 setSubjectCode(response.data.subjectCode);
                 setTagName(response.data.tag);
                 setGroupId(response.data.groupId);
                 setStudentCount(response.data.studentCount);
                 setNoHours(response.data.noOfHours);
+                //console.log(response.data.lecturers[0]);
             })
             .catch(function (error) {
                 console.log(error);
@@ -154,9 +175,10 @@ export default function LecturerForm(props) {
 
     const updateSession = () => {
         const req = {
-            lecturer1: lecturerName,
-            lecturer2: lecturerName2,
-            lecturer3: lecturerName3,
+            // lecturer1: lecturerName,
+            // lecturer2: lecturerName2,
+            // lecturer3: lecturerName3,
+            lecturers: lecturersToDB,
             subject: subjectName,
             subjectCode: subjectCode,
             tag: tagName,
@@ -177,6 +199,7 @@ export default function LecturerForm(props) {
         setLecturerName('');
         setLecturerName2('');
         setLecturerName3('');
+        setLecturersToDB([]);
         setSubjectName();
         setSubjectCode('');
         setTagName('');
@@ -198,6 +221,7 @@ export default function LecturerForm(props) {
         setLecturerName('');
         setLecturerName2('');
         setLecturerName3('');
+        setLecturersToDB([]);
         setSubjectName();
         setSubjectCode('');
         setTagName('');
@@ -322,11 +346,18 @@ export default function LecturerForm(props) {
                         variant="filled"
                         fullWidth
                     >
-                        {level.map((option) => (
-                            <MenuItem key={option.label} value={option.value}>
-                                {option.label}
+                    {tagName == "Lecture" || tagName == "Tutorial" ?
+                        (groups.map((item) => (
+                            <MenuItem key={item._id} value={item.academicYrSem+"."+item.programme+"."+item.grpNo}>
+                                {item.academicYrSem+"."+item.programme+"."+item.grpNo}
                             </MenuItem>
-                        ))}
+                        ))) :
+                        (groups.map((item) => (
+                            <MenuItem key={item._id} value={item.academicYrSem+"."+item.programme+"."+item.grpNo+"."+item.subGrpNo}>
+                                {item.academicYrSem+"."+item.programme+"."+item.grpNo+"."+item.subGrpNo}
+                            </MenuItem>
+                        )))
+                    }
                     </TextField>
                 </Grid>
 

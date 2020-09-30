@@ -223,13 +223,23 @@ function Room_lecturer(props) {
   };
 
   useEffect(() => {
-    room_lecturer.map((item) => {
-      if (item.lecturer == lecturer) {
-        return setCheckArray(true);
-      } else {
-        return setCheckArray(false);
-      }
-    });
+    if (toggle.value === "Add") {
+      room_lecturer.map((item) => {
+        if (item.lecturer == lecturer) {
+          return setCheckArray(true);
+        } else {
+          return setCheckArray(false);
+        }
+      });
+    } else {
+      room_lecturer.map((item) => {
+        if (item.lecturer == lecturer && item.room == room) {
+          return setCheckArray(true);
+        } else {
+          return setCheckArray(false);
+        }
+      });
+    }
   }, [lecturer, room]);
 
   // useEffect(() => {
