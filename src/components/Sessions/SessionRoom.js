@@ -12,6 +12,7 @@ import {Link} from "react-router-dom";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import swal from "sweetalert";
+import 'regenerator-runtime/runtime';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -63,6 +64,47 @@ export default function SessionRoom() {
             .catch(function (error) {
                 console.log(error);
             });
+
+        axios.get("http://localhost:5000/api/session_preferredRoom/")
+            .then((response) => {
+                setSessionRooms(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        axios.get("http://localhost:5000/api/room_group/")
+            .then((response) => {
+                setGroupRooms(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        axios.get("http://localhost:5000/api/room_lecturer/")
+            .then((response) => {
+                setLecturerRooms(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        axios.get("http://localhost:5000/api/room_subject_tag/")
+            .then((response) => {
+                setSubjectTagRooms(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        axios.get("http://localhost:5000/api/tag_room/")
+            .then((response) => {
+                setTagRooms(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
     }, []);
 
     useEffect(() => {
@@ -72,60 +114,82 @@ export default function SessionRoom() {
         setSearchResults(results);
     }, [searchTerm]);
 
-    function allocateRooms(){
-        sessions.map((session1) => {
-            let sessionId = session1._id;
-            let groupId = session1.groupId;
-            let lecturerName = session1.lecturers[0];
-            let subjectName = session1.subject;
-            let tagName = session1.tag;
+    function refreshPage() {
+        window.location.reload(false);
+    }
 
-            // console.log(sessionId)
-            // console.log(groupId)
-            // console.log(lecturerName)
-            // console.log(subjectName)
-            // console.log(tagName)
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
-            sessionRooms.map((sessionRoom1) => {
+    async function allocateRooms(){
+        for (let i = 0; i < sessions.length; i++) {
+            let roomsArray = [];
+            let sessionId = sessions[i]._id;
+            let groupId = sessions[i].groupId;
+            let lecturerName = sessions[i].lecturers[0];
+            let subjectName = sessions[i].subject;
+            let tagName = sessions[i].tag;
 
-            })
+            for (let i = 0; i < sessionRooms.length; i++) {
+                if(sessionId == sessionRooms[i].id){
+                    roomsArray.push(sessionRooms[i].room)
+                }
+            }
 
-            groupRooms.map((groupRoom1) => {
+            for (let i = 0; i < groupRooms.length; i++) {
+                if(groupId == groupRooms[i].group){
+                    roomsArray.push(groupRooms[i].room);
+                }
+            }
 
-            })
+            for (let i = 0; i < lecturerRooms.length; i++) {
+                //console.log(lecturerName);
+                //console.log(lecturerRooms[i].lecturer);;
 
-            lecturerRooms.map((lecturerRoom1) => {
+                if(lecturerName == lecturerRooms[i].lecturer){
+                    roomsArray.push(lecturerRooms[i].room)
+                }
+            }
 
-            })
+            for (let i = 0; i < subjectTagRooms.length; i++) {
+                if(subjectName == subjectTagRooms[i].subject && tagName == subjectTagRooms[i].tag){
+                    roomsArray.push(subjectTagRooms[i].room)
+                }
+            }
 
-            subjectTagRooms.map((subjectTagRoom1) => {
-
-            })
-
-            tagRooms.map((tagRoom1) => {
-
-            })
+            for (let i = 0; i < tagRooms.length; i++) {
+                if(tagName == tagRooms[i].tag){
+                    roomsArray.push(tagRooms[i].room)
+                }
+            }
 
             const req = {
-                lecturers: session1.lecturers,
-                subject: session1.subject,
-                subjectCode: session1.subjectCode,
-                tag: session1.tag,
-                groupId: session1.groupId,
-                studentCount: session1.studentCount,
-                noOfHours: session1.noOfHours
+                lecturers: sessions[i].lecturers,
+                subject: sessions[i].subject,
+                subjectCode: sessions[i].subjectCode,
+                tag: sessions[i].tag,
+                groupId: sessions[i].groupId,
+                studentCount: sessions[i].studentCount,
+                noOfHours: sessions[i].noOfHours,
+                rooms: roomsArray
             };
 
-            console.log(req.lecturers);
+            console.log(roomsArray);
 
-            // axios.post("http://localhost:5000/api/sessions/add", req).then((res) => {
-            //     if (res.data.success) {
-            //         console.log(res.data);
-            //     }else{
-            //         console.log('error in adding session location')
-            //     }
-            // });
-        })
+            axios.post('http://localhost:5000/api/sessions/update/' +sessionId, req)
+                .then((res) => {
+                    if(res.data == 'Update complete'){
+                        //swal("Successful", "Session details updated", "success");
+                        console.log('Successfully locations added')
+                    }else{
+                        //swal("Unsuccessful", "Error while updating details", "error");
+                        console.log('Error while adding locations')
+                    }
+                });
+        }
+
+        swal("Successful", "Preferred locations added to all sessions automatically", "success").then(refreshPage);
     };
 
     return (
@@ -158,7 +222,7 @@ export default function SessionRoom() {
                             <StyledTableCell align="right">Group ID</StyledTableCell>
                             <StyledTableCell align="right">Student Count</StyledTableCell>
                             <StyledTableCell align="right">Duration</StyledTableCell>
-                            <StyledTableCell align="right">Edit/Delete</StyledTableCell>
+                            <StyledTableCell align="right">Candidate Locations</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -174,12 +238,13 @@ export default function SessionRoom() {
                                 <StyledTableCell align="right">{row.studentCount}</StyledTableCell>
                                 <StyledTableCell align="right">{row.noOfHours}</StyledTableCell>
                                 <StyledTableCell align="right">
-                                    {/*<Link to={"/lecturer/edit/" +row._id} className="btn btn-primary"> Edit/Delete </Link>*/}
-                                    <Link to={"/session/edit/" +row._id}>
-                                        <EditIcon></EditIcon>
-                                        <DeleteIcon></DeleteIcon>
-                                    </Link>
+                                    {
+                                        row.rooms.map((item) => (
+                                            item+ ", "
+                                        ))
+                                    }
                                 </StyledTableCell>
+
                             </StyledTableRow>
                         ))}
                     </TableBody>

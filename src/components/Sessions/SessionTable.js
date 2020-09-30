@@ -11,6 +11,11 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormLabel from "@material-ui/core/FormLabel";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControl from "@material-ui/core/FormControl";
+import Radio from "@material-ui/core/Radio";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -42,8 +47,15 @@ export default function CustomizedTables() {
 
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
+
+    const [value, setValue] = React.useState('lecturer');
+
     const handleChange = e => {
         setSearchTerm(e.target.value);
+    };
+
+    const handleRadioButtonChange = (event) => {
+        setValue(event.target.value);
     };
 
     useEffect(() => {
@@ -58,10 +70,24 @@ export default function CustomizedTables() {
     }, []);
 
     useEffect(() => {
-        const results = sessions.filter(session =>
-            session.lecturer1.toLowerCase().includes(searchTerm)
-        );
-        setSearchResults(results);
+        if(value == 'lecturer'){
+            const results = sessions.filter(session =>
+                session.lecturers[0].toLowerCase().includes(searchTerm)
+            );
+            setSearchResults(results);
+        }
+        if(value == 'subject'){
+            const results = sessions.filter(session =>
+                session.subject.toLowerCase().includes(searchTerm)
+            );
+            setSearchResults(results);
+        }
+        if(value == 'tag'){
+            const results = sessions.filter(session =>
+                session.tag.toLowerCase().includes(searchTerm)
+            );
+            setSearchResults(results);
+        }
     }, [searchTerm]);
 
     return (
@@ -73,13 +99,25 @@ export default function CustomizedTables() {
                     <input type="submit" value="Add Session" className= "btn btn-primary"
                            style={{marginLeft: 10}}/>
                 </Link>
+
                 <div style={{width:"25px", display:"inline-block"}} />
+
                 <input
                     type="text"
                     placeholder="Search"
                     value={searchTerm}
                     onChange={handleChange}
                 />
+
+                <div style={{width:"25px", display:"inline-block"}} />
+
+                <FormControl component="fieldset">
+                    <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleRadioButtonChange} row>
+                        <FormControlLabel value="lecturer" control={<Radio />} label="Lecturer" />
+                        <FormControlLabel value="subject" control={<Radio />} label="Subject" />
+                        <FormControlLabel value="tag" control={<Radio />} label="Tag" />
+                    </RadioGroup>
+                </FormControl>
             </div>
 
             <TableContainer component={Paper}>
