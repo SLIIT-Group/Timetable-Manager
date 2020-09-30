@@ -22,6 +22,9 @@ import SessionExpansionPanel from './Sessions/SessionExpansionPanel';
 import SessionForm from './Sessions/Session';
 import EditSession from './Sessions/EditSession';
 import Customize from "./Customize/Customize";
+import SessionTableSAddCS from "./Customize/SubComponents/SessionTableAddCS";
+import SessionTableAddNO from "./Customize/SubComponents/SessionTableAddNO";
+import SessionTableAddPS from "./Customize/SubComponents/SessionTableAddPS";
 
 const App = () => {
   return (
@@ -50,6 +53,9 @@ const App = () => {
             <Route exact path='/addSession' component={SessionForm} />
             <Route exact path='/session/edit/:id' component={EditSession} />
             <Route exact path='/section3' component={Customize} />
+            <Route exact path='/addConsecutive' component={SessionTableSAddCS} />
+            <Route exact path='/addParallel' component={SessionTableAddPS} />
+            <Route exact path='/addNotOverlap' component={SessionTableAddNO} />
             <Route path='/' component={Home} />
           </Switch>
         </div>

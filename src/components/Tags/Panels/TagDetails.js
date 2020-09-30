@@ -71,15 +71,7 @@ export default function TagDetails() {
                   </Link>
                 </Col>
                 <Col >
-                  <div className="main">
-                    <div className="input-group">
-                      <input
-                          type="text"
-                          className="input mt-1"
-                          style={{ width: "100%" }}
-                      />
-                    </div>
-                  </div>
+
                 </Col>
 
 
