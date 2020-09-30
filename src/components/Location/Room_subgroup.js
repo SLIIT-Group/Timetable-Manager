@@ -223,13 +223,23 @@ function Room_subgroup(props) {
   };
 
   useEffect(() => {
-    room_group.map((item) => {
-      if (item.subgroup == group) {
-        return setCheckArray(true);
-      } else {
-        return setCheckArray(false);
-      }
-    });
+    if (toggle.value === "Add") {
+      room_group.map((item) => {
+        if (item.subgroup == group) {
+          return setCheckArray(true);
+        } else {
+          return setCheckArray(false);
+        }
+      });
+    } else {
+      room_group.map((item) => {
+        if (item.subgroup == group && item.room == room) {
+          return setCheckArray(true);
+        } else {
+          return setCheckArray(false);
+        }
+      });
+    }
   }, [group, room]);
 
   // useEffect(() => {
@@ -331,12 +341,16 @@ function Room_subgroup(props) {
                         value={
                           option.academicYrSem +
                           "." +
+                          option.programme +
+                          "." +
                           option.grpNo +
                           "." +
                           option.subGrpNo
                         }
                       >
                         {option.academicYrSem +
+                          "." +
+                          option.programme +
                           "." +
                           option.grpNo +
                           "." +
@@ -450,7 +464,7 @@ function Room_subgroup(props) {
                         >
                           <TableRow align="center">
                             <StyledTableCell align="center">
-                             Sub Group
+                              Sub Group
                             </StyledTableCell>
                             <StyledTableCell align="center">
                               Room

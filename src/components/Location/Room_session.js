@@ -243,7 +243,10 @@ function Room_session(props) {
           .post("http://localhost:5000/api/session_preferredRoom/add", data)
           .then((res) => {
             if (res.data.success == true) {
-              NotificationManager.success("Success message", "Room Added for session");
+              NotificationManager.success(
+                "Success message",
+                "Room Added for session"
+              );
               setSession("");
               setRoom("");
               setTable(true);
@@ -266,10 +269,18 @@ function Room_session(props) {
 
   useEffect(() => {
     session_preferredRoom.map((item) => {
-      if (item.id == session) {
-        return setCheckArray(true);
+      if (toggle.value === "Add") {
+        if (item.id == session) {
+          return setCheckArray(true);
+        } else {
+          return setCheckArray(false);
+        }
       } else {
-        return setCheckArray(false);
+        if (item.id == session && item.room == room) {
+          return setCheckArray(true);
+        } else {
+          return setCheckArray(false);
+        }
       }
     });
   }, [block, room]);
