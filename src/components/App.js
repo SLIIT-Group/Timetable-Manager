@@ -2,7 +2,6 @@ import React from 'react';
 import SideNav from './Navigation/SideNav';
 import TimeManager from './TimeManager/TimeManager';
 import LocationManager from './Location/LocationManager';
-import SessionManager from './Sessions/SessionManager';
 import StudentManager from './Students/StudentManager';
 import LecturerForm from './Lecturer/Lecturer';
 import TagManager from './Tags/TagManager';
@@ -20,6 +19,13 @@ import EditTagForm from './Tags/SubComponents/EditTagForm';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './Home/Home';
 import TimeTables from './Timetables/TimeTables';
+import SessionExpansionPanel from './Sessions/SessionExpansionPanel';
+import SessionForm from './Sessions/Session';
+import EditSession from './Sessions/EditSession';
+import Customize from './Customize/Customize';
+import SessionTableSAddCS from './Customize/SubComponents/SessionTableAddCS';
+import SessionTableAddNO from './Customize/SubComponents/SessionTableAddNO';
+import SessionTableAddPS from './Customize/SubComponents/SessionTableAddPS';
 
 const App = () => {
   return (
@@ -31,7 +37,7 @@ const App = () => {
             <Route exact path='/time' component={TimeManager} />
             <Route exact path='/lecturers' component={LecturerExpansionPanel} />
             <Route exact path='/location' component={LocationManager} />
-            <Route exact path='/session' component={SessionManager} />
+            <Route exact path='/session' component={SessionExpansionPanel} />
             <Route exact path='/student' component={StudentManager} />
             <Route exact path='/subject' component={SubjectExpansionPanel} />
             <Route exact path='/tags' component={TagManager} />
@@ -46,6 +52,16 @@ const App = () => {
             <Route exact path='/student/edit/:id' component={EditStudentForm} />
             <Route exact path='/tags/edit/:id' component={EditTagForm} />
             <Route exact path='/timetables' component={TimeTables} />
+            <Route exact path='/addSession' component={SessionForm} />
+            <Route exact path='/session/edit/:id' component={EditSession} />
+            <Route exact path='/section3' component={Customize} />
+            <Route
+              exact
+              path='/addConsecutive'
+              component={SessionTableSAddCS}
+            />
+            <Route exact path='/addParallel' component={SessionTableAddPS} />
+            <Route exact path='/addNotOverlap' component={SessionTableAddNO} />
             <Route path='/' component={Home} />
           </Switch>
         </div>

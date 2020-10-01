@@ -1,16 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { makeStyles, emphasize } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import axios from "axios";
-import MenuItem from "@material-ui/core/MenuItem";
-import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Students from "../SubComponents/Students";
 import {Link} from "react-router-dom";
+import ConsecutiveTable from "../SubComponents/ConsecutiveTable";
+import Row from "react-bootstrap/Row";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,13 +28,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function StudentDetails() {
+export default function Consecutive() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
 
   return (
     <div className={classes.root}>
@@ -53,16 +53,14 @@ export default function StudentDetails() {
           aria-controls='panel1bh-content'
           id='panel1bh-header'
         >
-          <Typography className={classes.heading}>Manage Student Details</Typography>
+          <Typography className={classes.heading}>Consecutive Sessions</Typography>
 
         </AccordionSummary>
         <AccordionDetails>
-            <Row className="p-0 m-0  col-md-12 d-flex bd-highlight justify-content-center">
-
-            <Students />
-            </Row>
-
-         </AccordionDetails>
+          <Row className="p-0 m-0  col-md-12 d-flex bd-highlight justify-content-center flex-column">
+            <ConsecutiveTable />
+          </Row>
+        </AccordionDetails>
       </Accordion>
     </div>
   );

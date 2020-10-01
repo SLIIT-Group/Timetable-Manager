@@ -24,6 +24,7 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import ApartmentIcon from '@material-ui/icons/Apartment';
+import AdjustIcon from '@material-ui/icons/Adjust';
 
 const drawerWidth = 240;
 
@@ -232,6 +233,19 @@ export default function PersistentDrawerLeft() {
               <ListItemText>
                 <ApartmentIcon style={iconStyle} />
                 Timetables
+              </ListItemText>
+            </ListItem>
+          </NavLink>
+          <NavLink
+            exact
+            activeStyle={activeStyle}
+            style={navStyle}
+            to='/section3'
+          >
+            <ListItem button>
+              <ListItemText>
+                <AdjustIcon style={iconStyle} />
+                Customize
               </ListItemText>
             </ListItem>
           </NavLink>

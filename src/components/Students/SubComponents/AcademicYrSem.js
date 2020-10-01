@@ -8,6 +8,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import axios from "axios";
+import swal from "sweetalert";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,32 +46,18 @@ export default function AcademicYrSem() {
   useEffect(() => {
     axios
 
-        .get("http://localhost:5000/api/students/all")
+        .post("http://localhost:5000/api/students/view/academicYrSem")
         .then((res) => {
           setStudentList(res.data);
         });
 
-  }, []);
+  },[yrSem,newYrSem]);
   const deleteStudent = () => {
-    axios
-        .get(
-            `http://localhost:5000/api/students/delete/${yrSem}`
-        )
-        .then((res) => {
-          alert("Student Entry Deleted Successfully");
-        })
-        .catch((err) => alert("Student Entry Deletion Failed"));
-
-    setYrSem("");
-  };
-
-  const updateStudent = () => {
     const req = {
-
-      academicYrSem: newYrSem,
+      academicYrSem: yrSem,
     };
 
-    axios.post(`http://localhost:5000/api/students/update/academicYrSem`, req).then((res) => {
+    axios.post(`http://localhost:5000/api/students/delete/academicYrSem`, req).then((res) => {
       if (res.data.success) {
         alert("Student Entry Updating Failed");
       }else{
@@ -78,6 +65,25 @@ export default function AcademicYrSem() {
       }
     });
     setYrSem("");
+    setNewYrSem("");
+
+  };
+
+  const updateStudent = () => {
+    const req = {
+      prevAcademicYrSem : yrSem,
+      academicYrSem: newYrSem,
+    };
+
+    axios.post(`http://localhost:5000/api/students/update/academicYrSem`, req).then((res) => {
+      if (res.data.success) {
+        swal("Unsuccessful", "Student Entry Updating Failed", "error");
+      }else{
+        swal("Successful", "Student Entry Update Successful", "success");
+      }
+    });
+    setYrSem("");
+    setNewYrSem("");
 
   };
   return (
@@ -103,7 +109,7 @@ export default function AcademicYrSem() {
                         <em>None</em>
                       </MenuItem>
                       {studentList.map((item) => (
-                      <MenuItem value={item.academicYrSem}>{item.academicYrSem}</MenuItem>
+                      <MenuItem value={item}>{item}</MenuItem>
                           ))}
                     </Select>
                   </FormControl>

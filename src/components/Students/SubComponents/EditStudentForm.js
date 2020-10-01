@@ -86,9 +86,7 @@ export default function EditStudentForm(props) {
                 academicYrSem: academicYrSem,
                 programme: programme,
                 grpNo: grpNo,
-                grpID: academicYrSem + "." + programme + "." + grpNo,
                 subGrpNo: subGrpNo,
-                subGrpID: academicYrSem + "." + programme + "." + grpNo + "." + subGrpNo,
                 id: _id,
             };
 
@@ -185,7 +183,7 @@ export default function EditStudentForm(props) {
                                 value={programme}
                                 onChange={handleProgrammeChange}
                                 id="standard-full-width"
-                                label="Enter New Programme"
+                                label="Enter New Session"
                                 style={{ margin: 8 }}
                                 placeholder="Eg: IT/CSSE"
                                 fullWidth

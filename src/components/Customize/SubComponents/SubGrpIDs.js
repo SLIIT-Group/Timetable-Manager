@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SubGrpIDs() {
+export default function SubGrpIDs({key, setKey}) {
   const classes = useStyles();
 
   const [yrSem, setYrSem] = React.useState('');
@@ -53,6 +53,8 @@ export default function SubGrpIDs() {
   const handleSubGrpNoChange = (event) => {
     setSubGrpNo(event.target.value);
     setNewSubGrpNo(event.target.value);
+    setKey(event.target.value);
+
   };
   const handleNewSubGrpNoChange = (event) => {
     setNewSubGrpNo(event.target.value);
@@ -108,29 +110,6 @@ export default function SubGrpIDs() {
         });
 
   },[grpNo,subGrpNo,newSubGrpNo]);
-
-  const deleteStudent = () => {
-    const req = {
-      prevAcademicYrSem: yrSem,
-      prevProgramme: prog,
-      prevGrpNo: grpNo,
-      prevSubGrpNo : subGrpNo,
-    };
-
-    axios.post(`http://localhost:5000/api/students/delete/subGrpNo`, req).then((res) => {
-      if (res.data.success) {
-        swal("Unsuccessful", "Student Entry Updating Failed", "error");
-      }else{
-        swal("Successful", "Student Entry Update Successful", "success");
-      }
-    });
-    setYrSem("");
-    setProg("");
-    setGrpNo("")
-    setSubGrpNo("");
-
-
-  };
 
 
   return (
@@ -233,7 +212,7 @@ export default function SubGrpIDs() {
                     <em>None</em>
                   </MenuItem>
                   {subGrpList.map((item) => (
-                      <MenuItem value={item}>{yrSem+"."+prog+"."+grpNo+"."+item}</MenuItem>
+                      <MenuItem value={yrSem+"."+prog+"."+grpNo+"."+item}>{yrSem+"."+prog+"."+grpNo+"."+item}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -241,25 +220,6 @@ export default function SubGrpIDs() {
           </div>
 
 
-
-          <div className="row col-md-12 mt-3">
-
-            <div className="input-field col s6">
-
-            </div>
-            <Col sm="6 pb-0">
-              <Row>
-                <Col>
-                  <Button variant="contained" color="secondary" className="btn-block pl-1" onClick={deleteStudent}>
-                    Delete
-                  </Button>
-                </Col>
-
-              </Row>
-
-            </Col>
-
-          </div>
 
         </div>
           </>

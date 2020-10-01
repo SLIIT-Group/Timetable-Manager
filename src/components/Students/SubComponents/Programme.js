@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Col} from "reactstrap";
 import Row from "react-bootstrap/Row";
@@ -8,6 +8,8 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import axios from "axios";
+import swal from "sweetalert";
 
 let cx = classNames;
 const useStyles = makeStyles((theme) => ({
@@ -30,16 +32,86 @@ const useStyles = makeStyles((theme) => ({
 export default function Programme() {
   const classes = useStyles();
   const [yrSem, setYrSem] = React.useState('');
-  console.log(yrSem);
+
   const handleYrSemChange = (event) => {
     setYrSem(event.target.value);
   };
 
   const [prog, setProg] = React.useState('');
-  console.log(prog);
+  const [newProg, setNewProg] = React.useState('');
   const handleProgChange = (event) => {
     setProg(event.target.value);
+    setNewProg(event.target.value);
   };
+  const handleNewProgChange = (event) => {
+    setNewProg(event.target.value);
+  };
+  const [yrList, setYrList] = useState([]);
+  const [progList, setProgList] = useState([]);
+
+
+  useEffect(() => {
+    axios
+        .post("http://localhost:5000/api/students/view/academicYrSem")
+        .then((res) => {
+          setYrList(res.data);
+        });
+
+  },[]);
+  useEffect(() => {
+    const req = {
+      academicYrSem: yrSem,
+    };
+    axios
+        .post("http://localhost:5000/api/students/view/programme",req)
+        .then((res) => {
+          setProgList(res.data);
+        });
+
+  },[prog,newProg,yrSem]);
+
+
+  const deleteStudent = () => {
+    const req = {
+      prevAcademicYrSem: yrSem,
+      prevProgramme: prog
+    };
+
+    axios.post(`http://localhost:5000/api/students/delete/programme`, req).then((res) => {
+      if (res.data.success) {
+        swal("Unsuccessful", "Student Entry Updating Failed", "error");
+      }else{
+        swal("Successful", "Student Entry Update Successful", "success");
+      }
+    });
+    setYrSem("");
+    setNewProg("");
+    setProg("");
+
+
+  };
+
+  const updateStudent = () => {
+    const req = {
+      prevAcademicYrSem: yrSem,
+      prevProgramme: prog,
+      programme : newProg
+    };
+
+    axios.post(`http://localhost:5000/api/students/update/programme`, req).then((res) => {
+      if (res.data.success) {
+        swal("Unsuccessful", "Student Entry Updating Failed", "error");
+      }else{
+        swal("Successful", "Student Entry Update Successful", "success");
+      }
+    });
+    setYrSem("");
+    setNewProg("");
+    setProg("");
+
+  };
+
+
   return (
 
           <>
@@ -62,8 +134,9 @@ export default function Programme() {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value="Y1.S2">Y1.S2</MenuItem>
-                      <MenuItem value="Y3.S1">Y3.S1</MenuItem>
+                      {yrList.map((item) => (
+                          <MenuItem value={item}>{item}</MenuItem>
+                      ))}
 
                     </Select>
                   </FormControl>
@@ -87,8 +160,9 @@ export default function Programme() {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value="SE">SE</MenuItem>
-                      <MenuItem value="IT">IT</MenuItem>
+                      {progList.map((item) => (
+                          <MenuItem value={item}>{item}</MenuItem>
+                      ))}
 
                     </Select>
                   </FormControl>
@@ -100,18 +174,18 @@ export default function Programme() {
 
                 <div className="input-field col s6">
                   <div className="form-group">
-                    <input type="text" className="form-control" value={prog} onChange=""/>
+                    <input type="text" className="form-control" value={newProg} onChange={handleNewProgChange}/>
                   </div>
                 </div>
                 <Col sm="6 pb-0">
                   <Row>
                     <Col>
-                      <Button variant="contained" color="primary" className="btn-block pr-1">
+                      <Button variant="contained" color="primary" className="btn-block pr-1" onClick={updateStudent}>
                         Update
                       </Button>
                     </Col>
                     <Col>
-                      <Button variant="contained" color="secondary" className="btn-block pl-1">
+                      <Button variant="contained" color="secondary" className="btn-block pl-1" onClick={deleteStudent}>
                         Delete
                       </Button>
                     </Col>

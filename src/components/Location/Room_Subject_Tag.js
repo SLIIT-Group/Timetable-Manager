@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Container } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
+
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -66,7 +67,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-function Room_group(props) {
+function Room_subject_tag(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [table, setTable] = useState(false);
@@ -83,20 +84,20 @@ function Room_group(props) {
   });
   const [tagRoom, setTagRoom] = useState([]);
   const [block, setBlock] = useState("");
-  const [room_group, setRoomGroup] = useState([]);
-  const [groups, setGroups] = useState([]);
-  const [group, setGroup] = useState("");
+  const [subjects, setSubjects] = useState([]);
+  const [subject, setSubject] = useState("");
+  const [room_subject_tag, SetRoomSubjectTag] = useState([]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/students/all`)
+    fetch(`http://localhost:5000/api/tags/all`)
       .then((res) => res.json())
       .then(
         (result) => {
-          setGroups(result);
+          setTags(result);
         },
         (error) => {
           setError(error);
@@ -111,9 +112,15 @@ function Room_group(props) {
 
     axios
 
-      .get(`http://localhost:5000/api/room_group/`) //get data from userID
+      .get(`http://localhost:5000/api/subjects/`) //get data from userID
       .then((res) => {
-        setRoomGroup(res.data);
+        setSubjects(res.data);
+      });
+
+    axios
+      .get(`http://localhost:5000/api/room_subject_tag/`) //get data from userID
+      .then((res) => {
+        SetRoomSubjectTag(res.data);
         setSearchFilter(res.data); //save retrieved data to the hook
       });
   }, [expanded, table]);
@@ -121,9 +128,9 @@ function Room_group(props) {
   const onClick = (id) => {
     setNumber(id);
 
-    room_group.map((item) => {
+    room_subject_tag.map((item) => {
       if (item._id == id) {
-        return setGroup(item.group), setRoom(item.room);
+        return setBlock(item.tag), setRoom(item.room), setSubject(item.subject);
       }
     });
 
@@ -143,7 +150,7 @@ function Room_group(props) {
   const deleteRoom = (id) => {
     setTable(false);
     axios
-      .delete(`http://localhost:5000/api/room_group/remove/${id}`)
+      .delete(`http://localhost:5000/api/room_subject_tag/remove/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
@@ -161,30 +168,34 @@ function Room_group(props) {
         isEdit: false,
       });
 
-      const update_tagRoom = {
-        group: group,
+      const data = {
+        tag: block,
         room: room,
+        subject: subject,
       };
       if (!checkArray) {
         axios
           .post(
-            `http://localhost:5000/api/room_group/update/${number}`,
-            update_tagRoom
+            `http://localhost:5000/api/room_subject_tag/update/${number}`,
+            data
           )
           .then((res) => {
             NotificationManager.info("Item is Successfully updated", "", 3000); //save retrieved data to the hook
             setTable(true);
-            setGroup("");
+            setBlock("");
             setRoom("");
+            setSubject("");
           });
       } else {
         NotificationManager.warning("Item is Already There", "", 3000);
-        setGroup("");
+        setBlock("");
         setRoom("");
+        setSubject("");
       }
     } else {
       const data = {
-        group: group,
+        subject: subject,
+        tag: block,
         room: room,
       };
 
@@ -194,16 +205,18 @@ function Room_group(props) {
           "Room is already allocated",
           3000
         );
-        setGroup("");
+        setSubject("");
         setRoom("");
+        setBlock("");
       } else {
         axios
-          .post("http://localhost:5000/api/room_group/add", data)
+          .post("http://localhost:5000/api/room_subject_tag/add", data)
           .then((res) => {
             if (res.data.success == true) {
               NotificationManager.success("Success message", "Room Added");
-              setGroup("");
+              setSubject("");
               setRoom("");
+              setBlock("");
               setTable(true);
             } else {
               NotificationManager.warning(
@@ -211,8 +224,9 @@ function Room_group(props) {
                 "Room is already there",
                 3000
               );
-              setGroup("");
+              setSubject("");
               setRoom("");
+              setBlock("");
             }
           })
           .catch((error) => {
@@ -223,24 +237,14 @@ function Room_group(props) {
   };
 
   useEffect(() => {
-    if (toggle.value === "Add") {
-      room_group.map((item) => {
-        if (item.group == group) {
-          return setCheckArray(true);
-        } else {
-          return setCheckArray(false);
-        }
-      });
-    } else {
-      room_group.map((item) => {
-        if (item.group == group && item.room == room) {
-          return setCheckArray(true);
-        } else {
-          return setCheckArray(false);
-        }
-      });
-    }
-  }, [group, room]);
+    room_subject_tag.map((item) => {
+      if (item.tag == block && item.room == room && item.subject == subject) {
+        return setCheckArray(true);
+      } else {
+        return setCheckArray(false);
+      }
+    });
+  }, [block, room]);
 
   // useEffect(() => {
   //   buildings.map((item) => {
@@ -251,8 +255,8 @@ function Room_group(props) {
   // }, [block]);
 
   useEffect(() => {
-    const results = room_group.filter((data) =>
-      data.group.toLowerCase().includes(search)
+    const results = room_subject_tag.filter((data) =>
+      data.subject.toLowerCase().includes(search)
     );
     setSearchFilter(results);
   }, [search]);
@@ -287,7 +291,7 @@ function Room_group(props) {
             id="panel1bh-header"
           >
             <Typography className={classes.heading}>
-              Add Rooms for Groups
+              Add Preferred Room for a Subject
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -324,33 +328,46 @@ function Room_group(props) {
                     id="demo-simple-select-label"
                     style={{ marginLeft: 7 }}
                   >
-                    Group
+                    Subject
                   </InputLabel>
                   <Select
                     variant="filled"
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={group}
+                    value={subject}
                     style={{ width: "150px" }}
-                    disabled={!groups.length}
-                    onChange={(event) => setGroup(event.target.value)}
+                    disabled={!subjects.length}
+                    onChange={(event) => setSubject(event.target.value)}
                   >
-                    {groups.map((option) => (
-                      <MenuItem
-                        key={option._id}
-                        value={
-                          option.academicYrSem +
-                          "." +
-                          option.programme +
-                          "." +
-                          option.grpNo
-                        }
-                      >
-                        {option.academicYrSem +
-                          "." +
-                          option.programme +
-                          "." +
-                          option.grpNo}
+                    {subjects.map((option) => (
+                      <MenuItem key={option._id} value={option.subName}>
+                        {option.subName}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl
+                  className={classes.formControl}
+                  style={{ marginLeft: 5, marginTop: 20 }}
+                >
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    style={{ marginLeft: 7 }}
+                  >
+                    Tag
+                  </InputLabel>
+                  <Select
+                    variant="filled"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={block}
+                    style={{ width: "150px" }}
+                    disabled={!tags.length}
+                    onChange={(event) => setBlock(event.target.value)}
+                  >
+                    {tags.map((option) => (
+                      <MenuItem key={option._id} value={option.tag}>
+                        {option.tag}
                       </MenuItem>
                     ))}
                   </Select>
@@ -387,7 +404,7 @@ function Room_group(props) {
                   variant="contained"
                   color="primary"
                   style={{ marginTop: 10, marginLeft: 50 }}
-                  disabled={!room || !group}
+                  disabled={!block || !tagRoom}
                   onClick={addRoom}
                 >
                   {toggle.value}
@@ -400,7 +417,7 @@ function Room_group(props) {
                   paddingLeft: 50,
                 }}
               >
-                {room_group.length !== 0 ? (
+                {room_subject_tag.length !== 0 ? (
                   <Paper
                     component="form"
                     className={classes.root}
@@ -436,7 +453,7 @@ function Room_group(props) {
                   <h1></h1>
                 )}
 
-                {room_group.length !== 0 ? (
+                {room_subject_tag.length !== 0 ? (
                   <Grid
                     style={{
                       flex: 5,
@@ -460,7 +477,10 @@ function Room_group(props) {
                         >
                           <TableRow align="center">
                             <StyledTableCell align="center">
-                              Group
+                              Subject
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              Tag
                             </StyledTableCell>
                             <StyledTableCell align="center">
                               Room
@@ -475,11 +495,12 @@ function Room_group(props) {
                         </TableHead>
                         {!search ? (
                           <TableBody>
-                            {room_group.map((item) => (
+                            {room_subject_tag.map((item) => (
                               <TableRow hover key={item._id}>
                                 <TableCell align="center">
-                                  {item.group}
+                                  {item.subject}
                                 </TableCell>
+                                <TableCell align="center">{item.tag}</TableCell>
                                 <TableCell align="center">
                                   {item.room}
                                 </TableCell>
@@ -508,8 +529,9 @@ function Room_group(props) {
                             {searchFilter.map((item) => (
                               <TableRow hover key={item._id}>
                                 <TableCell align="center">
-                                  {item.group}
+                                  {item.subject}
                                 </TableCell>
+                                <TableCell align="center">{item.tag}</TableCell>
                                 <TableCell align="center">
                                   {item.room}
                                 </TableCell>
@@ -552,4 +574,4 @@ function Room_group(props) {
   );
 }
 
-export default Room_group;
+export default Room_subject_tag;

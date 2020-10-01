@@ -66,7 +66,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-function Room_group(props) {
+function Consecutive_sessions(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [table, setTable] = useState(false);
@@ -84,8 +84,8 @@ function Room_group(props) {
   const [tagRoom, setTagRoom] = useState([]);
   const [block, setBlock] = useState("");
   const [room_group, setRoomGroup] = useState([]);
-  const [groups, setGroups] = useState([]);
-  const [group, setGroup] = useState("");
+  const [sessions, setSessions] = useState([]);
+  const [session, setSession] = useState("");
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -96,7 +96,7 @@ function Room_group(props) {
       .then((res) => res.json())
       .then(
         (result) => {
-          setGroups(result);
+          setSessions(result);
         },
         (error) => {
           setError(error);
@@ -123,7 +123,7 @@ function Room_group(props) {
 
     room_group.map((item) => {
       if (item._id == id) {
-        return setGroup(item.group), setRoom(item.room);
+        return setSession(item.group), setRoom(item.room);
       }
     });
 
@@ -162,7 +162,7 @@ function Room_group(props) {
       });
 
       const update_tagRoom = {
-        group: group,
+        group: session,
         room: room,
       };
       if (!checkArray) {
@@ -174,17 +174,17 @@ function Room_group(props) {
           .then((res) => {
             NotificationManager.info("Item is Successfully updated", "", 3000); //save retrieved data to the hook
             setTable(true);
-            setGroup("");
+            setSession("");
             setRoom("");
           });
       } else {
         NotificationManager.warning("Item is Already There", "", 3000);
-        setGroup("");
+        setSession("");
         setRoom("");
       }
     } else {
       const data = {
-        group: group,
+        group: session,
         room: room,
       };
 
@@ -194,7 +194,7 @@ function Room_group(props) {
           "Room is already allocated",
           3000
         );
-        setGroup("");
+        setSession("");
         setRoom("");
       } else {
         axios
@@ -202,7 +202,7 @@ function Room_group(props) {
           .then((res) => {
             if (res.data.success == true) {
               NotificationManager.success("Success message", "Room Added");
-              setGroup("");
+              setSession("");
               setRoom("");
               setTable(true);
             } else {
@@ -211,7 +211,7 @@ function Room_group(props) {
                 "Room is already there",
                 3000
               );
-              setGroup("");
+              setSession("");
               setRoom("");
             }
           })
@@ -223,24 +223,14 @@ function Room_group(props) {
   };
 
   useEffect(() => {
-    if (toggle.value === "Add") {
-      room_group.map((item) => {
-        if (item.group == group) {
-          return setCheckArray(true);
-        } else {
-          return setCheckArray(false);
-        }
-      });
-    } else {
-      room_group.map((item) => {
-        if (item.group == group && item.room == room) {
-          return setCheckArray(true);
-        } else {
-          return setCheckArray(false);
-        }
-      });
-    }
-  }, [group, room]);
+    room_group.map((item) => {
+      if (item.room == room && item.group == session) {
+        return setCheckArray(true);
+      } else {
+        return setCheckArray(false);
+      }
+    });
+  }, [block, room]);
 
   // useEffect(() => {
   //   buildings.map((item) => {
@@ -287,7 +277,7 @@ function Room_group(props) {
             id="panel1bh-header"
           >
             <Typography className={classes.heading}>
-              Add Rooms for Groups
+              Add Consecutive Sessions for a Room
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -330,27 +320,27 @@ function Room_group(props) {
                     variant="filled"
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={group}
+                    value={session}
                     style={{ width: "150px" }}
-                    disabled={!groups.length}
-                    onChange={(event) => setGroup(event.target.value)}
+                    disabled={!sessions.length}
+                    onChange={(event) => setSession(event.target.value)}
                   >
-                    {groups.map((option) => (
+                    {sessions.map((option) => (
                       <MenuItem
                         key={option._id}
                         value={
                           option.academicYrSem +
                           "." +
-                          option.programme +
+                          option.grpNo +
                           "." +
-                          option.grpNo
+                          option.subGrpNo
                         }
                       >
                         {option.academicYrSem +
                           "." +
-                          option.programme +
+                          option.grpNo +
                           "." +
-                          option.grpNo}
+                          option.subGrpNo}
                       </MenuItem>
                     ))}
                   </Select>
@@ -387,7 +377,7 @@ function Room_group(props) {
                   variant="contained"
                   color="primary"
                   style={{ marginTop: 10, marginLeft: 50 }}
-                  disabled={!room || !group}
+                  disabled={!room || !session}
                   onClick={addRoom}
                 >
                   {toggle.value}
@@ -552,4 +542,4 @@ function Room_group(props) {
   );
 }
 
-export default Room_group;
+export default Consecutive_sessions;
