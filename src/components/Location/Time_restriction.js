@@ -328,6 +328,7 @@ function Time_restriction(props) {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <TimePicker
                       clearable
+                      ampm={false}
                       label="Start time"
                       hidden={!room}
                       value={startTime}
@@ -340,6 +341,7 @@ function Time_restriction(props) {
                 <Grid item xs={12}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <TimePicker
+                      ampm={false}
                       clearable
                       hidden={!startTime}
                       label="End time"
