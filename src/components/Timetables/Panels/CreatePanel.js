@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Container, Grid, Paper, Button } from '@material-ui/core';
 import GroupDropDown from '../DropDowns/GroupDropDown';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,15 +32,13 @@ const buttonStyle = {
   width: '50%',
 };
 
-function CreatePanel() {
+function CreatePanel({ counter, setCounter }) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [groupId, setGroupId] = useState('');
   const [timetable, setTimeTable] = useState([]);
 
-  useEffect(() => {
-    console.log(timetable);
-  }, [timetable]);
+  useEffect(() => {}, [timetable]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -47,11 +46,21 @@ function CreatePanel() {
 
   const createTimetable = () => {
     axios
-      .get(`http://localhost:5000/api/timetable/${groupId}`)
+      .get(`http://localhost:5000/api/timetable/create/${groupId}`)
       .then((res) => {
+        console.log('From createTimetable');
         setTimeTable(res.data);
+        swal('Successful', `Timetable created for ${groupId}`, 'success');
+        setCounter(counter + 1);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        swal(
+          'Unsuccessful',
+          'Creation failed. Please check if timetable already exists or sufficient time is allocated',
+          'error'
+        );
+      });
   };
 
   return (
@@ -85,19 +94,17 @@ function CreatePanel() {
                   ></GroupDropDown>
                   <Button
                     style={buttonStyle}
-                    value='Add'
+                    value='Create'
                     variant='contained'
                     color='primary'
                     width='block'
                     onClick={createTimetable}
                   >
-                    Add
+                    Create
                   </Button>
                 </Paper>
               </Grid>
-              {timetable.map((alloc) => {
-                console.log(alloc);
-              })}
+              {/* content */}
             </Grid>
           </AccordionDetails>
         </Accordion>

@@ -81,7 +81,12 @@ function Slots({ slots, setCounter, counter }) {
                 <TableCell align='center'>{row.day}</TableCell>
                 <TableCell align='center'>
                   {row.slots.map((slot) => {
-                    return <div>{`Start ${slot.start} End ${slot.end}`}</div>;
+                    return <div>{`${slot.start}`}</div>;
+                  })}
+                </TableCell>
+                <TableCell align='center'>
+                  {row.slots.map((slot) => {
+                    return <div>{`${slot.end}`}</div>;
                   })}
                 </TableCell>
 

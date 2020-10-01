@@ -6,6 +6,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const groups = ['Y1.S1.IT.01', 'Y2.S3'];
+const groups = ['Y1S2.IT.01'];
 
 export default function GroupDropDown({ groupId, setGroupId }) {
   const classes = useStyles();

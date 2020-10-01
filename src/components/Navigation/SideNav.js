@@ -25,6 +25,7 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import AdjustIcon from '@material-ui/icons/Adjust';
+import TableChartIcon from '@material-ui/icons/TableChart';
 
 const drawerWidth = 240;
 
@@ -231,7 +232,7 @@ export default function PersistentDrawerLeft() {
           >
             <ListItem button>
               <ListItemText>
-                <ApartmentIcon style={iconStyle} />
+                <TableChartIcon style={iconStyle} />
                 Timetables
               </ListItemText>
             </ListItem>
