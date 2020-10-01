@@ -1,45 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Container } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import { Grid, Button } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import "react-notifications/lib/notifications.css";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
-import axios from "axios";
-import MenuItem from "@material-ui/core/MenuItem";
-import Dropdown from "react-dropdown";
-import "react-dropdown/style.css";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import InputBase from "@material-ui/core/InputBase";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import 'react-dropdown/style.css';
+import 'react-notifications/lib/notifications.css';
+
+import { Button, Container, Grid } from '@material-ui/core';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import FormControl from '@material-ui/core/FormControl';
+import IconButton from '@material-ui/core/IconButton';
+import InputBase from '@material-ui/core/InputBase';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import SearchIcon from '@material-ui/icons/Search';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,7 +68,6 @@ function Consecutive_sessions(props) {
   const [table, setTable] = useState(false);
   const [search, setSearch] = useState("");
   const [searchFilter, setSearchFilter] = useState([]);
-  const [tags, setTags] = useState([]);
   const [building_room, setBuilding_room] = useState([]);
   const [room, setRoom] = useState("");
   const [number, setNumber] = useState("");
@@ -86,14 +76,12 @@ function Consecutive_sessions(props) {
     value: "Add",
     isEdit: true,
   });
-  const [tagRoom, setTagRoom] = useState([]);
   const [block, setBlock] = useState("");
   const [consecutiveSessionRoom, setConsecutiveSessionRoomGroup] = useState([]);
   const [sessions, setSessions] = useState([]);
   const [session, setSession] = useState("");
   const [open, setOpen] = React.useState(false);
   const [sessionFilter, setSessionFilter] = useState([]);
-
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -109,43 +97,18 @@ function Consecutive_sessions(props) {
           setError(error);
         }
       );
-    axios
-
-      .get(`http://localhost:5000/api/room/`) //get data from userID
-      .then((res) => {
-        setBuilding_room(res.data);
-      });
-
-    axios
-
-      .get(`http://localhost:5000/api/consecutive_session_room/`) //get data from userID
-      .then((res) => {
-        setConsecutiveSessionRoomGroup(res.data);
-        setSearchFilter(res.data); //save retrieved data to the hook
-      });
-  }, [expanded, table]);
-
-  const onClick = (id) => {
-    setNumber(id);
-
-    consecutiveSessionRoom.map((item) => {
-      if (item._id == id) {
-        return setSession(item.group), setRoom(item.room);
-      }
+    axios.get(`http://localhost:5000/api/room/`).then((res) => {
+      setBuilding_room(res.data);
     });
 
-    if (toggle.value === "Add") {
-      setToggle({
-        value: "Save",
-        isEdit: false,
+    axios
+
+      .get(`http://localhost:5000/api/consecutive_session_room/`)
+      .then((res) => {
+        setConsecutiveSessionRoomGroup(res.data);
+        setSearchFilter(res.data);
       });
-    } else {
-      setToggle({
-        value: "Add",
-        isEdit: true,
-      });
-    }
-  };
+  }, [expanded, table]);
 
   const deleteRoom = (id) => {
     setTable(false);
@@ -162,75 +125,46 @@ function Consecutive_sessions(props) {
     setTable(false);
     e.preventDefault();
 
-    if (toggle.value === "Save") {
-      setToggle({
-        value: "Add",
-        isEdit: false,
-      });
+    var arr = sessions.filter((items) => items._id == session);
 
-      const update_tagRoom = {
-        group: session,
-        room: room,
-      };
-      if (!checkArray) {
-        axios
-          .post(
-            `http://localhost:5000/api/consecutive_session_room/update/${number}`,
-            update_tagRoom
-          )
-          .then((res) => {
-            NotificationManager.info("Item is Successfully updated", "", 3000); //save retrieved data to the hook
-            setTable(true);
+    const data = {
+      cs1: arr[0].cs1,
+      cs2: arr[0].cs2,
+      cs3: arr[0].cs3,
+      room: room,
+      id: arr[0]._id,
+    };
+
+    if (checkArray) {
+      NotificationManager.warning(
+        "Warning message",
+        "Room is already allocated",
+        3000
+      );
+      setSession("");
+      setRoom("");
+    } else {
+      axios
+        .post("http://localhost:5000/api/consecutive_session_room/add", data)
+        .then((res) => {
+          if (res.data.success == true) {
+            NotificationManager.success("Success message", "Room Added");
             setSession("");
             setRoom("");
-          });
-      } else {
-        NotificationManager.warning("Item is Already There", "", 3000);
-        setSession("");
-        setRoom("");
-      }
-    } else {
-      var arr = sessions.filter((items) => items._id == session);
-
-      const data = {
-        cs1: arr[0].cs1,
-        cs2: arr[0].cs2,
-        cs3: arr[0].cs3,
-        room: room,
-        id: arr[0]._id,
-      };
-
-      if (checkArray) {
-        NotificationManager.warning(
-          "Warning message",
-          "Room is already allocated",
-          3000
-        );
-        setSession("");
-        setRoom("");
-      } else {
-        axios
-          .post("http://localhost:5000/api/consecutive_session_room/add", data)
-          .then((res) => {
-            if (res.data.success == true) {
-              NotificationManager.success("Success message", "Room Added");
-              setSession("");
-              setRoom("");
-              setTable(true);
-            } else {
-              NotificationManager.warning(
-                "Warning message",
-                "Room is already there",
-                3000
-              );
-              setSession("");
-              setRoom("");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
+            setTable(true);
+          } else {
+            NotificationManager.warning(
+              "Warning message",
+              "Room is already there",
+              3000
+            );
+            setSession("");
+            setRoom("");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -278,7 +212,7 @@ function Consecutive_sessions(props) {
             id="panel1bh-header"
           >
             <Typography className={classes.heading}>
-              Add Consecutive Sessions for a Room
+              Add Preferred Room for Consecutive Sessions
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -386,7 +320,6 @@ function Consecutive_sessions(props) {
                   View Details
                 </Button>
                 <Dialog
-                  // fullScreen={fullScreen}
                   open={open}
                   onClose={handleClose}
                   aria-labelledby="responsive-dialog-title"
