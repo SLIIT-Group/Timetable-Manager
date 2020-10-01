@@ -50,6 +50,14 @@ function Slots({ slots, setCounter, counter }) {
       .catch((err) => console.log('Error', err));
   };
 
+  const getSlotString = (day) => {
+    let slotString = '';
+    day.slots.map((slot) => {
+      slotString += 'Start: ' + slot.start + ' End: ' + slot.end + '\n';
+    });
+    return slotString;
+  };
+
   return (
     <Grid item>
       <TableContainer component={Paper}>
@@ -70,9 +78,13 @@ function Slots({ slots, setCounter, counter }) {
           <TableBody>
             {slots.map((row) => (
               <TableRow hover key={row._id}>
-                <TableCell align='center'>{row.duration}</TableCell>
-                <TableCell align='center'>{row.start}</TableCell>
-                <TableCell align='center'>{row.end}</TableCell>
+                <TableCell align='center'>{row.day}</TableCell>
+                <TableCell align='center'>
+                  {row.slots.map((slot) => {
+                    return <div>{`Start ${slot.start} End ${slot.end}`}</div>;
+                  })}
+                </TableCell>
+
                 <TableCell align='center'>
                   <DeleteIcon
                     onClick={() => {

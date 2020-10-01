@@ -6,7 +6,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+import DateFnsUtils from '@date-io/date-fns';
+import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,9 +27,10 @@ function Add({ counter, setCounter }) {
   const [selectedDate, handleDateChange] = useState();
   const [slotTypeError, setSlotTypeError] = useState('');
   const [timeError, setTimeError] = useState('');
+  const [days, setDays] = useState([]);
 
   useEffect(() => {
-    console.log('fired');
+    getAllAllocations();
   }, [timeError]);
 
   //Slot types
@@ -40,8 +42,6 @@ function Add({ counter, setCounter }) {
 
   const checkErrors = () => {
     let errorCount = 0;
-
-    console.log(selectedDate);
 
     if (slot.duration === '' || slot.duration === null) {
       setSlotTypeError('Please select a valid type');
@@ -78,15 +78,54 @@ function Add({ counter, setCounter }) {
         return endTimeString2;
     }
   };
-  // POST
-  const post = (s) => {
+
+  const generateSlots = (day, start) => {
+    let slotsForDay = [];
+    let hours = day.hours;
+    let startTime = start;
+    let startTimeObj = new Date(selectedDate.getTime());
+    let endTimeObj = new Date(selectedDate.getTime() + 60 * 60000);
+
+    for (let index = 0; index < hours; index++) {
+      let tempSlot = {
+        _id: uuidv4(),
+        start: startTimeObj.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        end: endTimeObj.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        day: day.day,
+      };
+      slotsForDay.push(tempSlot);
+      startTimeObj = endTimeObj;
+      endTimeObj = new Date(endTimeObj.getTime() + 60 * 60000);
+    }
+    return slotsForDay;
+  };
+
+  const getAllAllocations = () => {
     axios
-      .post('http://localhost:5000/api/slot', s)
-      .then(() => {
-        setCounter(counter + 1);
-        console.log(s);
+      .get(`http://localhost:5000/api/day`)
+      .then((res) => {
+        console.log('------------------');
+        console.log(res.data);
+        setDays(res.data);
+        return res.data;
       })
-      .catch((err) => console.log(s));
+      .catch((err) => console.log(err));
+  };
+
+  //UPDATE
+  const updateDay = (id, slots) => {
+    axios
+      .patch(`http://localhost:5000/api/day/${id}`, slots)
+      .then((res) => {
+        setCounter(counter + 1);
+      })
+      .catch((err) => console.log(err));
   };
 
   // Handle Add button
@@ -99,14 +138,10 @@ function Add({ counter, setCounter }) {
         minute: '2-digit',
       });
 
-      let endTimeString = calcEndTime(slot.duration);
-      const s = {
-        start: startTimeString,
-        end: endTimeString,
-        duration: slot.duration,
-      };
-
-      post(s);
+      days.map((day) => {
+        let slotsForDay = generateSlots(day, startTimeString);
+        updateDay(day._id, slotsForDay);
+      });
     } else {
       console.log(errCount);
     }
