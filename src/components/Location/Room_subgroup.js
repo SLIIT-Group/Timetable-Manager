@@ -1,40 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import "react-dropdown/style.css";
+import "react-notifications/lib/notifications.css";
+
+import { Button, Container, Grid } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Container } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
+import FormControl from "@material-ui/core/FormControl";
+import IconButton from "@material-ui/core/IconButton";
+import InputBase from "@material-ui/core/InputBase";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
+import Select from "@material-ui/core/Select";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import { Grid, Button } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import "react-notifications/lib/notifications.css";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import SearchIcon from "@material-ui/icons/Search";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
-import axios from "axios";
-import MenuItem from "@material-ui/core/MenuItem";
-import Dropdown from "react-dropdown";
-import "react-dropdown/style.css";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import InputBase from "@material-ui/core/InputBase";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,7 +67,6 @@ function Room_subgroup(props) {
   const [table, setTable] = useState(false);
   const [search, setSearch] = useState("");
   const [searchFilter, setSearchFilter] = useState([]);
-  const [tags, setTags] = useState([]);
   const [building_room, setBuilding_room] = useState([]);
   const [room, setRoom] = useState("");
   const [number, setNumber] = useState("");
@@ -81,8 +75,7 @@ function Room_subgroup(props) {
     value: "Add",
     isEdit: true,
   });
-  const [tagRoom, setTagRoom] = useState([]);
-  const [block, setBlock] = useState("");
+
   const [room_group, setRoomGroup] = useState([]);
   const [groups, setGroups] = useState([]);
   const [group, setGroup] = useState("");
@@ -102,20 +95,14 @@ function Room_subgroup(props) {
           setError(error);
         }
       );
-    axios
+    axios.get(`http://localhost:5000/api/room/`).then((res) => {
+      setBuilding_room(res.data);
+    });
 
-      .get(`http://localhost:5000/api/room/`) //get data from userID
-      .then((res) => {
-        setBuilding_room(res.data);
-      });
-
-    axios
-
-      .get(`http://localhost:5000/api/room_subgroup/`) //get data from userID
-      .then((res) => {
-        setRoomGroup(res.data);
-        setSearchFilter(res.data); //save retrieved data to the hook
-      });
+    axios.get(`http://localhost:5000/api/room_subgroup/`).then((res) => {
+      setRoomGroup(res.data);
+      setSearchFilter(res.data);
+    });
   }, [expanded, table]);
 
   const onClick = (id) => {
@@ -172,7 +159,7 @@ function Room_subgroup(props) {
             update_tagRoom
           )
           .then((res) => {
-            NotificationManager.info("Item is Successfully updated", "", 3000); //save retrieved data to the hook
+            NotificationManager.info("Item is Successfully updated", "", 3000);
             setTable(true);
             setGroup("");
             setRoom("");
@@ -242,32 +229,12 @@ function Room_subgroup(props) {
     }
   }, [group, room]);
 
-  // useEffect(() => {
-  //   buildings.map((item) => {
-  //     if (item.building == block) {
-  //       return setBuildingId(item._id);
-  //     }
-  //   });
-  // }, [block]);
-
   useEffect(() => {
     const results = room_group.filter((data) =>
       data.group.toLowerCase().includes(search)
     );
     setSearchFilter(results);
   }, [search]);
-
-  // const check = (e) => {
-  //   try {
-  //     setCapacity(parseInt(e.target.value));
-  //   } catch (error) {
-  //     NotificationManager.warning(
-  //       "Warning message",
-  //       "Capacity should be a number",
-  //       3000
-  //     );
-  //   }
-  // };
 
   return (
     <div className={classes.root}>
@@ -287,7 +254,7 @@ function Room_subgroup(props) {
             id="panel1bh-header"
           >
             <Typography className={classes.heading}>
-              Add Rooms for sub Groups
+              Add Preferred Rooms for sub Groups
             </Typography>
           </AccordionSummary>
           <AccordionDetails>

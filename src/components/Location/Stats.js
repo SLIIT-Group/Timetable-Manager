@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, emphasize } from "@material-ui/core/styles";
+import {
+  Container,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import {
-  Container,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-} from "@material-ui/core";
-import Chart from 'react-apexcharts'
+import React, { useEffect, useState } from "react";
+import Chart from "react-apexcharts";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,9 +69,9 @@ function Stats() {
     },
     xaxis: {
       categories: label,
-    },    
+    },
     dataLabels: {
-      enabled: false
+      enabled: false,
     },
   };
   const series = [
@@ -171,7 +171,6 @@ function Stats() {
         "Y4S1",
         "Y4S2",
       ];
-      // const academic = student.map(item=>item.academicYrSem)
       setLabel(academic);
       setName("number of groups assigned for academic Yr.Sem");
 
@@ -233,8 +232,6 @@ function Stats() {
         g7.length,
         g8.length,
       ]);
-
-      // console.log(acys);
     } else if (statName == stats[2].value) {
       setLabel([
         "2012",
@@ -352,10 +349,7 @@ function Stats() {
           </AccordionSummary>
           <AccordionDetails>
             <div>
-              <FormControl
-                className={classes.formControl}
-                //style={{ marginLeft: 5, marginTop: 0 }}
-              >
+              <FormControl className={classes.formControl}>
                 <InputLabel
                   id="demo-simple-select-label"
                   style={{ marginLeft: 7 }}
@@ -368,7 +362,6 @@ function Stats() {
                   id="demo-simple-select"
                   value={statName}
                   style={{ width: "150px" }}
-                  // disabled={!buildings.length}
                   onChange={(event) => setStatName(event.target.value)}
                 >
                   {stats.map((option) => (
@@ -377,8 +370,14 @@ function Stats() {
                     </MenuItem>
                   ))}
                 </Select>
-              </FormControl>      
-              <Chart options={options} series={series} type="area" width={600} height={320} />
+              </FormControl>
+              <Chart
+                options={options}
+                series={series}
+                type="area"
+                width={600}
+                height={320}
+              />
             </div>
           </AccordionDetails>
         </Accordion>

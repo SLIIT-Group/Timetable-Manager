@@ -1,22 +1,14 @@
-import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
-import Room_tag from "./Room_tag";
-import Room_group from "./Room_group";
-import Room_session from "./Room_session";
-import Time_restriction from "./Time_restriction";
-import Room_subject_tag from "./Room_Subject_Tag";
-import Room_lecturer from "./Room_lecturer";
+import React, { useState } from "react";
 import Consecutive_sessions from "./consecutive_sessions";
+import Room_group from "./Room_group";
+import Room_lecturer from "./Room_lecturer";
+import Room_session from "./Room_session";
 import Room_subgroup from "./Room_subgroup";
+import Room_subject_tag from "./Room_Subject_Tag";
+import Room_tag from "./Room_tag";
+import Time_restriction from "./Time_restriction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
