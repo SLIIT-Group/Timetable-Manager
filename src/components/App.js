@@ -16,9 +16,10 @@ import StudentForm from './Students/SubComponents/StudentForm';
 import EditStudentForm from './Students/SubComponents/EditStudentForm';
 import TagForm from './Tags/SubComponents/TagForm';
 import EditTagForm from './Tags/SubComponents/EditTagForm';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './Home/Home';
 import TimeTables from './Timetables/TimeTables';
+import TimeTable from './Timetables/Tables/Timetable';
 import SessionExpansionPanel from './Sessions/SessionExpansionPanel';
 import SessionForm from './Sessions/Session';
 import EditSession from './Sessions/EditSession';
@@ -52,6 +53,7 @@ const App = () => {
             <Route exact path='/student/edit/:id' component={EditStudentForm} />
             <Route exact path='/tags/edit/:id' component={EditTagForm} />
             <Route exact path='/timetables' component={TimeTables} />
+            <Route exact path='/timetables/:id' component={TimeTable} />
             <Route exact path='/addSession' component={SessionForm} />
             <Route exact path='/session/edit/:id' component={EditSession} />
             <Route exact path='/section3' component={Customize} />
