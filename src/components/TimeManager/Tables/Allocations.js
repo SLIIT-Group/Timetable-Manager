@@ -48,7 +48,7 @@ function Allocations({
 
   const deleteAllocation = (id) => {
     axios
-      .delete(`http://localhost:5000/api/day/${id}`)
+      .delete(`https://kaalaapi.herokuapp.com/api/day/${id}`)
       .then(() => {
         console.log("Item deleted");
         setCounter(counter + 1);

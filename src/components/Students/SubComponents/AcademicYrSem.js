@@ -46,7 +46,7 @@ export default function AcademicYrSem() {
   useEffect(() => {
     axios
 
-        .post("http://localhost:5000/api/students/view/academicYrSem")
+        .post("https://kaalaapi.herokuapp.com/api/students/view/academicYrSem")
         .then((res) => {
           setStudentList(res.data);
         });
@@ -57,7 +57,7 @@ export default function AcademicYrSem() {
       academicYrSem: yrSem,
     };
 
-    axios.post(`http://localhost:5000/api/students/delete/academicYrSem`, req).then((res) => {
+    axios.post(`https://kaalaapi.herokuapp.com/api/students/delete/academicYrSem`, req).then((res) => {
       if (res.data.success) {
         alert("Student Entry Updating Failed");
       }else{
@@ -75,7 +75,7 @@ export default function AcademicYrSem() {
       academicYrSem: newYrSem,
     };
 
-    axios.post(`http://localhost:5000/api/students/update/academicYrSem`, req).then((res) => {
+    axios.post(`https://kaalaapi.herokuapp.com/api/students/update/academicYrSem`, req).then((res) => {
       if (res.data.success) {
         swal("Unsuccessful", "Student Entry Updating Failed", "error");
       }else{

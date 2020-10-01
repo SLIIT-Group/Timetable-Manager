@@ -84,7 +84,7 @@ function Room_group(props) {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/students/all`)
+    fetch(`https://kaalaapi.herokuapp.com/api/students/all`)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -94,11 +94,11 @@ function Room_group(props) {
           setError(error);
         }
       );
-    axios.get(`http://localhost:5000/api/room/`).then((res) => {
+    axios.get(`https://kaalaapi.herokuapp.com/api/room/`).then((res) => {
       setBuilding_room(res.data);
     });
 
-    axios.get(`http://localhost:5000/api/room_group/`).then((res) => {
+    axios.get(`https://kaalaapi.herokuapp.com/api/room_group/`).then((res) => {
       setRoomGroup(res.data);
       setSearchFilter(res.data);
     });
@@ -129,7 +129,7 @@ function Room_group(props) {
   const deleteRoom = (id) => {
     setTable(false);
     axios
-      .delete(`http://localhost:5000/api/room_group/remove/${id}`)
+      .delete(`https://kaalaapi.herokuapp.com/api/room_group/remove/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
@@ -154,7 +154,7 @@ function Room_group(props) {
       if (!checkArray) {
         axios
           .post(
-            `http://localhost:5000/api/room_group/update/${number}`,
+            `https://kaalaapi.herokuapp.com/api/room_group/update/${number}`,
             update_tagRoom
           )
           .then((res) => {
@@ -184,7 +184,7 @@ function Room_group(props) {
         setRoom("");
       } else {
         axios
-          .post("http://localhost:5000/api/room_group/add", data)
+          .post("https://kaalaapi.herokuapp.com/api/room_group/add", data)
           .then((res) => {
             if (res.data.success == true) {
               NotificationManager.success("Success message", "Room Added");

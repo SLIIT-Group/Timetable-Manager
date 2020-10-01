@@ -30,7 +30,7 @@ export default function Lecturer({keys, setKey}) {
 
   const [lecList, setLecList] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:5000/api/lecturers")
+    axios.get("https://kaalaapi.herokuapp.com/api/lecturers")
         .then((response) => {
           setLecList(response.data);
         })

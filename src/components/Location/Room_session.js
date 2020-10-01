@@ -103,7 +103,7 @@ function Room_session(props) {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/sessions/`)
+    fetch(`https://kaalaapi.herokuapp.com/api/sessions/`)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -113,13 +113,13 @@ function Room_session(props) {
           setError(error);
         }
       );
-    axios.get(`http://localhost:5000/api/room/`).then((res) => {
+    axios.get(`https://kaalaapi.herokuapp.com/api/room/`).then((res) => {
       setBuilding_room(res.data);
     });
 
     axios
 
-      .get(`http://localhost:5000/api/session_preferredRoom/`)
+      .get(`https://kaalaapi.herokuapp.com/api/session_preferredRoom/`)
       .then((res) => {
         setSessionPreferredRoom(res.data);
         setSearchFilter(res.data);
@@ -153,7 +153,7 @@ function Room_session(props) {
     setSession("");
     setRoom("");
     axios
-      .delete(`http://localhost:5000/api/session_preferredRoom/remove/${id}`)
+      .delete(`https://kaalaapi.herokuapp.com/api/session_preferredRoom/remove/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
@@ -189,7 +189,7 @@ function Room_session(props) {
       if (!checkArray) {
         axios
           .post(
-            `http://localhost:5000/api/session_preferredRoom/update/${number}`,
+            `https://kaalaapi.herokuapp.com/api/session_preferredRoom/update/${number}`,
             update_tagRoom
           )
           .then((res) => {
@@ -231,7 +231,7 @@ function Room_session(props) {
         setRoom("");
       } else {
         axios
-          .post("http://localhost:5000/api/session_preferredRoom/add", data)
+          .post("https://kaalaapi.herokuapp.com/api/session_preferredRoom/add", data)
           .then((res) => {
             if (res.data.success == true) {
               NotificationManager.success(

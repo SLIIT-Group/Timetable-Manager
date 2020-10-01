@@ -60,7 +60,7 @@ export default function GrpIDs() {
 
   useEffect(() => {
     axios
-        .post("http://localhost:5000/api/students/view/academicYrSem")
+        .post("https://kaalaapi.herokuapp.com/api/students/view/academicYrSem")
         .then((res) => {
           setYrList(res.data);
         });
@@ -71,7 +71,7 @@ export default function GrpIDs() {
       academicYrSem: yrSem,
     };
     axios
-        .post("http://localhost:5000/api/students/view/programme",req)
+        .post("https://kaalaapi.herokuapp.com/api/students/view/programme",req)
         .then((res) => {
           setProgList(res.data);
         });
@@ -84,7 +84,7 @@ export default function GrpIDs() {
 
     };
     axios
-        .post("http://localhost:5000/api/students/view/grpNo",req)
+        .post("https://kaalaapi.herokuapp.com/api/students/view/grpNo",req)
         .then((res) => {
           setGrpList(res.data);
         });
@@ -98,7 +98,7 @@ export default function GrpIDs() {
       prevGrpNo: grpNo,
     };
 
-    axios.post(`http://localhost:5000/api/students/delete/grpNo`, req).then((res) => {
+    axios.post(`https://kaalaapi.herokuapp.com/api/students/delete/grpNo`, req).then((res) => {
       if (res.data.success) {
         swal("Unsuccessful", "Student Entry Updating Failed", "error");
       }else{

@@ -42,7 +42,7 @@ function Slots({ slots, setCounter, counter }) {
 
   const deleteSlot = (id) => {
     axios
-      .delete(`http://localhost:5000/api/slot/${id}`)
+      .delete(`https://kaalaapi.herokuapp.com/api/slot/${id}`)
       .then(() => {
         console.log('Slot deleted');
         setCounter(counter + 1);

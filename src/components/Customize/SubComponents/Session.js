@@ -30,7 +30,7 @@ export default function Session({keys, setKey}) {
 
   const [lecList, setLecList] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:5000/api/sessions")
+    axios.get("https://kaalaapi.herokuapp.com/api/sessions")
         .then((response) => {
           setLecList(response.data);
         })

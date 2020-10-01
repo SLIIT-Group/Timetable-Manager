@@ -52,7 +52,7 @@ export default function Programme() {
 
   useEffect(() => {
     axios
-        .post("http://localhost:5000/api/students/view/academicYrSem")
+        .post("https://kaalaapi.herokuapp.com/api/students/view/academicYrSem")
         .then((res) => {
           setYrList(res.data);
         });
@@ -63,7 +63,7 @@ export default function Programme() {
       academicYrSem: yrSem,
     };
     axios
-        .post("http://localhost:5000/api/students/view/programme",req)
+        .post("https://kaalaapi.herokuapp.com/api/students/view/programme",req)
         .then((res) => {
           setProgList(res.data);
         });
@@ -77,7 +77,7 @@ export default function Programme() {
       prevProgramme: prog
     };
 
-    axios.post(`http://localhost:5000/api/students/delete/programme`, req).then((res) => {
+    axios.post(`https://kaalaapi.herokuapp.com/api/students/delete/programme`, req).then((res) => {
       if (res.data.success) {
         swal("Unsuccessful", "Student Entry Updating Failed", "error");
       }else{
@@ -98,7 +98,7 @@ export default function Programme() {
       programme : newProg
     };
 
-    axios.post(`http://localhost:5000/api/students/update/programme`, req).then((res) => {
+    axios.post(`https://kaalaapi.herokuapp.com/api/students/update/programme`, req).then((res) => {
       if (res.data.success) {
         swal("Unsuccessful", "Student Entry Updating Failed", "error");
       }else{

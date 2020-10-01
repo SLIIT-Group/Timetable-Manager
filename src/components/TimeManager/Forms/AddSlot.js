@@ -108,7 +108,7 @@ function Add({ counter, setCounter }) {
 
   const getAllAllocations = () => {
     axios
-      .get(`http://localhost:5000/api/day`)
+      .get(`https://kaalaapi.herokuapp.com/api/day`)
       .then((res) => {
         console.log('------------------');
         console.log(res.data);
@@ -121,7 +121,7 @@ function Add({ counter, setCounter }) {
   //UPDATE
   const updateDay = (id, slots) => {
     axios
-      .patch(`http://localhost:5000/api/day/${id}`, slots)
+      .patch(`https://kaalaapi.herokuapp.com/api/day/${id}`, slots)
       .then((res) => {
         setCounter(counter + 1);
       })

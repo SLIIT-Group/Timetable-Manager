@@ -49,7 +49,7 @@ function Tags() {
   const deleteTag = (tag) => {
     axios
         .get(
-            `http://localhost:5000/api/tags/delete/`+ tag
+            `https://kaalaapi.herokuapp.com/api/tags/delete/`+ tag
         )
         .then((res) => {
           swal("Successful","Tag Deleted Successfully","success");
@@ -60,7 +60,7 @@ function Tags() {
   useEffect(() => {
     axios
 
-        .get("http://localhost:5000/api/tags/all")
+        .get("https://kaalaapi.herokuapp.com/api/tags/all")
         .then((res) => {
           setTagList(res.data);
         });

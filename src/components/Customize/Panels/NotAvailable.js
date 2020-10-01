@@ -85,7 +85,7 @@ export default function NotAvailable() {
         swal("Unsuccessful","Fill All Fields", "error");
       }
       else {
-        axios.post("http://localhost:5000/api/notAvailable/add", req).then((res) => {
+        axios.post("https://kaalaapi.herokuapp.com/api/notAvailable/add", req).then((res) => {
           if (res.data.success) {
             swal("Successful", "Entry Saved Successfully", "success");
           } else {
@@ -105,7 +105,7 @@ export default function NotAvailable() {
   useEffect(() => {
     axios
 
-        .get("http://localhost:5000/api/day")
+        .get("https://kaalaapi.herokuapp.com/api/day")
         .then((res) => {
           setDayList(res.data);
         });

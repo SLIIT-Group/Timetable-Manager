@@ -83,7 +83,7 @@ function AddBuilding(props) {
       axios
 
         .post(
-          `http://localhost:5000/api/building/update/${number}`,
+          `https://kaalaapi.herokuapp.com/api/building/update/${number}`,
           updateBuilding
         )
         .then((res) => {
@@ -92,7 +92,7 @@ function AddBuilding(props) {
 
       axios
 
-        .put(`http://localhost:5000/api/room/updateOne/${number}`, updateRoom)
+        .put(`https://kaalaapi.herokuapp.com/api/room/updateOne/${number}`, updateRoom)
         .then((res) => {
           console.log("updated");
         });
@@ -104,7 +104,7 @@ function AddBuilding(props) {
       };
 
       axios
-        .post("http://localhost:5000/api/building/add", building_names)
+        .post("https://kaalaapi.herokuapp.com/api/building/add", building_names)
         .then((res) => {
           if (res.data.success == true) {
             NotificationManager.success("Success message", "Building Added");
@@ -122,7 +122,7 @@ function AddBuilding(props) {
     }
   };
   useEffect(() => {
-    fetch(`http://localhost:5000/api/building/`)
+    fetch(`https://kaalaapi.herokuapp.com/api/building/`)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -136,13 +136,13 @@ function AddBuilding(props) {
   const deleteBuilding = (buildingName) => {
     setInput("");
     axios
-      .delete(`http://localhost:5000/api/building/delete/${buildingName}`)
+      .delete(`https://kaalaapi.herokuapp.com/api/building/delete/${buildingName}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
       })
       .catch((err) => console.log("Done"));
     axios
-      .delete(`http://localhost:5000/api/room/delete/${buildingName}`)
+      .delete(`https://kaalaapi.herokuapp.com/api/room/delete/${buildingName}`)
       .then((res) => {})
       .catch((err) => console.log("Done"));
   };

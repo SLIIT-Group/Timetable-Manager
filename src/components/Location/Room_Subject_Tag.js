@@ -87,7 +87,7 @@ function Room_subject_tag(props) {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/tags/all`)
+    fetch(`https://kaalaapi.herokuapp.com/api/tags/all`)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -97,15 +97,15 @@ function Room_subject_tag(props) {
           setError(error);
         }
       );
-    axios.get(`http://localhost:5000/api/room/`).then((res) => {
+    axios.get(`https://kaalaapi.herokuapp.com/api/room/`).then((res) => {
       setBuilding_room(res.data);
     });
 
-    axios.get(`http://localhost:5000/api/subjects/`).then((res) => {
+    axios.get(`https://kaalaapi.herokuapp.com/api/subjects/`).then((res) => {
       setSubjects(res.data);
     });
 
-    axios.get(`http://localhost:5000/api/room_subject_tag/`).then((res) => {
+    axios.get(`https://kaalaapi.herokuapp.com/api/room_subject_tag/`).then((res) => {
       SetRoomSubjectTag(res.data);
       setSearchFilter(res.data);
     });
@@ -136,7 +136,7 @@ function Room_subject_tag(props) {
   const deleteRoom = (id) => {
     setTable(false);
     axios
-      .delete(`http://localhost:5000/api/room_subject_tag/remove/${id}`)
+      .delete(`https://kaalaapi.herokuapp.com/api/room_subject_tag/remove/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
@@ -162,7 +162,7 @@ function Room_subject_tag(props) {
       if (!checkArray) {
         axios
           .post(
-            `http://localhost:5000/api/room_subject_tag/update/${number}`,
+            `https://kaalaapi.herokuapp.com/api/room_subject_tag/update/${number}`,
             data
           )
           .then((res) => {
@@ -196,7 +196,7 @@ function Room_subject_tag(props) {
         setBlock("");
       } else {
         axios
-          .post("http://localhost:5000/api/room_subject_tag/add", data)
+          .post("https://kaalaapi.herokuapp.com/api/room_subject_tag/add", data)
           .then((res) => {
             if (res.data.success == true) {
               NotificationManager.success("Success message", "Room Added");

@@ -50,7 +50,7 @@ function NotAvailableTable() {
   const [searchResults, setSearchResults] = useState([]);
 
   const deleteData = (id) => {
-    axios.get('http://localhost:5000/api/notAvailable/delete/' + id)
+    axios.get('https://kaalaapi.herokuapp.com/api/notAvailable/delete/' + id)
         .then((res) => {
           if (res.data == 'Successfully removed') {
             swal("Successful", "Details removed", "success");
@@ -62,7 +62,7 @@ function NotAvailableTable() {
   useEffect(() => {
     axios
 
-        .get("http://localhost:5000/api/notAvailable/all")
+        .get("https://kaalaapi.herokuapp.com/api/notAvailable/all")
         .then((res) => {
           setDataList(res.data);
           setSearchResults(res.data);

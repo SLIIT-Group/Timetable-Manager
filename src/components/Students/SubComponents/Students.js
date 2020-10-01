@@ -51,7 +51,7 @@ function Students() {
   const [searchResults, setSearchResults] = useState([]);
 
   const deleteStudent = (id) => {
-    axios.get('http://localhost:5000/api/students/delete/' + id)
+    axios.get('https://kaalaapi.herokuapp.com/api/students/delete/' + id)
         .then((res) => {
           if (res.data == 'Successfully removed') {
             swal("Successful", "Student details removed", "success");
@@ -62,7 +62,7 @@ function Students() {
   }
   useEffect(() => {
     axios
-        .get("http://localhost:5000/api/students/all")
+        .get("https://kaalaapi.herokuapp.com/api/students/all")
         .then((res) => {
           setDataList(res.data);
           setSearchResults(res.data);

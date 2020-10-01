@@ -54,7 +54,7 @@ function ConsecutiveTable() {
   const [searchResults, setSearchResults] = useState([]);
 
   const deleteData = (id) => {
-    axios.get('http://localhost:5000/api/cs/delete/' + id)
+    axios.get('https://kaalaapi.herokuapp.com/api/cs/delete/' + id)
         .then((res) => {
           if (res.data == 'Successfully removed') {
             swal("Successful", "Details removed", "success");
@@ -66,7 +66,7 @@ function ConsecutiveTable() {
   useEffect(() => {
     axios
 
-        .get("http://localhost:5000/api/cs/all")
+        .get("https://kaalaapi.herokuapp.com/api/cs/all")
         .then((res) => {
           setDataList(res.data);
           setSearchResults(res.data);

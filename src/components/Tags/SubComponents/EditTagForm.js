@@ -74,7 +74,7 @@ export default function EditTagForm(props) {
                 id:_id,
             };
 
-            axios.post("http://localhost:5000/api/tags/update", req).then((res) => {
+            axios.post("https://kaalaapi.herokuapp.com/api/tags/update", req).then((res) => {
                 if (res.data === "Update complete") {
                     swal("Successful", "Tag Entry Updated Successfully", "success");
                 } else {
@@ -93,7 +93,7 @@ export default function EditTagForm(props) {
     useEffect(() => {
         axios
 
-            .get("http://localhost:5000/api/tags/byID/"+props.match.params.id)
+            .get("https://kaalaapi.herokuapp.com/api/tags/byID/"+props.match.params.id)
             .then((res) => {
                 setID(props.match.params.id);
                 setTag(res.data.tag);

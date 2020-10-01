@@ -34,7 +34,7 @@ function Edit({
   const editAllocation = () => {
     axios
       .patch(
-        `http://localhost:5000/api/day/${editingAllocation._id}`,
+        `https://kaalaapi.herokuapp.com/api/day/${editingAllocation._id}`,
         allocation
       )
       .then(() => {

@@ -54,7 +54,7 @@ function ParallelTable() {
   const [searchResults, setSearchResults] = useState([]);
 
   const deleteData = (id) => {
-    axios.get('http://localhost:5000/api/ps/delete/' + id)
+    axios.get('https://kaalaapi.herokuapp.com/api/ps/delete/' + id)
         .then((res) => {
           if (res.data == 'Successfully removed') {
             swal("Successful", "Details removed", "success");
@@ -66,7 +66,7 @@ function ParallelTable() {
   useEffect(() => {
     axios
 
-        .get("http://localhost:5000/api/ps/all")
+        .get("https://kaalaapi.herokuapp.com/api/ps/all")
         .then((res) => {
           setDataList(res.data);
           setSearchResults(res.data);

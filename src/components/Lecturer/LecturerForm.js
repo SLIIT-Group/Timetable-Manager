@@ -212,7 +212,7 @@ export default function LecturerForm() {
                 rank: level1+ "." +empid
             };
 
-            axios.post("http://localhost:5000/api/lecturers/add", req).then((res) => {
+            axios.post("https://kaalaapi.herokuapp.com/api/lecturers/add", req).then((res) => {
                 if (res.data.success) {
                     // console.log(res.data);
                     swal("Successful", "Lecturer details added", "success");

@@ -85,7 +85,7 @@ function AddRoom(props) {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/building/`)
+    fetch(`https://kaalaapi.herokuapp.com/api/building/`)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -95,7 +95,7 @@ function AddRoom(props) {
           setError(error);
         }
       );
-    axios.get(`http://localhost:5000/api/room/`).then((res) => {
+    axios.get(`https://kaalaapi.herokuapp.com/api/room/`).then((res) => {
       setBuilding_room(res.data);
 
       setSearchFilter(res.data);
@@ -130,7 +130,7 @@ function AddRoom(props) {
   const deleteRoom = (id) => {
     setTable(false);
     axios
-      .delete(`http://localhost:5000/api/room/remove/${id}`)
+      .delete(`https://kaalaapi.herokuapp.com/api/room/remove/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
@@ -161,7 +161,7 @@ function AddRoom(props) {
       };
       axios
 
-        .post(`http://localhost:5000/api/room/update/${number}`, updateBuilding)
+        .post(`https://kaalaapi.herokuapp.com/api/room/update/${number}`, updateBuilding)
         .then((res) => {
           NotificationManager.info("Item is Successfully updated", "", 3000);
           setTable(true);
@@ -186,7 +186,7 @@ function AddRoom(props) {
         );
       } else {
         axios
-          .post("http://localhost:5000/api/room/add", room_name)
+          .post("https://kaalaapi.herokuapp.com/api/room/add", room_name)
           .then((res) => {
             if (res.data.success == true) {
               NotificationManager.success("Success message", "Room Added");
