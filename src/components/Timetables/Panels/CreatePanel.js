@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles, emphasize } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Container, Grid, Paper, Divider } from '@material-ui/core';
-import AddSlot from '../Forms/AddSlot';
+import { Container, Grid, Paper, Button } from '@material-ui/core';
+import GroupDropDown from '../DropDowns/GroupDropDown';
 import axios from 'axios';
-import Slots from '../Tables/Slots';
+import swal from 'sweetalert';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,30 +27,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TimeSlot() {
+const buttonStyle = {
+  margin: '20px',
+  width: '50%',
+};
+
+function CreatePanel({ counter, setCounter }) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [groupId, setGroupId] = useState('');
+  const [timetable, setTimeTable] = useState([]);
+
+  useEffect(() => {}, [timetable]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const [slots, setSlots] = useState([]);
-  const [counter, setCounter] = useState(0);
-
-  const getAllSlots = () => {
+  const createTimetable = () => {
     axios
-      .get(`http://localhost:5000/api/day`)
+      .get(`http://localhost:5000/api/timetable/create/${groupId}`)
       .then((res) => {
-        console.log(res.data);
-        setSlots(res.data);
+        console.log('From createTimetable');
+        setTimeTable(res.data);
+        swal('Successful', `Timetable created for ${groupId}`, 'success');
+        setCounter(counter + 1);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        swal(
+          'Unsuccessful',
+          'Creation failed. Please check if timetable already exists or sufficient time is allocated',
+          'error'
+        );
+      });
   };
-
-  useEffect(() => {
-    getAllSlots();
-  }, [counter]);
 
   return (
     <div className={classes.root}>
@@ -70,25 +81,30 @@ function TimeSlot() {
             id='panel1bh-header'
           >
             <Typography className={classes.heading}>
-              Time Slot Allocation
+              Create A Timetable
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={12}>
                 <Paper className={classes.paper}>
-                  <AddSlot counter={counter} setCounter={setCounter}></AddSlot>
+                  <GroupDropDown
+                    groupId={groupId}
+                    setGroupId={setGroupId}
+                  ></GroupDropDown>
+                  <Button
+                    style={buttonStyle}
+                    value='Create'
+                    variant='contained'
+                    color='primary'
+                    width='block'
+                    onClick={createTimetable}
+                  >
+                    Create
+                  </Button>
                 </Paper>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <Paper className={classes.paper}>
-                  <Slots
-                    counter={counter}
-                    setCounter={setCounter}
-                    slots={slots}
-                  ></Slots>
-                </Paper>
-              </Grid>
+              {/* content */}
             </Grid>
           </AccordionDetails>
         </Accordion>
@@ -97,4 +113,4 @@ function TimeSlot() {
   );
 }
 
-export default TimeSlot;
+export default CreatePanel;
