@@ -1,29 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Container } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
+import 'react-notifications/lib/notifications.css';
 
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import { Grid, Button } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import "react-notifications/lib/notifications.css";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
-import axios from "axios";
+import { Button, Container, Grid } from '@material-ui/core';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -89,20 +85,19 @@ function AddBuilding(props) {
         .post(
           `http://localhost:5000/api/building/update/${number}`,
           updateBuilding
-        ) //get data from userID
+        )
         .then((res) => {
-          NotificationManager.info("Item is Successfully updated", "", 3000); //save retrieved data to the hook
+          NotificationManager.info("Item is Successfully updated", "", 3000);
         });
 
       axios
 
-        .put(`http://localhost:5000/api/room/updateOne/${number}`, updateRoom) //get data from userID
+        .put(`http://localhost:5000/api/room/updateOne/${number}`, updateRoom)
         .then((res) => {
-          console.log("updated"); //save retrieved data to the hook
+          console.log("updated");
         });
       setInput("");
     } else {
-      //setBuilding([...buildings, input]);
       setInput("");
       const building_names = {
         building: input,
@@ -126,7 +121,6 @@ function AddBuilding(props) {
         });
     }
   };
-
   useEffect(() => {
     fetch(`http://localhost:5000/api/building/`)
       .then((res) => res.json())
@@ -206,9 +200,7 @@ function AddBuilding(props) {
                 noValidate
                 autoComplete="off"
                 style={{
-                  // display: "flex",
                   justifyContent: "center",
-                  // flexDirection: "column",
                   alignItems: "center",
                   borderBottom: "5px solid #DADADA",
                   borderRadius: 30,
