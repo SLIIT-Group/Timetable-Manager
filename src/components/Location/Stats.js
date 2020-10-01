@@ -12,7 +12,7 @@ import {
   MenuItem,
   FormControl,
 } from "@material-ui/core";
-import { Line } from "react-chartjs-2";
+import Chart from 'react-apexcharts'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,6 +63,23 @@ function Stats() {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+  const options = {
+    chart: {
+      id: "Statistic Information",
+    },
+    xaxis: {
+      categories: label,
+    },    
+    dataLabels: {
+      enabled: false
+    },
+  };
+  const series = [
+    {
+      name: `${name}`,
+      data: amount,
+    },
+  ];
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/lecturers/`)
@@ -154,6 +171,7 @@ function Stats() {
         "Y4S1",
         "Y4S2",
       ];
+      // const academic = student.map(item=>item.academicYrSem)
       setLabel(academic);
       setName("number of groups assigned for academic Yr.Sem");
 
@@ -359,10 +377,8 @@ function Stats() {
                     </MenuItem>
                   ))}
                 </Select>
-              </FormControl>
-              <div style={{ display: "flex", width: "720px", padding: 50 }}>
-                <Line data={data} />
-              </div>
+              </FormControl>      
+              <Chart options={options} series={series} type="area" width={600} height={320} />
             </div>
           </AccordionDetails>
         </Accordion>
