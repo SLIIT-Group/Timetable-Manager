@@ -14,6 +14,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import swal from "sweetalert";
 import 'regenerator-runtime/runtime';
 
+const path = require('path');
+
 const StyledTableCell = withStyles((theme) => ({
     head: {
         backgroundColor: theme.palette.info.dark,
@@ -115,7 +117,12 @@ export default function SessionRoom() {
     }, [searchTerm]);
 
     function refreshPage() {
-        window.location.reload(false);
+        //window.location.reload(false);
+        //${__dirname}/assets/icon.png
+        //location.reload();
+        //console.log(path.join('/lecturers'));
+        //window.location.replace(path.join('/session'));
+
     }
 
     function sleep(ms) {
@@ -189,7 +196,9 @@ export default function SessionRoom() {
                 });
         }
 
-        swal("Successful", "Preferred locations added to all sessions automatically", "success").then(refreshPage);
+        swal("Successful", "Preferred locations added to all sessions automatically", "success").then(
+            //refreshPage
+        );
     };
 
     return (
@@ -197,8 +206,10 @@ export default function SessionRoom() {
             <h3 align="center"> Sessions List </h3>
 
             <div className="form-group">
-                <input type="submit" value="Automatically Assign Rooms for Sessions" className= "btn btn-primary"
-                       style={{marginLeft: 10}} onClick={allocateRooms}/>
+                <Link to={"/lecturers"}>
+                    <input type="submit" value="Automatically Assign Rooms for Sessions" className= "btn btn-primary"
+                           style={{marginLeft: 10}} onClick={allocateRooms}/>
+                </Link>
 
                 {/*<div style={{width:"25px", display:"inline-block"}} />*/}
                 {/*<input*/}

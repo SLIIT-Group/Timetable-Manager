@@ -18,7 +18,10 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
     "build": "cross-env NODE_ENV=production webpack --config webpack.build.config.js --mode production",
     "package": "npm run build",
-    "postpackage": "electron-packager ./ --out=./release-builds"
+    "postpackage": "electron-packager ./ --out=./release-builds",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Timetable App\"",
+    "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/icon.png --prune=true --out=release-builds"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -46,6 +49,7 @@
     "react-modal": "^3.11.2",
     "react-notifications": "^1.6.0",
     "react-router-dom": "^5.2.0",
+    "remote": "^0.2.6",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^1.2.0",
     "sweetalert": "^2.1.2"
