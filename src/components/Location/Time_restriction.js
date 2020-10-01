@@ -1,42 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import "react-dropdown/style.css";
+import "react-notifications/lib/notifications.css";
+
+import DateFnsUtils from "@date-io/date-fns";
+import { Button, Container, Grid } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Container } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
+import FormControl from "@material-ui/core/FormControl";
+import IconButton from "@material-ui/core/IconButton";
+import InputBase from "@material-ui/core/InputBase";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
+import Select from "@material-ui/core/Select";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import { Grid, Button } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import "react-notifications/lib/notifications.css";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import SearchIcon from "@material-ui/icons/Search";
+import { MuiPickersUtilsProvider, TimePicker } from "@material-ui/pickers";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
-import axios from "axios";
-import MenuItem from "@material-ui/core/MenuItem";
-import Dropdown from "react-dropdown";
-import "react-dropdown/style.css";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import InputBase from "@material-ui/core/InputBase";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import { TimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -98,19 +92,16 @@ function Time_restriction(props) {
   };
 
   useEffect(() => {
-    axios
-
-      .get(`http://localhost:5000/api/room/`) //get data from userID
-      .then((res) => {
-        setBuilding_room(res.data);
-      });
+    axios.get(`http://localhost:5000/api/room/`).then((res) => {
+      setBuilding_room(res.data);
+    });
 
     axios
 
-      .get(`http://localhost:5000/api/time_restriction_room/`) //get data from userID
+      .get(`http://localhost:5000/api/time_restriction_room/`)
       .then((res) => {
         setTimeRestriction(res.data);
-        setSearchFilter(res.data); //save retrieved data to the hook
+        setSearchFilter(res.data);
       });
   }, [expanded, table]);
 
@@ -168,7 +159,7 @@ function Time_restriction(props) {
             update_tagRoom
           )
           .then((res) => {
-            NotificationManager.info("Item is Successfully updated", "", 3000); //save retrieved data to the hook
+            NotificationManager.info("Item is Successfully updated", "", 3000);
             setTable(true);
             setSession("");
             setRoom("");
@@ -251,32 +242,12 @@ function Time_restriction(props) {
     });
   }, [startTime, endTime]);
 
-  // useEffect(() => {
-  //   buildings.map((item) => {
-  //     if (item.building == block) {
-  //       return setBuildingId(item._id);
-  //     }
-  //   });
-  // }, [block]);
-
   useEffect(() => {
     const results = timeRestriction.filter((data) =>
       data.room.toLowerCase().includes(search)
     );
     setSearchFilter(results);
   }, [search]);
-
-  // const check = (e) => {
-  //   try {
-  //     setCapacity(parseInt(e.target.value));
-  //   } catch (error) {
-  //     NotificationManager.warning(
-  //       "Warning message",
-  //       "Capacity should be a number",
-  //       3000
-  //     );
-  //   }
-  // };
 
   return (
     <div className={classes.root}>
@@ -296,7 +267,7 @@ function Time_restriction(props) {
             id="panel1bh-header"
           >
             <Typography className={classes.heading}>
-              Allocate Time Restriction
+              Allocate Time Restriction for a Room
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -357,35 +328,35 @@ function Time_restriction(props) {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <TimePicker
                       clearable
-                      // ampm={false}
+                      ampm={false}
                       label="Start time"
+                      hidden={!room}
                       value={startTime}
                       onChange={setStartTime}
                       autoOk
                     />
                   </MuiPickersUtilsProvider>
-                  {/* {timeError && <p style={errorStyle}>{timeError}</p>} */}
                 </Grid>
                 <br />
                 <Grid item xs={12}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <TimePicker
+                      ampm={false}
                       clearable
-                      // ampm={false}
+                      hidden={!startTime}
                       label="End time"
                       value={endTime}
                       onChange={setEndTime}
                       autoOk
                     />
                   </MuiPickersUtilsProvider>
-                  {/* {timeError && <p style={errorStyle}>{timeError}</p>} */}
                 </Grid>
 
                 <Button
                   variant="contained"
                   color="primary"
                   style={{ marginTop: 10, marginLeft: 50 }}
-                  disabled={!room}
+                  disabled={!room || !startTime || !endTime}
                   onClick={addRoom}
                 >
                   {toggle.value}
@@ -469,9 +440,6 @@ function Time_restriction(props) {
                             <StyledTableCell align="center">
                               Delete
                             </StyledTableCell>
-                            {/* <StyledTableCell align="center">
-                              Edit
-                            </StyledTableCell> */}
                           </TableRow>
                         </TableHead>
                         {!search ? (
@@ -496,14 +464,6 @@ function Time_restriction(props) {
                                     {" "}
                                   </DeleteIcon>
                                 </TableCell>
-                                {/* <TableCell align="center">
-                                  {" "}
-                                  <EditIcon
-                                    onClick={() => {
-                                      onClick(item._id);
-                                    }}
-                                  ></EditIcon>
-                                </TableCell> */}
                               </TableRow>
                             ))}
                           </TableBody>
@@ -529,14 +489,6 @@ function Time_restriction(props) {
                                     {" "}
                                   </DeleteIcon>
                                 </TableCell>
-                                {/* <TableCell align="center">
-                                  {" "}
-                                  <EditIcon
-                                    onClick={() => {
-                                      onClick(item._id);
-                                    }}
-                                  ></EditIcon>
-                                </TableCell> */}
                               </TableRow>
                             ))}
                           </TableBody>

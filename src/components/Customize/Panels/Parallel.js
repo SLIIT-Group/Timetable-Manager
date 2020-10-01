@@ -5,7 +5,9 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import StudentForm from "../SubComponents/StudentForm";
+import ParallelTable from "../SubComponents/ParallelTable";
+import ConsecutiveTable from "../SubComponents/ConsecutiveTable";
+import Row from "react-bootstrap/Row";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +56,9 @@ export default function Parallel() {
 
         </AccordionSummary>
         <AccordionDetails>
-         <StudentForm noBackBtn={true}/>
+          <Row className="p-0 m-0  col-md-12 d-flex bd-highlight justify-content-center flex-column">
+            <ParallelTable />
+          </Row>
         </AccordionDetails>
       </Accordion>
     </div>

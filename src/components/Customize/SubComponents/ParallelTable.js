@@ -12,10 +12,14 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import axios from 'axios';
 import swal from "sweetalert";
 import {Col} from "reactstrap";
-import {Link} from "react-router-dom";
+import FormControl from "@material-ui/core/FormControl";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
+import {Link} from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -42,7 +46,7 @@ const useStyles = makeStyles({
   },
 });
 
-function NotAvailableTable() {
+function ParallelTable() {
   const classes = useStyles();
 
   const [dataList, setDataList] = useState([]);
@@ -50,7 +54,7 @@ function NotAvailableTable() {
   const [searchResults, setSearchResults] = useState([]);
 
   const deleteData = (id) => {
-    axios.get('http://localhost:5000/api/notAvailable/delete/' + id)
+    axios.get('http://localhost:5000/api/ps/delete/' + id)
         .then((res) => {
           if (res.data == 'Successfully removed') {
             swal("Successful", "Details removed", "success");
@@ -62,7 +66,7 @@ function NotAvailableTable() {
   useEffect(() => {
     axios
 
-        .get("http://localhost:5000/api/notAvailable/all")
+        .get("http://localhost:5000/api/ps/all")
         .then((res) => {
           setDataList(res.data);
           setSearchResults(res.data);
@@ -72,10 +76,10 @@ function NotAvailableTable() {
 
   useEffect(() => {
 
-    const results = dataList.filter(dataList =>
-        dataList.key.toLowerCase().includes(searchTerm)
-    );
-    setSearchResults(results);
+      const results = dataList.filter(dataList =>
+          dataList.ps1.subject.toLowerCase().includes(searchTerm)
+      );
+      setSearchResults(results);
 
   }, [searchTerm]);
 
@@ -89,7 +93,9 @@ function NotAvailableTable() {
 
           <div className="row col-md-12">
             <Col sm="6 pb-0 text-left">
-
+              <Link to={"/addParallel"}>
+                <input type="submit" value="Add Parallel Sessions" className= "btn btn-primary"/>
+              </Link>
             </Col>
             <div className="input-field col s6 d-flex flex-column">
               <Paper
@@ -109,7 +115,7 @@ function NotAvailableTable() {
               >
                 <InputBase
                     className={classes.input}
-                    placeholder="Search Key"
+                    placeholder="Search"
                     value={searchTerm}
                     onChange={handleChange}
                     style={{ flex: 1 }}
@@ -125,43 +131,55 @@ function NotAvailableTable() {
           </div>
 
         </div>
-        <Grid item>
-          <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label='simple table'>
+    <Grid item>
+      <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label='simple table'>
               <TableHead
                   style={{
-                    backgroundColor: 'theme.palette.common.black',
-                    color: 'theme.palette.common.white',
+                      backgroundColor: 'theme.palette.common.black',
+                      color: 'theme.palette.common.white',
                   }}
               >
-                <TableRow align='center'>
-                  <StyledTableCell align='center'>Type</StyledTableCell>
-                  <StyledTableCell align='center'>Key</StyledTableCell>
-                  <StyledTableCell align='center'>Slot</StyledTableCell>
-                  <StyledTableCell align='center'>Delete</StyledTableCell>
-                </TableRow>
+                  <TableRow align='center'>
+                      <StyledTableCell align='center'>Parallel Session 1</StyledTableCell>
+                      <StyledTableCell align='center'>Parallel Session 2</StyledTableCell>
+                      <StyledTableCell align='center'>Parallel Session 3</StyledTableCell>
+                      <StyledTableCell align='center'>Delete</StyledTableCell>
+                  </TableRow>
               </TableHead>
               <TableBody>
-                {searchResults.map((item, key) => (
-                    <TableRow hover key={key}>
-                      <TableCell align='center'>{item.type}</TableCell>
-                      <TableCell align='center'>{item.key}</TableCell>
-                      <TableCell align='center'>{item.slot && item.slot.day} {item.slot && item.slot.start} - {item.slot && item.slot.end}</TableCell>
-                      <TableCell align='center'>
-                        <DeleteIcon onClick={() => deleteData(item._id)}
-                        >
-                          {' '}
-                        </DeleteIcon>
-                      </TableCell>
+                  {searchResults.map((item, key) => (
+                      <TableRow hover key={key}>
+                          <TableCell align='center'>
+                              {item.ps1.subject} {item.ps1.subjectCode}<br/>
+                              {item.ps1.tag}<br/>
+                              {item.ps1.groupId}
+                          </TableCell>
+                          <TableCell align='center'>
+                              {item.ps2.subject} {item.ps2.subjectCode}<br/>
+                              {item.ps2.tag}<br/>
+                              {item.ps2.groupId}
+                          </TableCell>
+                          <TableCell align='center'>
+                              {item.ps3.subject} {item.ps3.subjectCode}<br/>
+                              {item.ps3.tag}<br/>
+                              {item.ps3.groupId}
+                          </TableCell>
+                          <TableCell align='center'>
+                              <DeleteIcon onClick={() => deleteData(item._id)}
+                              >
+                                  {' '}
+                              </DeleteIcon>
+                          </TableCell>
 
-                    </TableRow>
-                ))}
+                      </TableRow>
+                  ))}
               </TableBody>
-            </Table>
-          </TableContainer>
-        </Grid>
+          </Table>
+      </TableContainer>
+    </Grid>
       </div>
   );
 }
 
-export default NotAvailableTable;
+export default ParallelTable;

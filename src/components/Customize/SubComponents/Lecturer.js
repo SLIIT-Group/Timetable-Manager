@@ -63,7 +63,7 @@ export default function Lecturer({keys, setKey}) {
                         <em>None</em>
                       </MenuItem>
                       {lecList.map((item) => (
-                      <MenuItem value={item.empid+"-"+item.fname+" "+item.lname}>{item.fname+" "+item.lname+" "+"Emp ID:"+item.empid}</MenuItem>
+                      <MenuItem value={item.fname+" "+item.lname}>{item.fname+" "+item.lname+" "+"Emp ID:"+item.empid}</MenuItem>
                           ))}
                     </Select>
                   </FormControl>
