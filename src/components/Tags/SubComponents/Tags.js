@@ -39,7 +39,7 @@ const useStyles = makeStyles({
   },
 });
 
-function Tags() {
+function Tags({expanded}) {
   const classes = useStyles();
 
 
@@ -53,19 +53,23 @@ function Tags() {
         )
         .then((res) => {
           swal("Successful","Tag Deleted Successfully","success");
+          axios
+              .get("https://kaalaapi.herokuapp.com/api/tags/all")
+              .then((res) => {
+                setTagList(res.data);
+              });
         })
         .catch((err) => swal("Unsuccessful","Tag Deletion Failed", "error"));
 
   }
   useEffect(() => {
     axios
-
         .get("https://kaalaapi.herokuapp.com/api/tags/all")
         .then((res) => {
           setTagList(res.data);
         });
 
-  },);
+  },[expanded]);
 
 
   return (

@@ -59,7 +59,7 @@ export default function StudentDetails() {
         <AccordionDetails>
             <Row className="p-0 m-0  col-md-12 d-flex bd-highlight justify-content-center">
 
-            <Students />
+            <Students expanded={expanded}/>
             </Row>
 
          </AccordionDetails>

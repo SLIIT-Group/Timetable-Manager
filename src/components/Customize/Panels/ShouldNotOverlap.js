@@ -57,7 +57,7 @@ export default function ShouldNotOverlap() {
         </AccordionSummary>
         <AccordionDetails>
           <Row className="p-0 m-0  col-md-12 d-flex bd-highlight justify-content-center flex-column">
-            <NotOverlapTable />
+            <NotOverlapTable expanded={expanded}/>
           </Row>
         </AccordionDetails>
       </Accordion>

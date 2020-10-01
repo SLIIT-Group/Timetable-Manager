@@ -77,7 +77,7 @@ export default function TagDetails() {
 
               </div>
 
-              <Tags />
+              <Tags expanded={expanded}/>
             </Row>
 
           </AccordionDetails>

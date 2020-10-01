@@ -42,7 +42,7 @@ const useStyles = makeStyles({
   },
 });
 
-function NotAvailableTable() {
+function NotAvailableTable({expanded}) {
   const classes = useStyles();
 
   const [dataList, setDataList] = useState([]);
@@ -54,6 +54,14 @@ function NotAvailableTable() {
         .then((res) => {
           if (res.data == 'Successfully removed') {
             swal("Successful", "Details removed", "success");
+              axios
+
+                  .get("https://kaalaapi.herokuapp.com/api/notAvailable/all")
+                  .then((res) => {
+                      setDataList(res.data);
+                      setSearchResults(res.data);
+                  });
+
           } else {
             swal("Unsuccessful", "Error while deleting details", "error");
           }
@@ -68,7 +76,7 @@ function NotAvailableTable() {
           setSearchResults(res.data);
         });
 
-  },[]);
+  },[expanded]);
 
   useEffect(() => {
 
@@ -89,7 +97,9 @@ function NotAvailableTable() {
 
           <div className="row col-md-12">
             <Col sm="6 pb-0 text-left">
-
+                <Link to={"/addNotAvailable"}>
+                    <input type="submit" value="Add Not Available" className= "btn btn-primary"/>
+                </Link>
             </Col>
             <div className="input-field col s6 d-flex flex-column">
               <Paper

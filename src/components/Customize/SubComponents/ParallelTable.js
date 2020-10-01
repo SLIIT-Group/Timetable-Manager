@@ -46,7 +46,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ParallelTable() {
+function ParallelTable({expanded}) {
   const classes = useStyles();
 
   const [dataList, setDataList] = useState([]);
@@ -58,6 +58,13 @@ function ParallelTable() {
         .then((res) => {
           if (res.data == 'Successfully removed') {
             swal("Successful", "Details removed", "success");
+              axios
+
+                  .get("https://kaalaapi.herokuapp.com/api/ps/all")
+                  .then((res) => {
+                      setDataList(res.data);
+                      setSearchResults(res.data);
+                  });
           } else {
             swal("Unsuccessful", "Error while deleting details", "error");
           }
@@ -72,7 +79,7 @@ function ParallelTable() {
           setSearchResults(res.data);
         });
 
-  },[]);
+  },[expanded]);
 
   useEffect(() => {
 

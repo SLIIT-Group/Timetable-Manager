@@ -43,7 +43,7 @@ const useStyles = makeStyles({
   },
 });
 
-function Students() {
+function Students({expanded}) {
   const classes = useStyles();
 
   const [dataList, setDataList] = useState([]);
@@ -55,6 +55,12 @@ function Students() {
         .then((res) => {
           if (res.data == 'Successfully removed') {
             swal("Successful", "Student details removed", "success");
+              axios
+                  .get("https://kaalaapi.herokuapp.com/api/students/all")
+                  .then((res) => {
+                      setDataList(res.data);
+                      setSearchResults(res.data);
+                  });
           } else {
             swal("Unsuccessful", "Error while deleting details", "error");
           }
@@ -67,7 +73,8 @@ function Students() {
           setDataList(res.data);
           setSearchResults(res.data);
         });
-  },[]);
+
+  },[expanded]);
 
   useEffect(() => {
 

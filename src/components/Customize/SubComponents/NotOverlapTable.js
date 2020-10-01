@@ -46,7 +46,7 @@ const useStyles = makeStyles({
   },
 });
 
-function NotOverlapTable() {
+function NotOverlapTable({expanded}) {
   const classes = useStyles();
 
   const [dataList, setDataList] = useState([]);
@@ -58,6 +58,13 @@ function NotOverlapTable() {
         .then((res) => {
           if (res.data == 'Successfully removed') {
             swal("Successful", "Details removed", "success");
+              axios
+
+                  .get("https://kaalaapi.herokuapp.com/api/nos/all")
+                  .then((res) => {
+                      setDataList(res.data);
+                      setSearchResults(res.data);
+                  });
           } else {
             swal("Unsuccessful", "Error while deleting details", "error");
           }
@@ -72,7 +79,7 @@ function NotOverlapTable() {
           setSearchResults(res.data);
         });
 
-  },[]);
+  },[expanded]);
 
   useEffect(() => {
 

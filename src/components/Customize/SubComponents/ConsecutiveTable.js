@@ -12,10 +12,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import axios from 'axios';
 import swal from "sweetalert";
 import {Col} from "reactstrap";
-import FormControl from "@material-ui/core/FormControl";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
@@ -46,7 +42,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ConsecutiveTable() {
+function ConsecutiveTable({expanded}) {
   const classes = useStyles();
 
   const [dataList, setDataList] = useState([]);
@@ -58,6 +54,13 @@ function ConsecutiveTable() {
         .then((res) => {
           if (res.data == 'Successfully removed') {
             swal("Successful", "Details removed", "success");
+              axios
+
+                  .get("https://kaalaapi.herokuapp.com/api/cs/all")
+                  .then((res) => {
+                      setDataList(res.data);
+                      setSearchResults(res.data);
+                  });
           } else {
             swal("Unsuccessful", "Error while deleting details", "error");
           }
@@ -72,7 +75,7 @@ function ConsecutiveTable() {
           setSearchResults(res.data);
         });
 
-  },[]);
+  },[expanded]);
 
   useEffect(() => {
 

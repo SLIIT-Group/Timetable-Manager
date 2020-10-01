@@ -27,6 +27,7 @@ import Customize from './Customize/Customize';
 import SessionTableSAddCS from './Customize/SubComponents/SessionTableAddCS';
 import SessionTableAddNO from './Customize/SubComponents/SessionTableAddNO';
 import SessionTableAddPS from './Customize/SubComponents/SessionTableAddPS';
+import SessionTableAddNA from "./Customize/SubComponents/SessionTableAddNA";
 
 const App = () => {
   return (
@@ -64,6 +65,7 @@ const App = () => {
             />
             <Route exact path='/addParallel' component={SessionTableAddPS} />
             <Route exact path='/addNotOverlap' component={SessionTableAddNO} />
+            <Route exact path='/addNotAvailable' component={SessionTableAddNA} />
             <Route path='/' component={Home} />
           </Switch>
         </div>
