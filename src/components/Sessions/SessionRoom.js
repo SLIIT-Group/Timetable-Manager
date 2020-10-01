@@ -58,7 +58,7 @@ export default function SessionRoom() {
     };
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/sessions")
+        axios.get("https://kaalaapi.herokuapp.com/api/sessions")
             .then((response) => {
                 setSessions(response.data);
                 setSearchResults(response.data);
@@ -67,7 +67,7 @@ export default function SessionRoom() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/session_preferredRoom/")
+        axios.get("https://kaalaapi.herokuapp.com/api/session_preferredRoom/")
             .then((response) => {
                 setSessionRooms(response.data);
             })
@@ -75,7 +75,7 @@ export default function SessionRoom() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/room_group/")
+        axios.get("https://kaalaapi.herokuapp.com/api/room_group/")
             .then((response) => {
                 setGroupRooms(response.data);
             })
@@ -83,7 +83,7 @@ export default function SessionRoom() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/room_lecturer/")
+        axios.get("https://kaalaapi.herokuapp.com/api/room_lecturer/")
             .then((response) => {
                 setLecturerRooms(response.data);
             })
@@ -91,7 +91,7 @@ export default function SessionRoom() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/room_subject_tag/")
+        axios.get("https://kaalaapi.herokuapp.com/api/room_subject_tag/")
             .then((response) => {
                 setSubjectTagRooms(response.data);
             })
@@ -99,7 +99,7 @@ export default function SessionRoom() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/tag_room/")
+        axios.get("https://kaalaapi.herokuapp.com/api/tag_room/")
             .then((response) => {
                 setTagRooms(response.data);
             })
@@ -184,7 +184,7 @@ export default function SessionRoom() {
 
             console.log(roomsArray);
 
-            axios.post('http://localhost:5000/api/sessions/update/' +sessionId, req)
+            axios.post('https://kaalaapi.herokuapp.com/api/sessions/update/' +sessionId, req)
                 .then((res) => {
                     if(res.data == 'Update complete'){
                         //swal("Successful", "Session details updated", "success");
@@ -206,7 +206,7 @@ export default function SessionRoom() {
             <h3 align="center"> Sessions List </h3>
 
             <div className="form-group">
-                <Link to={"/lecturers"}>
+                <Link to={"/"}>
                     <input type="submit" value="Automatically Assign Rooms for Sessions" className= "btn btn-primary"
                            style={{marginLeft: 10}} onClick={allocateRooms}/>
                 </Link>

@@ -100,7 +100,7 @@ export default function AddressForm(props) {
 
     useEffect(() => {
         console.log(props)
-        axios.get('http://localhost:5000/api/subjects/edit/' +props.subjectID)
+        axios.get('https://kaalaapi.herokuapp.com/api/subjects/edit/' +props.subjectID)
             .then(response => {
                 setSubName(response.data.subName);
                 setSubCode(response.data.subCode);
@@ -131,7 +131,7 @@ export default function AddressForm(props) {
                 evaHo: evaHo
             };
 
-            axios.post('http://localhost:5000/api/subjects/update/' +props.subjectID, req)
+            axios.post('https://kaalaapi.herokuapp.com/api/subjects/update/' +props.subjectID, req)
                 .then((res) => {
                     if(res.data == 'Update complete'){
                         swal("Successful", "Subject details updated", "success");
@@ -152,7 +152,7 @@ export default function AddressForm(props) {
     };
 
     const deleteSubject = () => {
-        axios.get('http://localhost:5000/api/subjects/delete/' +props.subjectID)
+        axios.get('https://kaalaapi.herokuapp.com/api/subjects/delete/' +props.subjectID)
             .then((res) => {
                 if(res.data == 'Successfully removed'){
                     swal("Successful", "Subject details removed", "success");
