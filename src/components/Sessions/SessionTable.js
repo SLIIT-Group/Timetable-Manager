@@ -59,7 +59,7 @@ export default function CustomizedTables() {
     };
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/sessions")
+        axios.get("https://kaalaapi.herokuapp.com/api/sessions")
             .then((response) => {
                 setSessions(response.data);
                 setSearchResults(response.data);

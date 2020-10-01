@@ -47,7 +47,7 @@ export default function CustomizedTables() {
     };
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/subjects")
+        axios.get("https://kaalaapi.herokuapp.com/api/subjects")
             .then((response) => {
                 setSubjects(response.data);
                 setSearchResults(response.data);

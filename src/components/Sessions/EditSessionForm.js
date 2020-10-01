@@ -120,7 +120,7 @@ export default function LecturerForm(props) {
     useEffect(() => {
         //console.log(props)
 
-        axios.get("http://localhost:5000/api/lecturers")
+        axios.get("https://kaalaapi.herokuapp.com/api/lecturers")
             .then((response) => {
                 setLecturers(response.data);
                 //console.log(lecturers)
@@ -129,7 +129,7 @@ export default function LecturerForm(props) {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/subjects")
+        axios.get("https://kaalaapi.herokuapp.com/api/subjects")
             .then((response) => {
                 setSubjects(response.data);
             })
@@ -137,18 +137,18 @@ export default function LecturerForm(props) {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/tags/all")
+        axios.get("https://kaalaapi.herokuapp.com/api/tags/all")
             .then((res) => {
                 setTags(res.data);
             });
 
         axios
-            .get("http://localhost:5000/api/students/all")
+            .get("https://kaalaapi.herokuapp.com/api/students/all")
             .then((res) => {
                 setGroups(res.data);
             });
 
-        axios.get('http://localhost:5000/api/sessions/edit/' +props.sessionId)
+        axios.get('https://kaalaapi.herokuapp.com/api/sessions/edit/' +props.sessionId)
             .then(response => {
                 setLecturerName(response.data.lecturers[0]);
                 setLecturerName2(response.data.lecturers[1]);
@@ -187,7 +187,7 @@ export default function LecturerForm(props) {
             noOfHours: noHours
         };
 
-        axios.post('http://localhost:5000/api/sessions/update/' +props.sessionId, req)
+        axios.post('https://kaalaapi.herokuapp.com/api/sessions/update/' +props.sessionId, req)
             .then((res) => {
                 if(res.data == 'Update complete'){
                     swal("Successful", "Session details updated", "success");
@@ -209,7 +209,7 @@ export default function LecturerForm(props) {
     };
 
     const deleteSession = () => {
-        axios.get('http://localhost:5000/api/sessions/delete/' +props.sessionId)
+        axios.get('https://kaalaapi.herokuapp.com/api/sessions/delete/' +props.sessionId)
             .then((res) => {
                 if(res.data == 'Successfully removed'){
                     swal("Successful", "Session details removed", "success");

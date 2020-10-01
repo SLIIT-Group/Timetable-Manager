@@ -14,6 +14,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import swal from "sweetalert";
 import 'regenerator-runtime/runtime';
 
+const path = require('path');
+
 const StyledTableCell = withStyles((theme) => ({
     head: {
         backgroundColor: theme.palette.info.dark,
@@ -56,7 +58,7 @@ export default function SessionRoom() {
     };
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/sessions")
+        axios.get("https://kaalaapi.herokuapp.com/api/sessions")
             .then((response) => {
                 setSessions(response.data);
                 setSearchResults(response.data);
@@ -65,7 +67,7 @@ export default function SessionRoom() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/session_preferredRoom/")
+        axios.get("https://kaalaapi.herokuapp.com/api/session_preferredRoom/")
             .then((response) => {
                 setSessionRooms(response.data);
             })
@@ -73,7 +75,7 @@ export default function SessionRoom() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/room_group/")
+        axios.get("https://kaalaapi.herokuapp.com/api/room_group/")
             .then((response) => {
                 setGroupRooms(response.data);
             })
@@ -81,7 +83,7 @@ export default function SessionRoom() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/room_lecturer/")
+        axios.get("https://kaalaapi.herokuapp.com/api/room_lecturer/")
             .then((response) => {
                 setLecturerRooms(response.data);
             })
@@ -89,7 +91,7 @@ export default function SessionRoom() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/room_subject_tag/")
+        axios.get("https://kaalaapi.herokuapp.com/api/room_subject_tag/")
             .then((response) => {
                 setSubjectTagRooms(response.data);
             })
@@ -97,7 +99,7 @@ export default function SessionRoom() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/tag_room/")
+        axios.get("https://kaalaapi.herokuapp.com/api/tag_room/")
             .then((response) => {
                 setTagRooms(response.data);
             })
@@ -115,7 +117,12 @@ export default function SessionRoom() {
     }, [searchTerm]);
 
     function refreshPage() {
-        window.location.reload(false);
+        //window.location.reload(false);
+        //${__dirname}/assets/icon.png
+        //location.reload();
+        //console.log(path.join('/lecturers'));
+        //window.location.replace(path.join('/session'));
+
     }
 
     function sleep(ms) {
@@ -177,7 +184,7 @@ export default function SessionRoom() {
 
             console.log(roomsArray);
 
-            axios.post('http://localhost:5000/api/sessions/update/' +sessionId, req)
+            axios.post('https://kaalaapi.herokuapp.com/api/sessions/update/' +sessionId, req)
                 .then((res) => {
                     if(res.data == 'Update complete'){
                         //swal("Successful", "Session details updated", "success");
@@ -189,7 +196,9 @@ export default function SessionRoom() {
                 });
         }
 
-        swal("Successful", "Preferred locations added to all sessions automatically", "success").then(refreshPage);
+        swal("Successful", "Preferred locations added to all sessions automatically", "success").then(
+            //refreshPage
+        );
     };
 
     return (
@@ -197,8 +206,10 @@ export default function SessionRoom() {
             <h3 align="center"> Sessions List </h3>
 
             <div className="form-group">
-                <input type="submit" value="Automatically Assign Rooms for Sessions" className= "btn btn-primary"
-                       style={{marginLeft: 10}} onClick={allocateRooms}/>
+                <Link to={"/"}>
+                    <input type="submit" value="Automatically Assign Rooms for Sessions" className= "btn btn-primary"
+                           style={{marginLeft: 10}} onClick={allocateRooms}/>
+                </Link>
 
                 {/*<div style={{width:"25px", display:"inline-block"}} />*/}
                 {/*<input*/}
