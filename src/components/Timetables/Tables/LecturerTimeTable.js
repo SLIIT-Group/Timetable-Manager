@@ -43,17 +43,17 @@ const useStyles = makeStyles({
   },
 });
 
-function Timetable(props) {
+function LecturerTimeTable(props) {
   const classes = useStyles();
-  // const intialState = {
-  //   allocations: [{ session: {}, slots: [], day: '', groupID: '' }],
-  // };
+
   const [timetable, setTimetable] = useState([
     { allocations: [{ day: '', session: {} }], groupID: '' },
   ]);
   const getTimetable = () => {
     axios
-      .get(`http://localhost:5000/api/timetable/${props.match.params.id}`)
+      .get(
+        `http://localhost:5000/api/timetable/lecturer/${props.match.params.id}`
+      )
       .then((response) => {
         console.log(response.data);
         setTimetable(response.data);
@@ -74,6 +74,7 @@ function Timetable(props) {
       case 'Lab':
         return { backgroundColor: '#cce3ff' };
         break;
+
       default:
         return { backgroundColor: '#fff' };
         break;
@@ -84,6 +85,9 @@ function Timetable(props) {
     getTimetable();
   }, []);
   return (
+    // <div>
+    //   <p>{timetable[0].day}</p>
+    // </div>
     <Grid item>
       <Link style={navStyle} to='/timetables'>
         <div style={{ marginTop: -30, marginLeft: 20 }}>
@@ -113,21 +117,17 @@ function Timetable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {timetable[0].allocations.map((alloc) => (
-              <TableRow
-                style={{ padding: 0 }}
-                key={alloc.session.groupID}
-                hover
-              >
+            {timetable.map((alloc) => (
+              <TableRow style={{ padding: 0 }} hover>
                 <TableCell align='center'>
                   {alloc.day === 'Monday' ? (
                     <div style={getBackgroundColor(alloc.session.tag)}>
                       {alloc.session.subject + '\n'}
                       {alloc.session.tag}
                       <br></br>
-                      {alloc.session.rooms[0]}
+                      {alloc.room}
                       <br></br>
-                      {alloc.session.lecturers[0]}
+                      {props.match.params.id}
                       <p>
                         {alloc.slots[0].start +
                           '-' +
@@ -144,7 +144,7 @@ function Timetable(props) {
                       {alloc.session.subject + '\n'}
                       {alloc.session.tag}
                       <br></br>
-                      {alloc.session.rooms[0]}
+                      {alloc.room}
                       <br></br>
                       {alloc.session.lecturers[0]}
                       <p>
@@ -163,7 +163,7 @@ function Timetable(props) {
                       {alloc.session.subject + '\n'}
                       {alloc.session.tag}
                       <br></br>
-                      {alloc.session.rooms[0]}
+                      {alloc.room}
                       <br></br>
                       {alloc.session.lecturers[0]}
                       <p>
@@ -182,7 +182,7 @@ function Timetable(props) {
                       {alloc.session.subject + '\n'}
                       {alloc.session.tag}
                       <br></br>
-                      {alloc.session.rooms[0]}
+                      {alloc.room}
                       <br></br>
                       {alloc.session.lecturers[0]}
                       <p>
@@ -201,7 +201,7 @@ function Timetable(props) {
                       {alloc.session.subject + '\n'}
                       {alloc.session.tag}
                       <br></br>
-                      {alloc.session.rooms[0]}
+                      {alloc.room}
                       <br></br>
                       {alloc.session.lecturers[0]}
                       <p>
@@ -223,4 +223,4 @@ function Timetable(props) {
   );
 }
 
-export default Timetable;
+export default LecturerTimeTable;

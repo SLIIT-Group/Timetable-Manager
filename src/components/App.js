@@ -27,6 +27,7 @@ import Customize from './Customize/Customize';
 import SessionTableSAddCS from './Customize/SubComponents/SessionTableAddCS';
 import SessionTableAddNO from './Customize/SubComponents/SessionTableAddNO';
 import SessionTableAddPS from './Customize/SubComponents/SessionTableAddPS';
+import LecturerTimeTable from './Timetables/Tables/LecturerTimeTable';
 
 const App = () => {
   return (
@@ -54,6 +55,11 @@ const App = () => {
             <Route exact path='/tags/edit/:id' component={EditTagForm} />
             <Route exact path='/timetables' component={TimeTables} />
             <Route exact path='/timetables/:id' component={TimeTable} />
+            <Route
+              exact
+              path='/timetables/lecturer/:id'
+              component={LecturerTimeTable}
+            />
             <Route exact path='/addSession' component={SessionForm} />
             <Route exact path='/session/edit/:id' component={EditSession} />
             <Route exact path='/section3' component={Customize} />
