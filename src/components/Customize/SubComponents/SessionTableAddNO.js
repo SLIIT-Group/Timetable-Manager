@@ -67,7 +67,7 @@ export default function SessionTableAddNO() {
     };
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/sessions")
+        axios.get("https://kaalaapi.herokuapp.com/api/sessions")
             .then((response) => {
                 setSessions(response.data);
                 setSearchResults(response.data);
@@ -121,7 +121,7 @@ export default function SessionTableAddNO() {
             swal("Unsuccessful","Select At Least Two", "error");
         }
         else {
-            axios.post("http://localhost:5000/api/nos/add", req).then((res) => {
+            axios.post("https://kaalaapi.herokuapp.com/api/nos/add", req).then((res) => {
                 if (res.data.success) {
                     swal("Successful", "Entry Saved Successfully", "success");
                 } else {

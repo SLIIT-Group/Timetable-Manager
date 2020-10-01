@@ -40,7 +40,7 @@ function TimeSlot() {
 
   const getAllSlots = () => {
     axios
-      .get(`http://localhost:5000/api/day`)
+      .get(`https://kaalaapi.herokuapp.com/api/day`)
       .then((res) => {
         console.log(res.data);
         setSlots(res.data);

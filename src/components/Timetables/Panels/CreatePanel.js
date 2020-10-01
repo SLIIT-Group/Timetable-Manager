@@ -46,7 +46,7 @@ function CreatePanel({ counter, setCounter }) {
 
   const createTimetable = () => {
     axios
-      .get(`http://localhost:5000/api/timetable/create/${groupId}`)
+      .get(`https://kaalaapi.herokuapp.com/api/timetable/create/${groupId}`)
       .then((res) => {
         console.log('From createTimetable');
         setTimeTable(res.data);

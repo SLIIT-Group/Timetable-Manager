@@ -55,7 +55,7 @@ function Add({ allocations, counter, setCounter }) {
       console.log(allocation);
       console.log('Posted');
       axios
-        .post('http://localhost:5000/api/day', allocation)
+        .post('https://kaalaapi.herokuapp.com/api/day', allocation)
         .then(() => setCounter(counter + 1))
         .catch((err) => console.log(err));
       setAllocation(initialState);

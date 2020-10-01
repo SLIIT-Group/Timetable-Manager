@@ -82,7 +82,7 @@ function Stats() {
   ];
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/lecturers/`)
+    fetch(`https://kaalaapi.herokuapp.com/api/lecturers/`)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -93,7 +93,7 @@ function Stats() {
         }
       );
 
-    fetch(`http://localhost:5000/api/subjects/`)
+    fetch(`https://kaalaapi.herokuapp.com/api/subjects/`)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -104,7 +104,7 @@ function Stats() {
         }
       );
 
-    fetch(`http://localhost:5000/api/students/all`)
+    fetch(`https://kaalaapi.herokuapp.com/api/students/all`)
       .then((res) => res.json())
       .then((result) => {
         setStudent(result);

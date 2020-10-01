@@ -66,7 +66,7 @@ export default function SubGrpNum() {
 
   useEffect(() => {
     axios
-        .post("http://localhost:5000/api/students/view/academicYrSem")
+        .post("https://kaalaapi.herokuapp.com/api/students/view/academicYrSem")
         .then((res) => {
           setYrList(res.data);
         });
@@ -77,7 +77,7 @@ export default function SubGrpNum() {
       academicYrSem: yrSem,
     };
     axios
-        .post("http://localhost:5000/api/students/view/programme",req)
+        .post("https://kaalaapi.herokuapp.com/api/students/view/programme",req)
         .then((res) => {
           setProgList(res.data);
         });
@@ -89,7 +89,7 @@ export default function SubGrpNum() {
       programme: prog,
     };
     axios
-        .post("http://localhost:5000/api/students/view/grpNo",req)
+        .post("https://kaalaapi.herokuapp.com/api/students/view/grpNo",req)
         .then((res) => {
           setGrpList(res.data);
         });
@@ -102,7 +102,7 @@ export default function SubGrpNum() {
       grpNo : grpNo,
     };
     axios
-        .post("http://localhost:5000/api/students/view/subGrpNo",req)
+        .post("https://kaalaapi.herokuapp.com/api/students/view/subGrpNo",req)
         .then((res) => {
           setSubGrpList(res.data);
         });
@@ -117,7 +117,7 @@ export default function SubGrpNum() {
       prevSubGrpNo : subGrpNo,
     };
 
-    axios.post(`http://localhost:5000/api/students/delete/subGrpNo`, req).then((res) => {
+    axios.post(`https://kaalaapi.herokuapp.com/api/students/delete/subGrpNo`, req).then((res) => {
       if (res.data.success) {
         swal("Unsuccessful", "Student Entry Updating Failed", "error");
       }else{
@@ -141,7 +141,7 @@ export default function SubGrpNum() {
       subGrpNo: newSubGrpNo,
     };
 
-    axios.post(`http://localhost:5000/api/students/update/subGrpNo`, req).then((res) => {
+    axios.post(`https://kaalaapi.herokuapp.com/api/students/update/subGrpNo`, req).then((res) => {
       if (res.data.success) {
         swal("Unsuccessful", "Student Entry Updating Failed", "error");
       }else{

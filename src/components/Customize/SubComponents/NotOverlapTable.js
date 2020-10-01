@@ -54,7 +54,7 @@ function NotOverlapTable() {
   const [searchResults, setSearchResults] = useState([]);
 
   const deleteData = (id) => {
-    axios.get('http://localhost:5000/api/nos/delete/' + id)
+    axios.get('https://kaalaapi.herokuapp.com/api/nos/delete/' + id)
         .then((res) => {
           if (res.data == 'Successfully removed') {
             swal("Successful", "Details removed", "success");
@@ -66,7 +66,7 @@ function NotOverlapTable() {
   useEffect(() => {
     axios
 
-        .get("http://localhost:5000/api/nos/all")
+        .get("https://kaalaapi.herokuapp.com/api/nos/all")
         .then((res) => {
           setDataList(res.data);
           setSearchResults(res.data);

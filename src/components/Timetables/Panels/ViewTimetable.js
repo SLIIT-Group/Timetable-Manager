@@ -66,7 +66,7 @@ function ViewTimetable({ counter, setCounter }) {
 
   const getTimetables = () => {
     axios
-      .get('http://localhost:5000/api/timetable')
+      .get('https://kaalaapi.herokuapp.com/api/timetable')
       .then((response) => {
         console.log(response.data);
         setTimetables(response.data);
@@ -82,7 +82,7 @@ function ViewTimetable({ counter, setCounter }) {
 
   const deleteTimetable = (id) => {
     axios
-      .delete(`http://localhost:5000/api/timetable/${id}`)
+      .delete(`https://kaalaapi.herokuapp.com/api/timetable/${id}`)
       .then(() => {
         swal('Successful', `Timetable deleted`, 'success');
         setCounter(counter + 1);

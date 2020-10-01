@@ -53,7 +53,7 @@ function Timetable(props) {
   ]);
   const getTimetable = () => {
     axios
-      .get(`http://localhost:5000/api/timetable/${props.match.params.id}`)
+      .get(`https://kaalaapi.herokuapp.com/api/timetable/${props.match.params.id}`)
       .then((response) => {
         console.log(response.data);
         setTimetable(response.data);

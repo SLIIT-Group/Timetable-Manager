@@ -92,13 +92,13 @@ function Time_restriction(props) {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/room/`).then((res) => {
+    axios.get(`https://kaalaapi.herokuapp.com/api/room/`).then((res) => {
       setBuilding_room(res.data);
     });
 
     axios
 
-      .get(`http://localhost:5000/api/time_restriction_room/`)
+      .get(`https://kaalaapi.herokuapp.com/api/time_restriction_room/`)
       .then((res) => {
         setTimeRestriction(res.data);
         setSearchFilter(res.data);
@@ -130,7 +130,7 @@ function Time_restriction(props) {
   const deleteRoom = (id) => {
     setTable(false);
     axios
-      .delete(`http://localhost:5000/api/time_restriction_room/remove/${id}`)
+      .delete(`https://kaalaapi.herokuapp.com/api/time_restriction_room/remove/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
@@ -155,7 +155,7 @@ function Time_restriction(props) {
       if (!checkArray) {
         axios
           .post(
-            `http://localhost:5000/api/time_restriction_room/update/${number}`,
+            `https://kaalaapi.herokuapp.com/api/time_restriction_room/update/${number}`,
             update_tagRoom
           )
           .then((res) => {
@@ -193,7 +193,7 @@ function Time_restriction(props) {
           setRoom("");
         } else {
           axios
-            .post("http://localhost:5000/api/time_restriction_room/add", data)
+            .post("https://kaalaapi.herokuapp.com/api/time_restriction_room/add", data)
             .then((res) => {
               if (res.data.success == true) {
                 NotificationManager.success("Success message", "Room Added");

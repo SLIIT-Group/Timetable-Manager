@@ -90,7 +90,7 @@ export default function EditStudentForm(props) {
                 id: _id,
             };
 
-            axios.post("http://localhost:5000/api/students/update", req).then((res) => {
+            axios.post("https://kaalaapi.herokuapp.com/api/students/update", req).then((res) => {
                 if (res.data === "Update complete") {
                     swal("Successful","Student Entry Updated Successfully","success");
                 } else {
@@ -111,7 +111,7 @@ export default function EditStudentForm(props) {
     useEffect(() => {
         axios
 
-            .get("http://localhost:5000/api/students/byID/"+props.match.params.id)
+            .get("https://kaalaapi.herokuapp.com/api/students/byID/"+props.match.params.id)
             .then((res) => {
 
                 setAcademicYrSem(res.data.academicYrSem);

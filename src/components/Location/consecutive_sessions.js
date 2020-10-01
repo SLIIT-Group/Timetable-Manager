@@ -87,7 +87,7 @@ function Consecutive_sessions(props) {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/cs/all`)
+    fetch(`https://kaalaapi.herokuapp.com/api/cs/all`)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -97,13 +97,13 @@ function Consecutive_sessions(props) {
           setError(error);
         }
       );
-    axios.get(`http://localhost:5000/api/room/`).then((res) => {
+    axios.get(`https://kaalaapi.herokuapp.com/api/room/`).then((res) => {
       setBuilding_room(res.data);
     });
 
     axios
 
-      .get(`http://localhost:5000/api/consecutive_session_room/`)
+      .get(`https://kaalaapi.herokuapp.com/api/consecutive_session_room/`)
       .then((res) => {
         setConsecutiveSessionRoomGroup(res.data);
         setSearchFilter(res.data);
@@ -113,7 +113,7 @@ function Consecutive_sessions(props) {
   const deleteRoom = (id) => {
     setTable(false);
     axios
-      .delete(`http://localhost:5000/api/consecutive_session_room/delete/${id}`)
+      .delete(`https://kaalaapi.herokuapp.com/api/consecutive_session_room/delete/${id}`)
       .then((res) => {
         NotificationManager.info("Item is Successfully deleted", "", 3000);
         setTable(true);
@@ -145,7 +145,7 @@ function Consecutive_sessions(props) {
       setRoom("");
     } else {
       axios
-        .post("http://localhost:5000/api/consecutive_session_room/add", data)
+        .post("https://kaalaapi.herokuapp.com/api/consecutive_session_room/add", data)
         .then((res) => {
           if (res.data.success == true) {
             NotificationManager.success("Success message", "Room Added");

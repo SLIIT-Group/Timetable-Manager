@@ -61,7 +61,7 @@ export default function GrpIDs({key, setKey}) {
 
   useEffect(() => {
     axios
-        .post("http://localhost:5000/api/students/view/academicYrSem")
+        .post("https://kaalaapi.herokuapp.com/api/students/view/academicYrSem")
         .then((res) => {
           setYrList(res.data);
         });
@@ -72,7 +72,7 @@ export default function GrpIDs({key, setKey}) {
       academicYrSem: yrSem,
     };
     axios
-        .post("http://localhost:5000/api/students/view/programme",req)
+        .post("https://kaalaapi.herokuapp.com/api/students/view/programme",req)
         .then((res) => {
           setProgList(res.data);
         });
@@ -85,7 +85,7 @@ export default function GrpIDs({key, setKey}) {
 
     };
     axios
-        .post("http://localhost:5000/api/students/view/grpNo",req)
+        .post("https://kaalaapi.herokuapp.com/api/students/view/grpNo",req)
         .then((res) => {
           setGrpList(res.data);
         });

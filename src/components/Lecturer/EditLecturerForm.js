@@ -187,7 +187,7 @@ export default function LecturerForm(props) {
 
     useEffect(() => {
         console.log(props)
-        axios.get('http://localhost:5000/api/lecturers/edit/' +props.lecturerID)
+        axios.get('https://kaalaapi.herokuapp.com/api/lecturers/edit/' +props.lecturerID)
             .then(response => {
                 setFname(response.data.fname);
                 setLname(response.data.lname);
@@ -219,7 +219,7 @@ export default function LecturerForm(props) {
                 rank: level1+ "." +empid
             };
 
-            axios.post('http://localhost:5000/api/lecturers/update/' +props.lecturerID, req)
+            axios.post('https://kaalaapi.herokuapp.com/api/lecturers/update/' +props.lecturerID, req)
                 .then((res) => {
                     if(res.data == 'Update complete'){
                         swal("Successful", "Lecturer details updated", "success");
@@ -241,7 +241,7 @@ export default function LecturerForm(props) {
     };
 
     const deleteLecturer = () => {
-        axios.get('http://localhost:5000/api/lecturers/delete/' +props.lecturerID)
+        axios.get('https://kaalaapi.herokuapp.com/api/lecturers/delete/' +props.lecturerID)
             .then((res) => {
                 if(res.data == 'Successfully removed'){
                     swal("Successful", "Lecturer details removed", "success");

@@ -70,7 +70,7 @@ export default function TagForm( {noBackBtn}) {
                 tag: tag,
             };
 
-            axios.post("http://localhost:5000/api/tags/add", req).then((res) => {
+            axios.post("https://kaalaapi.herokuapp.com/api/tags/add", req).then((res) => {
                 if (res.data.success) {
                     swal("Successful","Tag Entry Saved Successfully","success");
                 }else{

@@ -88,7 +88,7 @@ export default function StudentForm( {noBackBtn}) {
                 subGrpNo: subGrpNo,
             };
 
-            axios.post("http://localhost:5000/api/students/add", req).then((res) => {
+            axios.post("https://kaalaapi.herokuapp.com/api/students/add", req).then((res) => {
                 if (res.data.success) {
                     swal("Successful","Student Entry Saved Successfully","success");
                 }else{
