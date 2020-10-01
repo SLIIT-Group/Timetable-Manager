@@ -101,7 +101,7 @@ export default function SessionForm() {
             noOfHours: noHours
         };
 
-        axios.post("http://localhost:5000/api/sessions/add", req).then((res) => {
+        axios.post("https://kaalaapi.herokuapp.com/api/sessions/add", req).then((res) => {
             if (res.data.success) {
                 // console.log(res.data);
                 swal("Successful", "Session details added", "success");
@@ -123,7 +123,7 @@ export default function SessionForm() {
     };
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/lecturers")
+        axios.get("https://kaalaapi.herokuapp.com/api/lecturers")
             .then((response) => {
                 setLecturers(response.data);
                 //console.log(lecturers)
@@ -132,7 +132,7 @@ export default function SessionForm() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/subjects")
+        axios.get("https://kaalaapi.herokuapp.com/api/subjects")
             .then((response) => {
                 setSubjects(response.data);
             })
@@ -140,13 +140,13 @@ export default function SessionForm() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:5000/api/tags/all")
+        axios.get("https://kaalaapi.herokuapp.com/api/tags/all")
             .then((res) => {
                 setTags(res.data);
             });
 
         axios
-            .get("http://localhost:5000/api/students/all")
+            .get("https://kaalaapi.herokuapp.com/api/students/all")
             .then((res) => {
                 setGroups(res.data);
             });

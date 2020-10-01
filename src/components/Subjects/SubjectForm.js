@@ -113,7 +113,7 @@ export default function AddressForm() {
                 evaHo: evaHo
             };
 
-            axios.post("http://localhost:5000/api/subjects/add", req).then((res) => {
+            axios.post("https://kaalaapi.herokuapp.com/api/subjects/add", req).then((res) => {
                 if (res.data.success) {
                     //console.log(res.data);
                     swal("Successful", "Subject details added", "success");
