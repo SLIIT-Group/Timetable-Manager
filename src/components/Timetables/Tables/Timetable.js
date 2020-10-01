@@ -7,10 +7,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Grid, Button } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import { Grid, Button, colors } from '@material-ui/core';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -19,8 +18,14 @@ const StyledTableCell = withStyles((theme) => ({
   },
   body: {
     fontSize: 11,
+    maxWidth: '5px',
   },
 }))(TableCell);
+
+const navStyle = {
+  color: '#fff',
+  textDecoration: 'none',
+};
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
@@ -38,11 +43,60 @@ const useStyles = makeStyles({
   },
 });
 
-function Timetable({ allocations }) {
+function Timetable(props) {
   const classes = useStyles();
+  // const intialState = {
+  //   allocations: [{ session: {}, slots: [], day: '', groupID: '' }],
+  // };
+  const [timetable, setTimetable] = useState([
+    { allocations: [{ day: '', session: {} }], groupID: '' },
+  ]);
+  const getTimetable = () => {
+    axios
+      .get(`http://localhost:5000/api/timetable/${props.match.params.id}`)
+      .then((response) => {
+        console.log(response.data);
+        setTimetable(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
+  const getBackgroundColor = (tag) => {
+    switch (tag) {
+      case 'Lecture':
+        return { backgroundColor: '#ede6ff' };
+        break;
+      case 'Tutorial':
+        return { backgroundColor: '#fceac5' };
+        break;
+      case 'Lab':
+        return { backgroundColor: '#cce3ff' };
+        break;
+
+      default:
+        return { backgroundColor: '#fff' };
+        break;
+    }
+  };
+
+  useEffect(() => {
+    getTimetable();
+  }, []);
   return (
     <Grid item>
+      <Link style={navStyle} to='/timetables'>
+        <div style={{ marginTop: -30, marginLeft: 20 }}>
+          <Button
+            variant='contained'
+            color='secondary'
+            className={classes.button}
+          >
+            Back
+          </Button>
+        </div>
+      </Link>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label='simple table'>
           <TableHead
@@ -60,7 +114,7 @@ function Timetable({ allocations }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allocations.map((alloc) => (
+            {timetable[0].allocations.map((alloc) => (
               <TableRow
                 style={{ padding: 0 }}
                 key={alloc.session.groupID}
@@ -68,11 +122,13 @@ function Timetable({ allocations }) {
               >
                 <TableCell align='center'>
                   {alloc.day === 'Monday' ? (
-                    <div style={{ backgroundColor: 'pink' }}>
+                    <div style={getBackgroundColor(alloc.session.tag)}>
                       {alloc.session.subject + '\n'}
                       {alloc.session.tag}
-                      <p>{alloc.session.rooms[0]}</p>
-                      <p>{alloc.session.lecturers[0]}</p>
+                      <br></br>
+                      {alloc.session.rooms[0]}
+                      <br></br>
+                      {alloc.session.lecturers[0]}
                       <p>
                         {alloc.slots[0].start +
                           '-' +
@@ -85,11 +141,13 @@ function Timetable({ allocations }) {
                 </TableCell>
                 <TableCell align='center'>
                   {alloc.day === 'Tuesday' ? (
-                    <div style={{ backgroundColor: 'pink' }}>
+                    <div style={getBackgroundColor(alloc.session.tag)}>
                       {alloc.session.subject + '\n'}
                       {alloc.session.tag}
-                      <p>{alloc.session.rooms[0]}</p>
-                      <p>{alloc.session.lecturers[0]}</p>
+                      <br></br>
+                      {alloc.session.rooms[0]}
+                      <br></br>
+                      {alloc.session.lecturers[0]}
                       <p>
                         {alloc.slots[0].start +
                           '-' +
@@ -102,11 +160,13 @@ function Timetable({ allocations }) {
                 </TableCell>
                 <TableCell align='center'>
                   {alloc.day === 'Wednesday' ? (
-                    <div style={{ backgroundColor: 'yellow' }}>
+                    <div style={getBackgroundColor(alloc.session.tag)}>
                       {alloc.session.subject + '\n'}
                       {alloc.session.tag}
-                      <p>{alloc.session.rooms[0]}</p>
-                      <p>{alloc.session.lecturers[0]}</p>
+                      <br></br>
+                      {alloc.session.rooms[0]}
+                      <br></br>
+                      {alloc.session.lecturers[0]}
                       <p>
                         {alloc.slots[0].start +
                           '-' +
@@ -119,11 +179,13 @@ function Timetable({ allocations }) {
                 </TableCell>
                 <TableCell align='center'>
                   {alloc.day === 'Thursday' ? (
-                    <div style={{ backgroundColor: 'pink' }}>
+                    <div style={getBackgroundColor(alloc.session.tag)}>
                       {alloc.session.subject + '\n'}
                       {alloc.session.tag}
-                      <p>{alloc.session.rooms[0]}</p>
-                      <p>{alloc.session.lecturers[0]}</p>
+                      <br></br>
+                      {alloc.session.rooms[0]}
+                      <br></br>
+                      {alloc.session.lecturers[0]}
                       <p>
                         {alloc.slots[0].start +
                           '-' +
@@ -136,11 +198,13 @@ function Timetable({ allocations }) {
                 </TableCell>
                 <TableCell align='center'>
                   {alloc.day === 'Friday' ? (
-                    <div style={{ backgroundColor: 'pink' }}>
+                    <div style={getBackgroundColor(alloc.session.tag)}>
                       {alloc.session.subject + '\n'}
                       {alloc.session.tag}
-                      <p>{alloc.session.rooms[0]}</p>
-                      <p>{alloc.session.lecturers[0]}</p>
+                      <br></br>
+                      {alloc.session.rooms[0]}
+                      <br></br>
+                      {alloc.session.lecturers[0]}
                       <p>
                         {alloc.slots[0].start +
                           '-' +

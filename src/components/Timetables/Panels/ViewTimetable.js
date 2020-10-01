@@ -13,12 +13,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Button } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import swal from 'sweetalert';
-import TimetableModal from '../TimetableModal';
 import Timetable from '../Tables/Timetable';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,7 +63,6 @@ function ViewTimetable({ counter, setCounter }) {
   };
   const initialState = [{ allocations: [{ session: {}, slots: [], day: '' }] }];
   const [timetables, setTimetables] = useState(initialState);
-  // const [counter, setCounter] = useState(0);
 
   const getTimetables = () => {
     axios
@@ -80,8 +78,7 @@ function ViewTimetable({ counter, setCounter }) {
 
   useEffect(() => {
     getTimetables();
-    console.log(isVisible);
-  }, [isVisible, selectedRow, counter]);
+  }, [counter]);
 
   const deleteTimetable = (id) => {
     axios
@@ -92,10 +89,6 @@ function ViewTimetable({ counter, setCounter }) {
       })
       .catch((err) => console.log('Error', err));
   };
-
-  const [isVisible, setIsVisible] = useState(false);
-
-  const [selectedRow, setSelectedRow] = useState([]);
 
   return (
     <div className={classes.root}>
@@ -114,7 +107,9 @@ function ViewTimetable({ counter, setCounter }) {
             aria-controls='panel1bh-content'
             id='panel1bh-header'
           >
-            <Typography className={classes.heading}>View Timetables</Typography>
+            <Typography className={classes.heading}>
+              View Timetables by Group
+            </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Grid container spacing={3}>
@@ -153,17 +148,9 @@ function ViewTimetable({ counter, setCounter }) {
                               </TableCell>
 
                               <TableCell align='center'>
-                                {/* <TimetableModal
-                                  fullWidth={true}
-                                  maxWidth={'md'}
-                                  row={row}
-                                ></TimetableModal> */}
-                                <VisibilityIcon
-                                  onClick={() => {
-                                    setSelectedRow(row);
-                                    setIsVisible(!isVisible);
-                                  }}
-                                ></VisibilityIcon>
+                                <Link to={'/timetables/' + row.groupID}>
+                                  <VisibilityIcon></VisibilityIcon>
+                                </Link>
                               </TableCell>
 
                               <TableCell align='center'>
@@ -181,13 +168,6 @@ function ViewTimetable({ counter, setCounter }) {
                       </Table>
                     </TableContainer>
                   </div>
-                  {isVisible && (
-                    <Container style={{ marginTop: '10px' }}>
-                      <Timetable
-                        allocations={selectedRow.allocations}
-                      ></Timetable>
-                    </Container>
-                  )}
                 </Paper>
               </Grid>
             </Grid>
