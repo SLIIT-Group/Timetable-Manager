@@ -85,9 +85,6 @@ function LecturerTimeTable(props) {
     getTimetable();
   }, []);
   return (
-    // <div>
-    //   <p>{timetable[0].day}</p>
-    // </div>
     <Grid item>
       <Link style={navStyle} to='/timetables'>
         <div style={{ marginTop: -30, marginLeft: 20 }}>
@@ -100,6 +97,7 @@ function LecturerTimeTable(props) {
           </Button>
         </div>
       </Link>
+      <h6 style={{ marginLeft: '300px' }}>Lecturer {props.match.params.id}</h6>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label='simple table'>
           <TableHead
@@ -122,16 +120,20 @@ function LecturerTimeTable(props) {
                 <TableCell align='center'>
                   {alloc.day === 'Monday' ? (
                     <div style={getBackgroundColor(alloc.session.tag)}>
-                      {alloc.session.subject + '\n'}
-                      {alloc.session.tag}
+                      <b>
+                        {alloc.session.subject + '\n'}
+                        {alloc.session.tag}
+                      </b>
                       <br></br>
                       {alloc.room}
                       <br></br>
                       {props.match.params.id}
                       <p>
-                        {alloc.slots[0].start +
-                          '-' +
-                          alloc.slots[alloc.slots.length - 1].end}
+                        <b>
+                          {alloc.slots[0].start +
+                            '-' +
+                            alloc.slots[alloc.slots.length - 1].end}
+                        </b>
                       </p>
                     </div>
                   ) : (
@@ -141,17 +143,19 @@ function LecturerTimeTable(props) {
                 <TableCell align='center'>
                   {alloc.day === 'Tuesday' ? (
                     <div style={getBackgroundColor(alloc.session.tag)}>
-                      {alloc.session.subject + '\n'}
-                      {alloc.session.tag}
+                      <b>
+                        {alloc.session.subject + '\n'}
+                        {alloc.session.tag}
+                      </b>
                       <br></br>
                       {alloc.room}
                       <br></br>
-                      {alloc.session.lecturers[0]}
-                      <p>
+                      {props.match.params.id}
+                      <b>
                         {alloc.slots[0].start +
                           '-' +
                           alloc.slots[alloc.slots.length - 1].end}
-                      </p>
+                      </b>
                     </div>
                   ) : (
                     <p>---</p>
@@ -160,17 +164,20 @@ function LecturerTimeTable(props) {
                 <TableCell align='center'>
                   {alloc.day === 'Wednesday' ? (
                     <div style={getBackgroundColor(alloc.session.tag)}>
-                      {alloc.session.subject + '\n'}
-                      {alloc.session.tag}
+                      <b>
+                        {alloc.session.subject + '\n'}
+                        {alloc.session.tag}
+                      </b>
                       <br></br>
                       {alloc.room}
                       <br></br>
-                      {alloc.session.lecturers[0]}
-                      <p>
+                      {props.match.params.id}
+                      <br></br>
+                      <b>
                         {alloc.slots[0].start +
                           '-' +
                           alloc.slots[alloc.slots.length - 1].end}
-                      </p>
+                      </b>
                     </div>
                   ) : (
                     <p>---</p>
@@ -179,16 +186,20 @@ function LecturerTimeTable(props) {
                 <TableCell align='center'>
                   {alloc.day === 'Thursday' ? (
                     <div style={getBackgroundColor(alloc.session.tag)}>
-                      {alloc.session.subject + '\n'}
-                      {alloc.session.tag}
+                      <b>
+                        {alloc.session.subject + '\n'}
+                        {alloc.session.tag}
+                      </b>
                       <br></br>
                       {alloc.room}
                       <br></br>
-                      {alloc.session.lecturers[0]}
+                      {props.match.params.id}
                       <p>
-                        {alloc.slots[0].start +
-                          '-' +
-                          alloc.slots[alloc.slots.length - 1].end}
+                        <b>
+                          {alloc.slots[0].start +
+                            '-' +
+                            alloc.slots[alloc.slots.length - 1].end}
+                        </b>
                       </p>
                     </div>
                   ) : (
@@ -198,16 +209,20 @@ function LecturerTimeTable(props) {
                 <TableCell align='center'>
                   {alloc.day === 'Friday' ? (
                     <div style={getBackgroundColor(alloc.session.tag)}>
-                      {alloc.session.subject + '\n'}
-                      {alloc.session.tag}
+                      <b>
+                        {alloc.session.subject + '\n'}
+                        {alloc.session.tag}
+                      </b>
                       <br></br>
                       {alloc.room}
                       <br></br>
-                      {alloc.session.lecturers[0]}
+                      {props.match.params.id}
                       <p>
-                        {alloc.slots[0].start +
-                          '-' +
-                          alloc.slots[alloc.slots.length - 1].end}
+                        <b>
+                          {alloc.slots[0].start +
+                            '-' +
+                            alloc.slots[alloc.slots.length - 1].end}
+                        </b>
                       </p>
                     </div>
                   ) : (
