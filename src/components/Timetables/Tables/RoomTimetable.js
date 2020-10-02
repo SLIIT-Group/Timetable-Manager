@@ -10,6 +10,8 @@ import Paper from '@material-ui/core/Paper';
 import { Grid, Button, colors } from '@material-ui/core';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import PrintIcon from '@material-ui/icons/Print';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -85,17 +87,34 @@ function RoomTimetable(props) {
   }, []);
   return (
     <Grid item>
-      <Link style={navStyle} to='/timetables'>
-        <div style={{ marginTop: -30, marginLeft: 20 }}>
+      <div style={{ marginTop: -30, marginLeft: 20 }}>
+        <Link style={navStyle} to='/timetables'>
           <Button
             variant='contained'
             color='secondary'
             className={classes.button}
           >
+            <ArrowBackIcon
+              style={{ marginRight: '6px' }}
+              fontSize='small'
+            ></ArrowBackIcon>
             Back
           </Button>
-        </div>
-      </Link>
+        </Link>
+        <Button
+          variant='contained'
+          color='primary'
+          className={classes.button}
+          onClick={() => window.print()}
+          style={{ marginLeft: '5px' }}
+        >
+          <PrintIcon
+            style={{ marginRight: '6px' }}
+            fontSize='small'
+          ></PrintIcon>
+          PRINT
+        </Button>
+      </div>
       <h6 style={{ marginLeft: '300px' }}>Room {props.match.params.id}</h6>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label='simple table'>

@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -26,6 +26,14 @@ export default function GroupDropDown({ groupId, setGroupId }) {
     setGroupId(event.target.value);
   };
 
+  const [groups, setGroups] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/students/all').then((res) => {
+      setGroups(res.data);
+    });
+  }, []);
+
   return (
     <div>
       <FormControl variant='outlined' className={classes.formControl}>
@@ -37,9 +45,23 @@ export default function GroupDropDown({ groupId, setGroupId }) {
           onChange={handleChange}
           label='Group'
         >
+          <MenuItem value='Y1S2.IT.01'>Y1S2.IT.01</MenuItem>
           {groups.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
+            <MenuItem
+              key={option._id}
+              value={
+                option.academicYrSem +
+                '.' +
+                option.programme +
+                '.' +
+                option.grpNo
+              }
+            >
+              {option.academicYrSem +
+                '.' +
+                option.programme +
+                '.' +
+                option.grpNo}
             </MenuItem>
           ))}
         </Select>
