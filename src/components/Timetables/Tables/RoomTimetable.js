@@ -43,15 +43,16 @@ const useStyles = makeStyles({
   },
 });
 
-function Timetable(props) {
+function RoomTimetable(props) {
   const classes = useStyles();
 
   const [timetable, setTimetable] = useState([
     { allocations: [{ day: '', session: {} }], groupID: '' },
   ]);
   const getTimetable = () => {
+    console.log(props.match.params.id);
     axios
-      .get(`http://localhost:5000/api/timetable/${props.match.params.id}`)
+      .get(`http://localhost:5000/api/timetable/room/${props.match.params.id}`)
       .then((response) => {
         console.log(response.data);
         setTimetable(response.data);
@@ -72,6 +73,7 @@ function Timetable(props) {
       case 'Lab':
         return { backgroundColor: '#cce3ff' };
         break;
+
       default:
         return { backgroundColor: '#fff' };
         break;
@@ -94,7 +96,7 @@ function Timetable(props) {
           </Button>
         </div>
       </Link>
-      <h6 style={{ marginLeft: '300px' }}>Group {props.match.params.id}</h6>
+      <h6 style={{ marginLeft: '300px' }}>Room {props.match.params.id}</h6>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label='simple table'>
           <TableHead
@@ -112,12 +114,8 @@ function Timetable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {timetable[0].allocations.map((alloc) => (
-              <TableRow
-                style={{ padding: 0 }}
-                key={alloc.session.groupID}
-                hover
-              >
+            {timetable.map((alloc) => (
+              <TableRow style={{ padding: 0 }} hover>
                 <TableCell align='center'>
                   {alloc.day === 'Monday' ? (
                     <div style={getBackgroundColor(alloc.session.tag)}>
@@ -252,4 +250,4 @@ function Timetable(props) {
   );
 }
 
-export default Timetable;
+export default RoomTimetable;
